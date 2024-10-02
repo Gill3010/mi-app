@@ -1,0 +1,22 @@
+/* Footer.module.css */
+.footer {
+    background: linear-gradient(135deg, #ffb606, #00994d);
+    color: white;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .socialLinks {
+    margin-top: 10px;
+  }
+  
+  .socialLinks a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+  }
+  
+  .socialLinks a:hover {
+    text-decoration: underline;
+  }
+  

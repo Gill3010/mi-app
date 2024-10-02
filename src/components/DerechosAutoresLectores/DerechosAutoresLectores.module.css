@@ -1,0 +1,36 @@
+/* DerechosAutoresLectores.module.css */
+.derechosContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f4f4f4;
+}
+
+.canvas {
+  background-color: white;
+  width: 80%;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  min-height: 300px; /* Esto asegurará que haya suficiente espacio para el contenido */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Suaviza la transformación y la sombra */
+}
+
+.canvas:hover {
+  transform: scale(1.02); /* Efecto de expansión al pasar el cursor */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Aumenta la sombra al pasar el cursor */
+}
+
+h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}

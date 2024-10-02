@@ -1,0 +1,144 @@
+/* Navbar.module.css */
+.navbar {
+  background: linear-gradient(135deg, #ffb606, #00994d);/* Gradiente atractivo */
+  padding: 15px 20px;
+  position: relative;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between; /* Alinea el logo a la izquierda y el menú a la derecha */
+  align-items: center; /* Centra verticalmente el contenido */
+}
+
+/* Logo y título del portal */
+.logoTitle {
+  display: flex;
+  align-items: center;
+}
+
+.navbar h1 {
+  font-size: 1.6rem;
+  color: white;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.navbar img {
+  height: 50px; /* Tamaño del logo */
+}
+
+/* Menú principal */
+.navList {
+  list-style: none;
+  display: flex;
+  justify-content: flex-end;
+  gap: 25px;
+  align-items: center;
+}
+
+.navList li {
+  position: relative;
+}
+
+.navList li a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: background 0.3s ease;
+}
+
+.navList li a:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* Efecto hover */
+}
+
+/* Submenús */
+.submenu {
+  display: none;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.8); /* Fondo oscuro */
+  top: 100%; /* Alineado justo debajo del menú principal */
+  left: 0;
+  padding: 10px 0;
+  min-width: 150px;
+  border-radius: 5px;
+  z-index: 1000;
+}
+
+.navList li:hover .submenu {
+  display: block; /* Mostrar submenú al hacer hover */
+}
+
+.submenu li {
+  padding: 10px 15px;
+}
+
+.submenu li a {
+  color: white;
+  text-decoration: none;
+  display: block;
+}
+
+.submenu li a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Ícono de hamburguesa */
+.hamburger {
+  display: none;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+}
+
+.hamburger .bar {
+  width: 30px;
+  height: 3px;
+  background-color: white;
+  border-radius: 3px;
+  transition: transform 0.3s ease;
+}
+
+/* Menú desplegable en móviles */
+@media (max-width: 768px) {
+  .navList {
+    display: none;
+  }
+
+  .navListOpen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.8); /* Fondo verde para móviles */
+    padding: 20px;
+    width: 100%;
+    top: 50px;
+    left: 0;
+    right: 0;
+    position: absolute;
+    z-index: 1000;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .submenu {
+    display: none;
+  }
+
+  .submenuOpen {
+    display: block;
+    background: rgba(0, 0, 0, 0.8); /* Color de fondo para el submenú en móviles */
+    padding: 10px 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  .submenu li {
+    padding-left: 0;
+  }
+}
