@@ -1,63 +1,75 @@
 import React, { useState, useEffect } from 'react';
-import styles from './Slider.module.css';
+import '../../output.css';  // Ajusta la ruta para llegar a output.css desde el componente Slider
 
 const Slider = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const images = [
-    '/img/Imagen1.webp',
-    '/img/Imagen1.webp',
-    '/img/Imagen1.webp',
-    '/img/Imagen1.webp'
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const slides = [
+    { id: 1, image: '/img/imagen1.webp', title: 'Slide 1' },
+    { id: 2, image: '/img/imagen2.webp', title: 'Slide 2' },
+    { id: 3, image: '/img/imagen1.webp', title: 'Slide 3' },
+    { id: 4, image: '/img/imagen2.webp', title: 'Slide 4' }
   ];
 
-  // Cambiar la imagen automáticamente cada 3 segundos
+  // Cambia automáticamente al siguiente slide cada 3 segundos
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) =>
-        prevIndex === images.length - 1 ? 0 : prevIndex + 1
-      );
-    }, 3000); // 3 segundos
+      nextSlide();
+    }, 3000); // Cambia cada 3 segundos
 
-    return () => clearInterval(interval); // Limpiar el intervalo cuando el componente se desmonta
-  }, [images.length]);
+    return () => clearInterval(interval); // Limpia el intervalo cuando el componente se desmonta
+  }, [currentSlide]); // Ejecuta el efecto cuando currentSlide cambie
 
-  // Cambiar imagen manualmente
   const nextSlide = () => {
-    setCurrentIndex(currentIndex === images.length - 1 ? 0 : currentIndex + 1);
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
 
   const prevSlide = () => {
-    setCurrentIndex(currentIndex === 0 ? images.length - 1 : currentIndex - 1);
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
   return (
-    <div className={styles.sliderContainer}>
-      <div className={styles.slider}>
-        {/* Botón para ir a la imagen anterior */}
-        <button onClick={prevSlide} className={styles.prevButton}>
-          &#10094;
-        </button>
+    <div className="relative w-full max-w-4xl mx-auto overflow-hidden rounded-lg shadow-lg">
+      {/* Slides */}
+      <div
+        className="flex transition-transform duration-500 ease-out"
+        style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+      >
+        {slides.map((slide) => (
+          <div key={slide.id} className="w-full flex-shrink-0">
+            <img src={slide.image} alt={slide.title} className="w-full h-80 object-cover" />
+          </div>
+        ))}
+      </div>
 
-        {/* Contenedor de todas las imágenes */}
-        <div
-          className={styles.sliderWrapper}
-          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-        >
-          {images.map((image, index) => (
-            <div key={index} className={styles.sliderItem}>
-              <img
-                src={image}
-                alt={`Descripción de la imagen ${index + 1}`}
-                className={styles.sliderImage}
-              />
-            </div>
-          ))}
-        </div>
+      {/* Botones de navegación con íconos */}
+      <button
+        onClick={prevSlide}
+        className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700"
+        aria-label="Previous Slide"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+      <button
+        onClick={nextSlide}
+        className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700"
+        aria-label="Next Slide"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
 
-        {/* Botón para ir a la siguiente imagen */}
-        <button onClick={nextSlide} className={styles.nextButton}>
-          &#10095;
-        </button>
+      {/* Indicadores */}
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        {slides.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentSlide(index)}
+            className={`w-3 h-3 rounded-full ${currentSlide === index ? 'bg-white' : 'bg-gray-400'}`}
+          />
+        ))}
       </div>
     </div>
   );

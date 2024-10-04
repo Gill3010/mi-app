@@ -14,19 +14,19 @@ const Login = () => {
       const response = await axios.post('/api/login', { email, password });
       console.log(response.data);
       if (response.data.success) {
-        alert('Login successful!');
+        alert('¡Inicio de sesión exitoso!');
       } else {
-        setError('Login failed, please try again.');
+        setError('Error en el inicio de sesión, por favor intenta de nuevo.');
       }
     } catch (error) {
-      setError('Error during login. Please try again.');
+      setError('Error durante el inicio de sesión. Por favor intenta de nuevo.');
     }
   };
 
   const handleGoogleLoginSuccess = (response) => {
     // Aquí puedes enviar el token al backend para manejar la autenticación
     console.log(response.credential);
-    alert('Google login successful!');
+    alert('¡Inicio de sesión con Google exitoso!');
   };
 
   const handleGitHubLogin = () => {
@@ -36,11 +36,11 @@ const Login = () => {
 
   return (
     <div className={styles.loginContainer}>
-      <h2>Login</h2>
+      <h2>Iniciar Sesión</h2>
       {error && <p className={styles.error}>{error}</p>}
       <form onSubmit={handleLogin}>
         <div className={styles.formGroup}>
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="email">Correo Electrónico:</label>
           <input
             type="email"
             id="email"
@@ -50,7 +50,7 @@ const Login = () => {
           />
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="password">Password:</label>
+          <label htmlFor="password">Contraseña:</label>
           <input
             type="password"
             id="password"
@@ -59,7 +59,7 @@ const Login = () => {
             required
           />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit">Iniciar Sesión</button>
       </form>
 
       <div className={styles.oauthButtons}>
@@ -67,18 +67,18 @@ const Login = () => {
           <GoogleLogin
             onSuccess={handleGoogleLoginSuccess}
             onError={() => {
-              console.log('Google Login Failed');
+              console.log('Error en el inicio de sesión con Google');
             }}
           />
         </GoogleOAuthProvider>
 
         <button className={styles.githubButton} onClick={handleGitHubLogin}>
-          Login with GitHub
+          Iniciar sesión con GitHub
         </button>
       </div>
 
       <div className={styles.signupLink}>
-        <p>Don't have an account? <a href="/register">Create one</a></p>
+        <p>¿No tienes una cuenta? <a href="/register">Crea una</a></p>
       </div>
     </div>
   );

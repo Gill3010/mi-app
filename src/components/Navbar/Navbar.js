@@ -1,97 +1,134 @@
-import React, { useState } from 'react';
-import styles from './Navbar.module.css';
-import logo from './logo.png'; // Asegúrate de tener el logo correcto
+import React, { useState, useCallback } from 'react';
+import { NavLink } from 'react-router-dom';  // Importar NavLink de react-router-dom
+import logo from './logo.png';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState(null);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const toggleMenu = useCallback(() => {
+    setIsMenuOpen((prev) => !prev);
+  }, []);
 
-  const toggleSubmenu = (submenu) => {
-    if (openSubmenu === submenu) {
-      setOpenSubmenu(null);
-    } else {
-      setOpenSubmenu(submenu);
-    }
-  };
+  const toggleSubmenu = useCallback((submenu) => {
+    setOpenSubmenu(openSubmenu === submenu ? null : submenu);
+  }, [openSubmenu]);
+
+  const closeMenu = useCallback(() => {
+    setIsMenuOpen(false);
+    setOpenSubmenu(null);
+  }, []);
 
   return (
-    <nav className={styles.navbar}>
-      {/* Logo y título */}
-      <div className={styles.logoTitle}>
-        <img src={logo} alt="Logo" />
-        <h1>Portal de Carteles Científicos</h1>
+    <nav className="bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 p-4">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-4">
+          <img src={logo} alt="Logo" className="h-10" />
+          <h1 className="text-white text-lg font-bold">Portal de Carteles Científicos</h1>
+        </div>
+
+        {/* Ícono de hamburguesa visible en móvil */}
+        <div className="md:hidden" onClick={toggleMenu} aria-label="Toggle menu">
+          <div className="space-y-1.5 cursor-pointer">
+            <span className="block w-8 h-0.5 bg-white"></span>
+            <span className="block w-8 h-0.5 bg-white"></span>
+            <span className="block w-8 h-0.5 bg-white"></span>
+          </div>
+        </div>
       </div>
 
-      {/* Ícono de hamburguesa visible en móvil */}
-      <div className={styles.hamburger} onClick={toggleMenu}>
-        <div className={styles.bar}></div>
-        <div className={styles.bar}></div>
-        <div className={styles.bar}></div>
-      </div>
-
-      {/* Menú */}
-      <ul className={`${styles.navList} ${isMenuOpen ? styles.navListOpen : ''}`}>
-        <li><a href="#home">Inicio</a></li>
+      {/* Menú desplegable */}
+      <ul
+        className={`${
+          isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
+        } md:flex md:space-x-4 md:max-h-full md:opacity-100 md:block overflow-hidden transition-all duration-500 ease-in-out`}
+      >
         <li>
-          <a href="/Nosotros" onClick={() => toggleSubmenu('acercaDeNosotros')}>
-            Acerca de Nosotros
-          </a>
+          <NavLink to="/" className="block py-2 px-4 text-white hover:bg-purple-600 rounded-md" onClick={closeMenu}>
+            Inicio
+          </NavLink>
         </li>
         <li>
-          <a href="#about" onClick={() => toggleSubmenu('politicas')}>
+          <NavLink to="/nosotros" className="block py-2 px-4 text-white hover:bg-purple-600 rounded-md" onClick={closeMenu}>
+            Acerca de Nosotros
+          </NavLink>
+        </li>
+
+        {/* Políticas de Publicación con 9 opciones */}
+        <li>
+          <a
+            href="#politicas"
+            className="block py-2 px-4 text-white hover:bg-purple-600 rounded-md"
+            onClick={() => toggleSubmenu('politicas')}
+          >
             Políticas de Publicación
           </a>
-          {/* Submenú de Políticas de Publicación con 9 opciones */}
-          <ul className={`${styles.submenu} ${openSubmenu === 'politicas' ? styles.submenuOpen : ''}`}>
-            <li><a href="/declaracion-acceso-abierto">Declaración de Acceso Abierto</a></li>
-            <li><a href="/DerechosAutoresLectores">Derechos de los Autores y Lectores</a></li>
-            <li><a href="/EvaluacionAbierta">Evaluación Abierta</a></li>
-            <li><a href="/LicenciasPublicacion">Licencias de Publicación</a></li>
-            <li><a href="/Comunicacion">Comunicación</a></li>
-            <li><a href="/Antiplagio">Antiplagio</a></li>
-            <li><a href="/CriteriosEticosPublicacion">Criterios Eticos de Publicación</a></li>
-            <li><a href="/DeclaracionPrivacidad">Declaración de Privacidad</a></li>
-            <li><a href="/ReferenciasBibliograficas">Referencias Bibliográficas</a></li>
+          <ul className={`${openSubmenu === 'politicas' ? 'block' : 'hidden'} bg-gray-700 p-2 space-y-1`}>
+            <li><NavLink to="/declaracion-acceso-abierto" className="text-white hover:bg-purple-500 block px-4 py-2">Declaración de Acceso Abierto</NavLink></li>
+            <li><NavLink to="/DerechosAutoresLectores" className="text-white hover:bg-purple-500 block px-4 py-2">Derechos de los Autores y Lectores</NavLink></li>
+            <li><NavLink to="/EvaluacionAbierta" className="text-white hover:bg-purple-500 block px-4 py-2">Evaluación Abierta</NavLink></li>
+            <li><NavLink to="/LicenciasPublicacion" className="text-white hover:bg-purple-500 block px-4 py-2">Licencias de Publicación</NavLink></li>
+            <li><NavLink to="/Comunicacion" className="text-white hover:bg-purple-500 block px-4 py-2">Comunicación</NavLink></li>
+            <li><NavLink to="/Antiplagio" className="text-white hover:bg-purple-500 block px-4 py-2">Antiplagio</NavLink></li>
+            <li><NavLink to="/CriteriosEticosPublicacion" className="text-white hover:bg-purple-500 block px-4 py-2">Criterios Eticos de Publicación</NavLink></li>
+            <li><NavLink to="/DeclaracionPrivacidad" className="text-white hover:bg-purple-500 block px-4 py-2">Declaración de Privacidad</NavLink></li>
+            <li><NavLink to="/ReferenciasBibliograficas" className="text-white hover:bg-purple-500 block px-4 py-2">Referencias Bibliográficas</NavLink></li>
+            {/* Agrega las otras 7 opciones como rutas si son necesarias */}
           </ul>
         </li>
+
+        {/* Servicios con 6 opciones */}
         <li>
-          <a href="#about" onClick={() => toggleSubmenu('nosotros')}>
+          <a
+            href="#servicios"
+            className="block py-2 px-4 text-white hover:bg-purple-600 rounded-md"
+            onClick={() => toggleSubmenu('servicios')}
+          >
             Servicios
           </a>
-          <ul className={`${styles.submenu} ${openSubmenu === 'nosotros' ? styles.submenuOpen : ''}`}>
-            <li><a href="#team">Sala</a></li>
-            <li><a href="#mission">Cursos</a></li>
-            <li><a href="#mission">Diseños</a></li>
-            <li><a href="#mission">Redacción y Publicación</a></li>
-            <li><a href="#mission">Normas APA</a></li>
-            <li><a href="#mission">Criterios</a></li>
+          <ul className={`${openSubmenu === 'servicios' ? 'block' : 'hidden'} bg-gray-700 p-2 space-y-1`}>
+            <li><NavLink to="/servicio1" className="text-white hover:bg-purple-500 block px-4 py-2">Salas</NavLink></li>
+            <li><NavLink to="/servicio2" className="text-white hover:bg-purple-500 block px-4 py-2">Cursos</NavLink></li>
+            <li><NavLink to="/servicio3" className="text-white hover:bg-purple-500 block px-4 py-2">Información</NavLink></li>
+            <li><NavLink to="/servicio3" className="text-white hover:bg-purple-500 block px-4 py-2">Diseños</NavLink></li>
+            <li><NavLink to="/servicio3" className="text-white hover:bg-purple-500 block px-4 py-2">Redacción</NavLink></li>
+            <li><NavLink to="/servicio3" className="text-white hover:bg-purple-500 block px-4 py-2">Norma APA</NavLink></li>
+            <li><NavLink to="/servicio3" className="text-white hover:bg-purple-500 block px-4 py-2">Eventos</NavLink></li>
           </ul>
         </li>
+
+        {/* Galería con 2 opciones */}
         <li>
-          <a href="#about" onClick={() => toggleSubmenu('nosotros')}>
+          <a
+            href="#galeria"
+            className="block py-2 px-4 text-white hover:bg-purple-600 rounded-md"
+            onClick={() => toggleSubmenu('galeria')}
+          >
             Galería
           </a>
-          <ul className={`${styles.submenu} ${openSubmenu === 'nosotros' ? styles.submenuOpen : ''}`}>
-            <li><a href="#team">Sala</a></li>
-            <li><a href="#mission">Cursos</a></li>
+          <ul className={`${openSubmenu === 'galeria' ? 'block' : 'hidden'} bg-gray-700 p-2 space-y-1`}>
+            <li><NavLink to="/galeria-opcion1" className="text-white hover:bg-purple-500 block px-4 py-2">Galería Opción 1</NavLink></li>
+            <li><NavLink to="/galeria-opcion2" className="text-white hover:bg-purple-500 block px-4 py-2">Galería Opción 2</NavLink></li>
           </ul>
         </li>
+
+        {/* Ingresar con 5 opciones */}
         <li>
-          <a href="#about" onClick={() => toggleSubmenu('nosotros')}>
+          <a
+            href="#ingresar"
+            className="block py-2 px-4 text-white hover:bg-purple-600 rounded-md"
+            onClick={() => toggleSubmenu('ingresar')}
+          >
             Ingresar
           </a>
-          <ul className={`${styles.submenu} ${openSubmenu === 'nosotros' ? styles.submenuOpen : ''}`}>
-            <li><a href="/Login">Ingresar</a></li>
-            <li><a href="/Resgister">Crear Perfil</a></li>
-            <li><a href="#mission">Editar Perfil</a></li>
-            <li><a href="#mission">Agregar Cartel</a></li>
-            <li><a href="#mission">Salir</a></li>
+          <ul className={`${openSubmenu === 'ingresar' ? 'block' : 'hidden'} bg-gray-700 p-2 space-y-1`}>
+            <li><NavLink to="/Login" className="text-white hover:bg-purple-500 block px-4 py-2">Ingresar</NavLink></li>
+            <li><NavLink to="/registro" className="text-white hover:bg-purple-500 block px-4 py-2">Registro</NavLink></li>
+            <li><NavLink to="/recuperar-cuenta" className="text-white hover:bg-purple-500 block px-4 py-2">Recuperar Cuenta</NavLink></li>
           </ul>
         </li>
+
+        
       </ul>
     </nav>
   );

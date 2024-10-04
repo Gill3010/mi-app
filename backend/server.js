@@ -1,73 +1,186 @@
-require('dotenv').config();
 const express = require('express');
+const bcrypt = require('bcrypt');
 const mysql = require('mysql');
 const cors = require('cors');
-const helmet = require('helmet'); // Middleware de seguridad
-const path = require('path'); // Para manejar rutas de archivos
+const passport = require('passport');
+const session = require('express-session');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const GitHubStrategy = require('passport-github').Strategy;
 
 const app = express();
+app.use(express.json());
+app.use(cors());
 
-// Middleware
-app.use(cors()); // Permitir solicitudes desde el frontend
-app.use(express.json()); // Parsear JSON
-app.use(helmet()); // Añadir capas de seguridad
+// Configuración de la sesión
+app.use(session({
+    secret: '4I@vBzL1a7CxB#JkP8qzM2wQ8^9H!lTxN3rE',  // Secreto real para firmar las cookies
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }  // Cambiar a true si usas HTTPS en producción
+}));
 
-// Configurar la conexión a la base de datos MySQL
-const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
+// Inicializar Passport y sesiones
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Conexión a la base de datos
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'Innova24',
+    password: 'Innova.2024',
+    database: 'Innova'
 });
 
-connection.connect((err) => {
-  if (err) {
-    console.error('Error al conectar a la base de datos:', err.message);
-    return;
-  }
-  console.log('Conectado a la base de datos MySQL');
-});
-
-// Endpoint para buscar en la base de datos
-app.get('/api/search', (req, res) => {
-  const searchTerm = req.query.q;
-  
-  if (!searchTerm) {
-    return res.status(400).json({ error: 'Debe proporcionar un término de búsqueda.' });
-  }
-
-  const query = `
-    SELECT titulo_investigacion, nombres, apellidos, institucion 
-    FROM sponsor_registros 
-    WHERE titulo_investigacion LIKE ? OR nombres LIKE ? OR apellidos LIKE ?
-  `;
-
-  const searchValue = `%${searchTerm}%`;
-
-  connection.query(query, [searchValue, searchValue, searchValue], (err, results) => {
+db.connect((err) => {
     if (err) {
-      console.error('Error al ejecutar la consulta:', err.message); 
-      return res.status(500).json({ error: 'Error interno en el servidor' });
+        console.error('Error conectando a la base de datos:', err);
+        return;
     }
-
-    if (results.length === 0) {
-      return res.status(404).json({ message: 'No se encontraron resultados' });
-    }
-
-    res.json(results);
-  });
+    console.log('Conectado a la base de datos');
 });
 
-// Servir archivos estáticos desde la carpeta build
-app.use(express.static(path.join(__dirname, 'build')));
-
-// Catch-all handler for any requests that don't match the above
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// Serialización y deserialización del usuario
+passport.serializeUser((user, done) => {
+    done(null, user.id);  // Almacena solo el ID del usuario en la sesión
 });
 
-// Iniciar el servidor
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`Servidor escuchando en el puerto ${PORT}`);
+passport.deserializeUser((id, done) => {
+    db.query('SELECT * FROM users WHERE id = ?', [id], (err, user) => {
+        if (err) {
+            console.error('Error deserializando el usuario:', err);
+            return done(err, null);
+        }
+        done(null, user[0]);  // Recupera el usuario de la base de datos
+    });
+});
+
+// Estrategia de Google para inicio de sesión
+passport.use(new GoogleStrategy({
+    clientID: 'TU_GOOGLE_CLIENT_ID',
+    clientSecret: 'TU_GOOGLE_CLIENT_SECRET',
+    callbackURL: '/auth/google/callback'
+}, (accessToken, refreshToken, profile, done) => {
+    const email = profile.emails[0].value;
+    const name = profile.displayName;
+
+    db.query('SELECT * FROM users WHERE email = ?', [email], (err, result) => {
+        if (err) {
+            console.error('Error al verificar usuario con Google:', err);
+            return done(err);
+        }
+        if (result.length > 0) {
+            return done(null, result[0]);
+        } else {
+            const sql = 'INSERT INTO users (name, email) VALUES (?, ?)';
+            db.query(sql, [name, email], (err, result) => {
+                if (err) {
+                    console.error('Error al insertar usuario con Google:', err);
+                    return done(err);
+                }
+                const newUser = { id: result.insertId, name, email };
+                return done(null, newUser);
+            });
+        }
+    });
+}));
+
+// Estrategia de GitHub para inicio de sesión
+passport.use(new GitHubStrategy({
+    clientID: 'TU_GITHUB_CLIENT_ID',
+    clientSecret: 'TU_GITHUB_CLIENT_SECRET',
+    callbackURL: '/auth/github/callback'
+}, (accessToken, refreshToken, profile, done) => {
+    const email = profile.emails[0].value;
+    const name = profile.username;
+
+    db.query('SELECT * FROM users WHERE email = ?', [email], (err, result) => {
+        if (err) {
+            console.error('Error al verificar usuario con GitHub:', err);
+            return done(err);
+        }
+        if (result.length > 0) {
+            return done(null, result[0]);
+        } else {
+            const sql = 'INSERT INTO users (name, email) VALUES (?, ?)';
+            db.query(sql, [name, email], (err, result) => {
+                if (err) {
+                    console.error('Error al insertar usuario con GitHub:', err);
+                    return done(err);
+                }
+                const newUser = { id: result.insertId, name, email };
+                return done(null, newUser);
+            });
+        }
+    });
+}));
+
+// Middleware para verificar autenticación
+const ensureAuthenticated = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/login');
+};
+
+// Ruta para autenticación con Google
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+app.get('/auth/google/callback', passport.authenticate('google', {
+    successRedirect: '/dashboard',
+    failureRedirect: '/login'
+}));
+
+// Ruta para autenticación con GitHub
+app.get('/auth/github', passport.authenticate('github', { scope: ['user:email'] }));
+
+app.get('/auth/github/callback', passport.authenticate('github', {
+    successRedirect: '/dashboard',
+    failureRedirect: '/login'
+}));
+
+// Ruta protegida, solo accesible si el usuario está autenticado
+app.get('/dashboard', ensureAuthenticated, (req, res) => {
+    res.send('Bienvenido a tu panel de usuario');
+});
+
+// Ruta para registrar un usuario
+app.post('/api/register', async (req, res) => {
+    const { name, email, password } = req.body;
+
+    try {
+        // Verificar si el usuario ya existe
+        db.query('SELECT * FROM users WHERE email = ?', [email], (err, result) => {
+            if (err) {
+                console.error('Error al verificar usuario:', err);
+                return res.status(500).json({ message: 'Error en el servidor al verificar usuario.' });
+            }
+            if (result.length > 0) {
+                return res.status(400).json({ message: 'El usuario ya existe.' });
+            } else {
+                // Encriptar la contraseña
+                bcrypt.hash(password, 10, (err, hash) => {
+                    if (err) {
+                        console.error('Error al encriptar contraseña:', err);
+                        return res.status(500).json({ message: 'Error en el servidor al encriptar contraseña.' });
+                    }
+                    const sql = 'INSERT INTO users (name, email, password) VALUES (?, ?, ?)';
+                    db.query(sql, [name, email, hash], (err, result) => {
+                        if (err) {
+                            console.error('Error al insertar usuario:', err);
+                            return res.status(500).json({ message: 'Error en el servidor al insertar usuario.' });
+                        }
+                        res.status(200).json({ success: true, message: 'Registro exitoso' });
+                    });
+                });
+            }
+        });
+    } catch (err) {
+        console.error('Error general:', err);
+        res.status(500).json({ message: 'Error en el servidor.' });
+    }
+});
+
+// Iniciar servidor
+app.listen(3001, () => {
+    console.log('Servidor corriendo en el puerto 3001');
 });

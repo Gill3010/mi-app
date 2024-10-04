@@ -6,7 +6,7 @@ import store from './redux/store';  // Importar el store de Redux
 import Navbar from './components/Navbar/Navbar';
 import Slider from './components/Slider/Slider';
 import SearchBar from './components/SearchBar/SearchBar';
-import Resultados from './components/Resultados/Resultados'; // Importa el componente de Resultados
+import Resultados from './components/Resultados/Resultados';
 import Footer from './components/Footer/Footer';
 import Nosotros from './components/Nosotros/Nosotros';
 import DeclaracionAccesoAbierto from './components/DeclaracionAccesoAbierto/DeclaracionAccesoAbierto';
@@ -20,40 +20,45 @@ import DeclaracionPrivacidad from './components/DeclaracionPrivacidad/Declaracio
 import ReferenciasBibliograficas from './components/ReferenciasBibliograficas/ReferenciasBibliograficas';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
-import './App.css'; // Si necesitas estilos globales
 
 const App = () => {
   return (
-    <Provider store={store}>  {/* Proveer el store a toda la app */}
+    <Provider store={store}>
       <Router>
-        <>
+        {/* Div con Tailwind para agregar un layout común */}
+        <div className="min-h-screen flex flex-col">
           <Navbar />
-          <Routes>
-            <Route 
-              path="/" 
-              element={
-                <>
-                  <Slider />
-                  <SearchBar />  {/* Eliminar setSearchResults, ya no es necesario */}
-                </>
-              } 
-            />
-            <Route path="/resultados" element={<Resultados />} />  {/* Resultados ya no recibe props */}
-            <Route path="/nosotros" element={<Nosotros />} />
-            <Route path="/declaracion-acceso-abierto" element={<DeclaracionAccesoAbierto />} />
-            <Route path="/DerechosAutoresLectores" element={<DerechosAutoresLectores />} />
-            <Route path="/EvaluacionAbierta" element={<EvaluacionAbierta />} />
-            <Route path="/LicenciasPublicacion" element={<LicenciasPublicacion />} />
-            <Route path="/Comunicacion" element={<Comunicacion />} />
-            <Route path="/Antiplagio" element={<Antiplagio />} />
-            <Route path="/CriteriosEticosPublicacion" element={<CriteriosEticosPublicacion />} />
-            <Route path="/DeclaracionPrivacidad" element={<DeclaracionPrivacidad />} />
-            <Route path="/ReferenciasBibliograficas" element={<ReferenciasBibliograficas />} />
-            <Route path="/Login" element={<Login/>}/>
-            <Route path="/Register" element={<Register/>}/>
-          </Routes>
+          {/* Contenedor principal */}
+          <div className="flex-grow">
+            <Routes>
+              {/* Ruta principal con Slider y SearchBar */}
+              <Route 
+                path="/" 
+                element={
+                  <div>
+                    <Slider />
+                    <SearchBar />
+                  </div>
+                } 
+              />
+              {/* Rutas adicionales */}
+              <Route path="/resultados" element={<Resultados />} />
+              <Route path="/nosotros" element={<Nosotros />} />
+              <Route path="/declaracion-acceso-abierto" element={<DeclaracionAccesoAbierto />} />
+              <Route path="/DerechosAutoresLectores" element={<DerechosAutoresLectores />} />
+              <Route path="/EvaluacionAbierta" element={<EvaluacionAbierta />} />
+              <Route path="/LicenciasPublicacion" element={<LicenciasPublicacion />} />
+              <Route path="/Comunicacion" element={<Comunicacion />} />
+              <Route path="/Antiplagio" element={<Antiplagio />} />
+              <Route path="/CriteriosEticosPublicacion" element={<CriteriosEticosPublicacion />} />
+              <Route path="/DeclaracionPrivacidad" element={<DeclaracionPrivacidad />} />
+              <Route path="/ReferenciasBibliograficas" element={<ReferenciasBibliograficas />} />
+              <Route path="/Login" element={<Login />} />
+              <Route path="/Register" element={<Register />} />
+            </Routes>
+          </div>
           <Footer />
-        </>
+        </div>
       </Router>
     </Provider>
   );

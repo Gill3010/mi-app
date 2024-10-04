@@ -1,21 +1,20 @@
 import React from 'react';
-import styles from './Comunicacion.module.css';
 
 const Comunicacion = () => {
   return (
-    <div className={styles.comunicacionContainer}>
-      <div className={styles.canvas}>
-        <h2>Comunicación</h2>
-        <p>
+    <div className="bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 p-8">
+      <div className="bg-white p-6 rounded-lg shadow-lg max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">Comunicación</h2>
+        <p className="text-gray-600 mb-4">
           En el Portal de Carteles Científicos, fomentamos la comunicación científica abierta y efectiva. Creemos que la difusión del conocimiento no solo debe darse entre investigadores, sino que también debe llegar al público en general, con el fin de generar un impacto más amplio.
         </p>
-        <p>
+        <p className="text-gray-600 mb-4">
           Nuestra plataforma proporciona un espacio donde los investigadores pueden compartir sus hallazgos de manera accesible, utilizando un formato de cartel que facilita la comprensión visual de los resultados.
         </p>
-        <p>
+        <p className="text-gray-600 mb-4">
           Además, nos esforzamos por facilitar la comunicación entre investigadores de distintas disciplinas, promoviendo la colaboración interdisciplinaria para enfrentar los desafíos globales.
         </p>
-        <p>
+        <p className="text-gray-600">
           Invitamos a todos los investigadores a utilizar nuestras herramientas de comunicación para compartir sus trabajos y contribuir al crecimiento del conocimiento científico a nivel global.
         </p>
       </div>

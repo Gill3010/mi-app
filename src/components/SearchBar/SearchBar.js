@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // Hook para la navegación
 import { useDispatch, useSelector } from 'react-redux'; // Para usar Redux
 import { search } from '../../redux/actions/searchActions'; // Importar la acción de búsqueda desde Redux
-import styles from './SearchBar.module.css'; // Importar los estilos
 
 const SearchBar = () => {
   const [query, setQuery] = useState('');  // Término de búsqueda
@@ -25,32 +24,37 @@ const SearchBar = () => {
   };
 
   return (
-    <div className={styles.searchBarContainer}>
+    <div className="flex flex-col items-center mt-8 w-full max-w-lg mx-auto">
       <input
-        className={styles.searchInput}
+        className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}  // Actualizar el término de búsqueda
         placeholder="Buscar investigación, nombres o apellidos"
-        id="search-input" // Añadir un ID aquí
+        id="search-input"
       />
-      <button className={styles.searchButton} onClick={handleSearch}>Buscar</button>
+      <button
+        className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out"
+        onClick={handleSearch}
+      >
+        Buscar
+      </button>
 
       {/* Mostrar estado de carga */}
-      {loading && <p>Buscando...</p>}
+      {loading && <p className="mt-4 text-gray-600">Buscando...</p>}
 
       {/* Mostrar errores */}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p className="mt-4 text-red-500">{error}</p>}
 
       {/* Mostrar resultados (si no se está buscando y no hay errores) */}
       {results && !loading && results.length > 0 && (
-        <div className={styles.resultContainer}>
+        <div className="mt-6 w-full bg-white shadow-lg rounded-lg p-4">
           <ul>
             {results.map((item, index) => (
-              <li key={index} className={styles.resultItem}>
-                <h3>{item.titulo_investigacion}</h3>
+              <li key={index} className="border-b border-gray-200 py-2">
+                <h3 className="text-lg font-semibold">{item.titulo_investigacion}</h3>
                 <p>{item.nombres} {item.apellidos}</p>
-                <p>{item.institucion}</p>
+                <p className="text-sm text-gray-500">{item.institucion}</p>
               </li>
             ))}
           </ul>

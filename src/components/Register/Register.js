@@ -31,11 +31,11 @@ const Register = () => {
 
   return (
     <div className={styles.registerContainer}>
-      <h2>Register</h2>
+      <h2>Registro</h2>
       {error && <p className={styles.error}>{error}</p>}
       <form onSubmit={handleRegister}>
         <div className={styles.formGroup}>
-          <label htmlFor="name">Name:</label>
+          <label htmlFor="name">Nombre:</label>
           <input
             type="text"
             id="name"
@@ -45,7 +45,7 @@ const Register = () => {
           />
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="email">Correo:</label>
           <input
             type="email"
             id="email"
@@ -55,7 +55,7 @@ const Register = () => {
           />
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="password">Password:</label>
+          <label htmlFor="password">Contraseña:</label>
           <input
             type="password"
             id="password"
@@ -65,7 +65,7 @@ const Register = () => {
           />
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="confirmPassword">Confirm Password:</label>
+          <label htmlFor="confirmPassword">Confirmar Contraseña:</label>
           <input
             type="password"
             id="confirmPassword"
@@ -74,11 +74,11 @@ const Register = () => {
             required
           />
         </div>
-        <button type="submit">Register</button>
+        <button type="submit">Registrarse</button>
       </form>
 
       <div className={styles.loginLink}>
-        <p>Already have an account? <a href="/login">Login here</a></p>
+      <p>¿Ya tienes una cuenta? <a href="/login">Inicia sesión aquí</a></p>
       </div>
     </div>
   );
