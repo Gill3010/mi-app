@@ -85,8 +85,8 @@ const Navbar = () => {
             Ingresar
           </a>
           <ul className={`${styles.submenu} ${openSubmenu === 'nosotros' ? styles.submenuOpen : ''}`}>
-            <li><a href="#team">Ingresar</a></li>
-            <li><a href="#mission">Crear Perfil</a></li>
+            <li><a href="/Login">Ingresar</a></li>
+            <li><a href="/Resgister">Crear Perfil</a></li>
             <li><a href="#mission">Editar Perfil</a></li>
             <li><a href="#mission">Agregar Cartel</a></li>
             <li><a href="#mission">Salir</a></li>
