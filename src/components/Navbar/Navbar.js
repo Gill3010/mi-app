@@ -37,11 +37,11 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Menú desplegable */}
+      {/* Menú desplegable en móvil, alineado a la derecha en escritorio */}
       <ul
         className={`${
           isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
-        } md:flex md:space-x-4 md:max-h-full md:opacity-100 md:block overflow-hidden transition-all duration-500 ease-in-out`}
+        } md:flex md:space-x-4 md:max-h-full md:opacity-100 md:justify-end md:block overflow-hidden transition-all duration-500 ease-in-out`}
       >
         <li>
           <NavLink to="/" className="block py-2 px-4 text-white hover:bg-purple-600 rounded-md" onClick={closeMenu}>
@@ -73,7 +73,6 @@ const Navbar = () => {
             <li><NavLink to="/CriteriosEticosPublicacion" className="text-white hover:bg-purple-500 block px-4 py-2">Criterios Eticos de Publicación</NavLink></li>
             <li><NavLink to="/DeclaracionPrivacidad" className="text-white hover:bg-purple-500 block px-4 py-2">Declaración de Privacidad</NavLink></li>
             <li><NavLink to="/ReferenciasBibliograficas" className="text-white hover:bg-purple-500 block px-4 py-2">Referencias Bibliográficas</NavLink></li>
-            {/* Agrega las otras 7 opciones como rutas si son necesarias */}
           </ul>
         </li>
 
@@ -127,8 +126,6 @@ const Navbar = () => {
             <li><NavLink to="/recuperar-cuenta" className="text-white hover:bg-purple-500 block px-4 py-2">Recuperar Cuenta</NavLink></li>
           </ul>
         </li>
-
-        
       </ul>
     </nav>
   );

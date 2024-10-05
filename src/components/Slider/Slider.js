@@ -4,10 +4,10 @@ import '../../output.css';  // Ajusta la ruta para llegar a output.css desde el 
 const Slider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const slides = [
-    { id: 1, image: '/img/imagen1.webp', title: 'Slide 1' },
-    { id: 2, image: '/img/imagen2.webp', title: 'Slide 2' },
-    { id: 3, image: '/img/imagen1.webp', title: 'Slide 3' },
-    { id: 4, image: '/img/imagen2.webp', title: 'Slide 4' }
+    { id: 1, image: '/img/imagen1.png', title: 'Slide 1' },
+    { id: 2, image: '/img/imagen2.png', title: 'Slide 2' },
+    { id: 3, image: '/img/imagen1.png', title: 'Slide 3' },
+    { id: 4, image: '/img/imagen2.png', title: 'Slide 4' }
   ];
 
   // Cambia automáticamente al siguiente slide cada 3 segundos

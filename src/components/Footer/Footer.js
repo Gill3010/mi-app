@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaFacebook, FaInstagram } from 'react-icons/fa';  // Importamos los íconos
 
 const Footer = () => {
   return (
@@ -16,9 +17,9 @@ const Footer = () => {
         <div>
           <h3 className="text-xl font-bold mb-3">Contáctanos</h3>
           <ul className="space-y-2">
-            <li><span className="font-semibold">Dirección:</span> Calle Ejemplo 123, Ciudad, País</li>
-            <li><span className="font-semibold">Correo Electrónico:</span> contacto@portalcarteles.com</li>
-            <li><span className="font-semibold">Teléfono:</span> +123 456 7890</li>
+            <li><span className="font-semibold">Dirección:</span> Río Abajo calle 5ta, Edif. LA QUINTA local C4 Ciudad de Panamá, Panamá</li>
+            <li><span className="font-semibold">Correo Electrónico:</span> info@galeria-virtual.org</li>
+            <li><span className="font-semibold">Teléfono:</span>+507 6645-7685/+507 208-4689</li>
           </ul>
         </div>
 
@@ -29,20 +30,23 @@ const Footer = () => {
             <a
               href="https://facebook.com"
               className="hover:text-blue-300 transition duration-300"
+              aria-label="Facebook"
             >
-              Facebook
+              <FaFacebook size={30} />
             </a>
             <a
-              href="https://twitter.com"
-              className="hover:text-blue-300 transition duration-300"
+              href="https://x.com"
+              className="hover:text-gray-300 transition duration-300"
+              aria-label="X"
             >
-              Twitter
+              <img src="/img/x.png" alt="X Logo" className="w-8 h-8" /> {/* Imagen de X */}
             </a>
             <a
               href="https://instagram.com"
               className="hover:text-pink-300 transition duration-300"
+              aria-label="Instagram"
             >
-              Instagram
+              <FaInstagram size={30} />
             </a>
           </div>
         </div>
