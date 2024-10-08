@@ -20,7 +20,13 @@ import DeclaracionPrivacidad from './components/DeclaracionPrivacidad/Declaracio
 import ReferenciasBibliograficas from './components/ReferenciasBibliograficas/ReferenciasBibliograficas';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
-
+import Salas from './components/Salas/Salas';
+import Cursos from './components/Cursos/Cursos';
+import Informacion from './components/Informacion/Informacion';
+import Diseños from './components/Diseños/Diseños';
+import Redaccion from './components/Redaccion/Redaccion';
+import NormasAPA from './components/NormasAPA/NormasAPA';
+import Eventos from './components/Eventos/Eventos';
 const App = () => {
   return (
     <Provider store={store}>
@@ -55,6 +61,14 @@ const App = () => {
               <Route path="/ReferenciasBibliograficas" element={<ReferenciasBibliograficas />} />
               <Route path="/Login" element={<Login />} />
               <Route path="/Register" element={<Register />} />
+              <Route path="/Salas" element={<Salas />} />
+              <Route path="/Cursos" element={<Cursos />} />
+              <Route path="/Informacion" element={<Informacion />} />
+              <Route path="/Diseños" element={<Diseños />} />
+              <Route path="/Redaccion" element={<Redaccion />} />
+              <Route path="/NormasAPA" element={<NormasAPA />} />
+              <Route path="/Eventos" element={<Eventos />} />
+
             </Routes>
           </div>
           <Footer />

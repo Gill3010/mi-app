@@ -86,13 +86,13 @@ const Navbar = () => {
             Servicios
           </a>
           <ul className={`${openSubmenu === 'servicios' ? 'block' : 'hidden'} bg-gray-700 p-2 space-y-1`}>
-            <li><NavLink to="/servicio1" className="text-white hover:bg-purple-500 block px-4 py-2">Salas</NavLink></li>
-            <li><NavLink to="/servicio2" className="text-white hover:bg-purple-500 block px-4 py-2">Cursos</NavLink></li>
-            <li><NavLink to="/servicio3" className="text-white hover:bg-purple-500 block px-4 py-2">Información</NavLink></li>
-            <li><NavLink to="/servicio3" className="text-white hover:bg-purple-500 block px-4 py-2">Diseños</NavLink></li>
-            <li><NavLink to="/servicio3" className="text-white hover:bg-purple-500 block px-4 py-2">Redacción</NavLink></li>
-            <li><NavLink to="/servicio3" className="text-white hover:bg-purple-500 block px-4 py-2">Norma APA</NavLink></li>
-            <li><NavLink to="/servicio3" className="text-white hover:bg-purple-500 block px-4 py-2">Eventos</NavLink></li>
+            <li><NavLink to="/Salas" className="text-white hover:bg-purple-500 block px-4 py-2">Salas</NavLink></li>
+            <li><NavLink to="/Cursos" className="text-white hover:bg-purple-500 block px-4 py-2">Cursos</NavLink></li>
+            <li><NavLink to="/Informacion" className="text-white hover:bg-purple-500 block px-4 py-2">Información</NavLink></li>
+            <li><NavLink to="/Diseños" className="text-white hover:bg-purple-500 block px-4 py-2">Diseños</NavLink></li>
+            <li><NavLink to="/Redaccion" className="text-white hover:bg-purple-500 block px-4 py-2">Redacción</NavLink></li>
+            <li><NavLink to="/NormasAPA" className="text-white hover:bg-purple-500 block px-4 py-2">Normas APA</NavLink></li>
+            <li><NavLink to="/Eventos" className="text-white hover:bg-purple-500 block px-4 py-2">Eventos</NavLink></li>
           </ul>
         </li>
 
@@ -122,8 +122,9 @@ const Navbar = () => {
           </a>
           <ul className={`${openSubmenu === 'ingresar' ? 'block' : 'hidden'} bg-gray-700 p-2 space-y-1`}>
             <li><NavLink to="/Login" className="text-white hover:bg-purple-500 block px-4 py-2">Ingresar</NavLink></li>
-            <li><NavLink to="/registro" className="text-white hover:bg-purple-500 block px-4 py-2">Registro</NavLink></li>
-            <li><NavLink to="/recuperar-cuenta" className="text-white hover:bg-purple-500 block px-4 py-2">Recuperar Cuenta</NavLink></li>
+            <li><NavLink to="/registro" className="text-white hover:bg-purple-500 block px-4 py-2">Crear Perfil</NavLink></li>
+            <li><NavLink to="/recuperar-cuenta" className="text-white hover:bg-purple-500 block px-4 py-2">Editar Perfil</NavLink></li>
+            <li><NavLink to="/recuperar-cuenta" className="text-white hover:bg-purple-500 block px-4 py-2">Cerrar Sesión</NavLink></li>
           </ul>
         </li>
       </ul>
