@@ -20,7 +20,7 @@ const SearchBar = () => {
 
   // Función para manejar la redirección después de buscar
   const handleSearch = () => {
-    navigate('/resultados'); // Redirigir a la página de resultados
+    navigate('/GaleriasActuales'); // Redirigir a la página de resultados
   };
 
   return (

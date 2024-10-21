@@ -27,6 +27,8 @@ import Diseños from './components/Diseños/Diseños';
 import Redaccion from './components/Redaccion/Redaccion';
 import NormasAPA from './components/NormasAPA/NormasAPA';
 import Eventos from './components/Eventos/Eventos';
+import FormularioEnvio from './components/FormularioEnvio/FormularioEnvio';
+import GaleriasActuales from './components/GaleriasActuales/GaleriasActuales';
 const App = () => {
   return (
     <Provider store={store}>
@@ -68,6 +70,9 @@ const App = () => {
               <Route path="/Redaccion" element={<Redaccion />} />
               <Route path="/NormasAPA" element={<NormasAPA />} />
               <Route path="/Eventos" element={<Eventos />} />
+              <Route path="/FormularioEnvio" element={<FormularioEnvio />} />
+              <Route path="/GaleriasActuales" element={<GaleriasActuales />} />
+
 
             </Routes>
           </div>

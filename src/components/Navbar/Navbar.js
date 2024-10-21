@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { NavLink } from 'react-router-dom';  // Importar NavLink de react-router-dom
-import logo from './logo.png';
+import logo from './Logo4.png';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -107,7 +107,7 @@ const Navbar = () => {
           </a>
           <ul className={`${openSubmenu === 'galeria' ? 'block' : 'hidden'} bg-gray-700 p-2 space-y-1`}>
             <li><NavLink to="/galeria-opcion1" className="text-white hover:bg-purple-500 block px-4 py-2">Galería Opción 1</NavLink></li>
-            <li><NavLink to="/galeria-opcion2" className="text-white hover:bg-purple-500 block px-4 py-2">Galería Opción 2</NavLink></li>
+            <li><NavLink to="/GaleriasActuales" className="text-white hover:bg-purple-500 block px-4 py-2">Actuales</NavLink></li>
           </ul>
         </li>
 
@@ -125,6 +125,7 @@ const Navbar = () => {
             <li><NavLink to="/registro" className="text-white hover:bg-purple-500 block px-4 py-2">Crear Perfil</NavLink></li>
             <li><NavLink to="/recuperar-cuenta" className="text-white hover:bg-purple-500 block px-4 py-2">Editar Perfil</NavLink></li>
             <li><NavLink to="/recuperar-cuenta" className="text-white hover:bg-purple-500 block px-4 py-2">Cerrar Sesión</NavLink></li>
+            <li><NavLink to="/FormularioEnvio" className="text-white hover:bg-purple-500 block px-4 py-2">Formulario</NavLink></li>
           </ul>
         </li>
       </ul>
