@@ -1,40 +1,46 @@
-import React, { useState } from 'react'; // Importamos React y useState para manejar el estado
-import axios from 'axios'; // Importamos Axios para hacer solicitudes HTTP
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google'; // Importamos GoogleOAuthProvider y GoogleLogin para iniciar sesión con Google
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { auth, loginUser } from '../../config/firebaseConfig';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { signInWithPopup, GithubAuthProvider } from 'firebase/auth';
 
 const Login = () => {
-  const [email, setEmail] = useState(''); // Estado para almacenar el correo electrónico
-  const [password, setPassword] = useState(''); // Estado para almacenar la contraseña
-  const [error, setError] = useState(''); // Estado para almacenar mensajes de error
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault(); // Prevenimos que la página se recargue al enviar el formulario
-
+    e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3001/api/login', { email, password }); // Asegúrate de que la URL sea correcta
-      console.log(response.data); // Mostramos la respuesta en la consola para depuración
-
-      if (response.data.success) {
-        localStorage.setItem('token', response.data.token); // Guarda el token en el almacenamiento local
-        alert('¡Inicio de sesión exitoso!'); // Muestra un mensaje de éxito al usuario
-        // Redirige al usuario a otra página aquí si es necesario
-      } else {
-        setError(response.data.message || 'Error en el inicio de sesión, por favor intenta de nuevo.'); // Muestra un mensaje de error
-      }
+      const userCredential = await loginUser(email, password);
+      console.log('Inicio de sesión exitoso:', userCredential.user);
+      alert('¡Inicio de sesión exitoso!');
+      navigate('/');  // Redirigir a la página de inicio
     } catch (error) {
-      console.error('Error en la solicitud:', error);
-      setError('Error durante el inicio de sesión. Por favor intenta de nuevo.'); // Manejamos errores de la solicitud (e.g. errores del servidor)
+      console.error('Error en el inicio de sesión:', error);
+      setError('Error durante el inicio de sesión. Por favor intenta de nuevo.');
     }
   };
 
-  const handleGoogleLoginSuccess = (response) => {
-    console.log(response.credential); // Mostramos el token JWT de Google en la consola
-    alert('¡Inicio de sesión con Google exitoso!'); // Muestra un mensaje de éxito al usuario
-    // Aquí puedes manejar la lógica para enviar el token a tu servidor si es necesario
+  const handleGoogleLoginSuccess = async (response) => {
+    console.log('Token de Google:', response.credential);
+    alert('¡Inicio de sesión con Google exitoso!');
+    // Lógica adicional para manejar el token de Google
+    navigate('/');  // Redirigir a la página de inicio después de iniciar sesión
   };
 
-  const handleGitHubLogin = () => {
-    window.location.href = 'https://github.com/login/oauth/authorize?client_id=TU_CLIENT_ID'; // Reemplaza TU_CLIENT_ID por el ID de cliente de GitHub
+  const handleGitHubLogin = async () => {
+    const provider = new GithubAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      console.log('Inicio de sesión con GitHub exitoso:', result.user);
+      alert('¡Inicio de sesión con GitHub exitoso!');
+      navigate('/');  // Redirigir a la página de inicio después de iniciar sesión
+    } catch (error) {
+      console.error('Error en el inicio de sesión con GitHub:', error);
+      setError('Error en el inicio de sesión con GitHub. Por favor intenta de nuevo.');
+    }
   };
 
   return (
@@ -49,7 +55,7 @@ const Login = () => {
             type="email"
             id="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)} // Actualizamos el estado de "email" cuando el usuario escribe
+            onChange={(e) => setEmail(e.target.value)}
             required
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
@@ -61,7 +67,7 @@ const Login = () => {
             type="password"
             id="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)} // Actualizamos el estado de "password" cuando el usuario escribe
+            onChange={(e) => setPassword(e.target.value)}
             required
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
@@ -73,25 +79,23 @@ const Login = () => {
       </form>
 
       <div className="mt-8 w-full max-w-md">
-        <GoogleOAuthProvider clientId="TU_GOOGLE_CLIENT_ID"> {/* Reemplaza TU_GOOGLE_CLIENT_ID por tu ID de cliente de Google */}
+        <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
           <GoogleLogin
-            onSuccess={handleGoogleLoginSuccess} // Manejamos el inicio de sesión exitoso con Google
-            onError={() => {
-              console.log('Error en el inicio de sesión con Google'); // Si ocurre un error, lo mostramos en la consola
-            }}
+            onSuccess={handleGoogleLoginSuccess}
+            onError={() => setError('Error en el inicio de sesión con Google.')}
             className="w-full"
           />
         </GoogleOAuthProvider>
 
-        <button 
-          onClick={handleGitHubLogin} // Llamamos a la función para iniciar sesión con GitHub
+        <button
+          onClick={handleGitHubLogin}
           className="w-full mt-4 bg-gray-900 text-white py-3 rounded-lg text-lg hover:bg-gray-800 transition duration-300">
           Iniciar sesión con GitHub
         </button>
       </div>
 
       <div className="mt-6">
-        <p>¿No tienes una cuenta? <a href="/Register" className="text-indigo-200 hover:underline">Crea una</a></p>
+        <p>¿No tienes una cuenta? <a href="/register" className="text-indigo-200 hover:underline">Crea una</a></p>
       </div>
     </div>
   );

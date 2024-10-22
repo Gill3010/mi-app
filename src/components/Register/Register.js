@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { registerUser } from '../../config/firebaseConfig';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -18,12 +18,30 @@ const Register = () => {
     setError(null);
   }, []);
 
+  // Función para validar el formato del correo
+  const validateEmail = (email) => {
+    const re = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
 
     // Validación de campos vacíos
     if (!name || !email || !password || !confirmPassword) {
       setError('Todos los campos son obligatorios.');
+      return;
+    }
+
+    // Validación de formato de correo
+    if (!validateEmail(email)) {
+      setError('El formato del correo electrónico es inválido.');
+      return;
+    }
+
+    // Validación de longitud de la contraseña
+    if (password.length < 6) {
+      setError('La contraseña debe tener al menos 6 caracteres.');
       return;
     }
 
@@ -34,18 +52,24 @@ const Register = () => {
     }
 
     try {
-      // Realizar la solicitud de registro
-      const response = await axios.post('/api/register', { name, email, password });
-
-      if (response.data.success) {
+      // Realizar el registro con Firebase
+      console.log("Intentando registrar al usuario...");
+      const userCredential = await registerUser(email, password);
+      if (userCredential) {
+        console.log("Usuario registrado exitosamente:", userCredential);
         alert('¡Registro exitoso!');
-        navigate('/login');
-      } else {
-        setError(response.data.message || 'El registro falló, por favor intenta de nuevo.');
+        navigate('/login');  // Redirigir a la página de login después de un registro exitoso
       }
     } catch (error) {
-      console.error('Error en la solicitud:', error);
-      setError('Error durante el registro. Por favor intenta de nuevo.');
+      console.error('Error en el registro:', error);
+      // Mostrar mensajes más específicos si es posible
+      if (error.code === 'auth/email-already-in-use') {
+        setError('El correo electrónico ya está registrado.');
+      } else if (error.code === 'auth/weak-password') {
+        setError('La contraseña es muy débil.');
+      } else {
+        setError('Error durante el registro. Por favor intenta de nuevo más tarde.');
+      }
     }
   };
 
@@ -54,7 +78,6 @@ const Register = () => {
       <h2 className="text-4xl font-bold mb-8">Regístrate</h2>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <form onSubmit={handleRegister} className="w-full max-w-md bg-white p-8 shadow-2xl rounded-lg text-gray-800">
-        {/* Input para el nombre */}
         <div className="mb-6">
           <label htmlFor="name" className="block text-gray-700 text-lg">Nombre</label>
           <input
@@ -67,7 +90,6 @@ const Register = () => {
           />
         </div>
 
-        {/* Input para el correo electrónico */}
         <div className="mb-6">
           <label htmlFor="email" className="block text-gray-700 text-lg">Correo Electrónico</label>
           <input
@@ -80,7 +102,6 @@ const Register = () => {
           />
         </div>
 
-        {/* Input para la contraseña */}
         <div className="mb-6">
           <label htmlFor="password" className="block text-gray-700 text-lg">Contraseña</label>
           <input
@@ -93,7 +114,6 @@ const Register = () => {
           />
         </div>
 
-        {/* Input para confirmar la contraseña */}
         <div className="mb-8">
           <label htmlFor="confirmPassword" className="block text-gray-700 text-lg">Confirmar Contraseña</label>
           <input
@@ -106,7 +126,6 @@ const Register = () => {
           />
         </div>
 
-        {/* Botón para enviar el formulario */}
         <button type="submit" className="w-full bg-teal-600 text-white py-3 rounded-lg text-lg hover:bg-teal-700 transition duration-300">
           Registrarse
         </button>
