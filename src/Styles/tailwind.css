@@ -1,3 +1,59 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Clases para el fondo de héroe y perfil */
+.bg-hero, .bg-perfil {
+  background-color: var(--color-azul-oscuro); /* Azul oscuro */
+  color: var(--color-blanco); /* Texto blanco */
+}
+
+@layer base {
+  :root {
+    --color-azul-oscuro: #0a2540;  /* Azul más oscuro */
+    --color-azul-claro: #2a4aa8;   /* Azul claro */
+    --color-teal: #38b2ac;         /* Teal */
+    --color-blanco: #ffffff;       /* Blanco */
+  }
+}
+
+/* Estilos para el fondo del contenedor principal */
+.bg-principal {
+  background-color: var(--color-azul-oscuro); /* Fondo azul oscuro */
+  color: var(--color-blanco); /* Texto blanco */
+}
+
+/* Estilos para las formas onduladas */
+.wave-top {
+  position: relative;
+  overflow: hidden;
+}
+
+.wave-top::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100px; /* Ajuste de la altura para mayor visualización */
+  background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNDQwIDMyMCI+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTAsMTYwTDE0NDAsMjg4TDE0NDAsMzIwTDAuMTIsMzIwWiIvPjwvc3ZnPg==') no-repeat;
+  background-size: cover;
+  z-index: -1;
+}
+
+.wave-bottom {
+  position: relative;
+  overflow: hidden;
+}
+
+.wave-bottom::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px; /* Ajuste de la altura para mayor visualización */
+  background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNDQwIDMyMCI+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTAsMTYwTDE0NDAsMjg4TDE0NDAsMzIwTDAuMTIsMzIwWiIvPjwvc3ZnPg==') no-repeat;
+  background-size: cover;
+  z-index: -1;
+}
