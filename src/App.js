@@ -1,37 +1,87 @@
 import React from 'react';
-import Header from './components/Header/Header';
-import Hero from './components/Hero/Hero';
-import SobreNosotros from './components/SobreNosotros/SobreNosotros';
-import Perfil from './components/Perfil/Perfil';
-import Servicios from './components/Servicios/Servicios';
-import Contacto from './components/Contacto/Contacto';
-import Footer from './components/Footer/Footer';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Provider } from 'react-redux';  // Importar el Provider de Redux
+import store from './redux/store';  // Importar el store de Redux
 
-function App() {
+import Navbar from './components/Navbar/Navbar';
+import Slider from './components/Slider/Slider';
+import SearchBar from './components/SearchBar/SearchBar';
+import Resultados from './components/Resultados/Resultados';
+import Footer from './components/Footer/Footer';
+import Nosotros from './components/Nosotros/Nosotros';
+import DeclaracionAccesoAbierto from './components/DeclaracionAccesoAbierto/DeclaracionAccesoAbierto';
+import DerechosAutoresLectores from './components/DerechosAutoresLectores/DerechosAutoresLectores';
+import EvaluacionAbierta from './components/EvaluacionAbierta/EvaluacionAbierta';
+import LicenciasPublicacion from './components/LicenciasPublicacion/LicenciasPublicacion';
+import Comunicacion from './components/Comunicacion/Comunicacion';
+import Antiplagio from './components/Antiplagio/Antiplagio';
+import CriteriosEticosPublicacion from './components/CriteriosEticosPublicacion/CriteriosEticosPublicacion';
+import DeclaracionPrivacidad from './components/DeclaracionPrivacidad/DeclaracionPrivacidad'; 
+import ReferenciasBibliograficas from './components/ReferenciasBibliograficas/ReferenciasBibliograficas';
+import Login from './components/Login/Login';
+import Register from './components/Register/Register';
+import Salas from './components/Salas/Salas';
+import Cursos from './components/Cursos/Cursos';
+import Informacion from './components/Informacion/Informacion';
+import Diseños from './components/Diseños/Diseños';
+import Redaccion from './components/Redaccion/Redaccion';
+import NormasAPA from './components/NormasAPA/NormasAPA';
+import Eventos from './components/Eventos/Eventos';
+import FormularioEnvio from './components/FormularioEnvio/FormularioEnvio';
+import GaleriasActuales from './components/GaleriasActuales/GaleriasActuales';
+import EditarPublicacion from './components/EditarPublicacion/EditarPublicacion';  // Nueva importación
+
+const App = () => {
   return (
-    <div>
-      <Header />
-      <Hero />
-      <SobreNosotros />
-      <div className="flex flex-col md:flex-row justify-center items-center space-y-8 md:space-y-0 md:space-x-8 py-10">
-        <Perfil 
-          nombre="Cristal Tavárez"
-          descripcion="Desarrolladora especializada en soluciones frontend."
-          imagen="img/Cristal.png"
-          cvLink="#"
-        />
-        <Perfil 
-          nombre="Israel Samuels"
-          descripcion="Desarrollador backend especializado en soluciones robustas."
-          imagen="img/Israel.jpeg"
-          cvLink="#"
-        />
-      </div>
-      <Servicios />
-      <Contacto />
-      <Footer />
-    </div>
+    <Provider store={store}>
+      <Router>
+        {/* Div con Tailwind para agregar un layout común */}
+        <div className="min-h-screen flex flex-col">
+          <Navbar />
+          {/* Contenedor principal */}
+          <div className="flex-grow">
+            <Routes>
+              {/* Ruta principal con Slider y SearchBar */}
+              <Route 
+                path="/" 
+                element={
+                  <div>
+                    <Slider />
+                    <SearchBar />
+                  </div>
+                } 
+              />
+              {/* Rutas adicionales */}
+              <Route path="/resultados" element={<Resultados />} />
+              <Route path="/nosotros" element={<Nosotros />} />
+              <Route path="/declaracion-acceso-abierto" element={<DeclaracionAccesoAbierto />} />
+              <Route path="/DerechosAutoresLectores" element={<DerechosAutoresLectores />} />
+              <Route path="/EvaluacionAbierta" element={<EvaluacionAbierta />} />
+              <Route path="/LicenciasPublicacion" element={<LicenciasPublicacion />} />
+              <Route path="/Comunicacion" element={<Comunicacion />} />
+              <Route path="/Antiplagio" element={<Antiplagio />} />
+              <Route path="/CriteriosEticosPublicacion" element={<CriteriosEticosPublicacion />} />
+              <Route path="/DeclaracionPrivacidad" element={<DeclaracionPrivacidad />} />
+              <Route path="/ReferenciasBibliograficas" element={<ReferenciasBibliograficas />} />
+              <Route path="/Login" element={<Login />} />
+              <Route path="/Register" element={<Register />} />
+              <Route path="/Salas" element={<Salas />} />
+              <Route path="/Cursos" element={<Cursos />} />
+              <Route path="/Informacion" element={<Informacion />} />
+              <Route path="/Diseños" element={<Diseños />} />
+              <Route path="/Redaccion" element={<Redaccion />} />
+              <Route path="/NormasAPA" element={<NormasAPA />} />
+              <Route path="/Eventos" element={<Eventos />} />
+              <Route path="/FormularioEnvio" element={<FormularioEnvio />} />
+              <Route path="/GaleriasActuales" element={<GaleriasActuales />} />
+              <Route path="/EditarPublicacion" element={<EditarPublicacion />} />  {/* Nueva ruta de edición */}
+            </Routes>
+          </div>
+          <Footer />
+        </div>
+      </Router>
+    </Provider>
   );
-}
+};
 
 export default App;

@@ -10,8 +10,8 @@
       "port": 3306,
       "driver": "MySQL",
       "name": "GoDaddy MySQL",
-      "database": "Mcanales",
-      "username": "Prueba30"
+      "database": "Innova",
+      "username": "Innova24"
     }
   ]
 }

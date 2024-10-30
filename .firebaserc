@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "innovaproyectos-9420b"
-  }
+    "default": "mi-app-fc514",
+    "mi-app": "mi-app-fc514"
+  },
+  "targets": {},
+  "etags": {}
 }
