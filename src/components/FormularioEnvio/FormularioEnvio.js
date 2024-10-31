@@ -15,8 +15,8 @@ const FormularioEnvio = () => {
     galeria: '',
     instrucciones: '',
     metodoPago: '',
-    vistas: 0,  // Valor inicial
-    likes: 0,   // Valor inicial
+    vistas: 0,
+    likes: 0,
     tituloInvestigacion: '',
     imagen: null,
     resumen: null,
@@ -85,30 +85,30 @@ const FormularioEnvio = () => {
   };
 
   return (
-    <div className="p-4 max-w-3xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Formulario de Envío de Documento</h2>
+    <div className="p-8 max-w-3xl mx-auto">
+      <h2 className="text-2xl font-bold mb-4 text-[#002855]">Formulario de Envío de Documento</h2>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
-        <input type="text" name="nombreAutor" value={formData.nombreAutor} onChange={handleChange} placeholder="Nombre del Autor" required className="w-full px-4 py-2 border rounded-lg" />
-        <input type="text" name="apellidoAutor" value={formData.apellidoAutor} onChange={handleChange} placeholder="Apellido del Autor" required className="w-full px-4 py-2 border rounded-lg" />
-        <input type="email" name="correo" value={formData.correo} onChange={handleChange} placeholder="Correo Electrónico" required className="w-full px-4 py-2 border rounded-lg" />
-        <input type="text" name="telefono" value={formData.telefono} onChange={handleChange} placeholder="Número de Teléfono" required className="w-full px-4 py-2 border rounded-lg" />
-        <input type="text" name="institucion" value={formData.institucion} onChange={handleChange} placeholder="Institución" className="w-full px-4 py-2 border rounded-lg" />
-        <input type="text" name="orcid" value={formData.orcid} onChange={handleChange} placeholder="ORCID" className="w-full px-4 py-2 border rounded-lg" />
-        <input type="text" name="pais" value={formData.pais} onChange={handleChange} placeholder="País de Origen" className="w-full px-4 py-2 border rounded-lg" />
-        <input type="text" name="tituloInvestigacion" value={formData.tituloInvestigacion} onChange={handleChange} placeholder="Título de la Investigación" required className="w-full px-4 py-2 border rounded-lg" />
+        <input type="text" name="nombreAutor" value={formData.nombreAutor} onChange={handleChange} placeholder="Nombre del Autor" required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
+        <input type="text" name="apellidoAutor" value={formData.apellidoAutor} onChange={handleChange} placeholder="Apellido del Autor" required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
+        <input type="email" name="correo" value={formData.correo} onChange={handleChange} placeholder="Correo Electrónico" required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
+        <input type="text" name="telefono" value={formData.telefono} onChange={handleChange} placeholder="Número de Teléfono" required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
+        <input type="text" name="institucion" value={formData.institucion} onChange={handleChange} placeholder="Institución" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
+        <input type="text" name="orcid" value={formData.orcid} onChange={handleChange} placeholder="ORCID" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
+        <input type="text" name="pais" value={formData.pais} onChange={handleChange} placeholder="País de Origen" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
+        <input type="text" name="tituloInvestigacion" value={formData.tituloInvestigacion} onChange={handleChange} placeholder="Título de la Investigación" required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
         <input type="file" name="imagen" onChange={handleChange} className="w-full px-4 py-2 border rounded-lg" accept="image/*" />
         <input type="file" name="resumen" onChange={handleChange} className="w-full px-4 py-2 border rounded-lg" accept=".pdf,.doc,.docx" />
         <input type="file" name="audio" onChange={handleChange} className="w-full px-4 py-2 border rounded-lg" accept="audio/*" />
-        <textarea name="instrucciones" value={formData.instrucciones} onChange={handleChange} placeholder="Instrucciones" className="w-full px-4 py-2 border rounded-lg" />
-        <select name="metodoPago" value={formData.metodoPago} onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg">
+        <textarea name="instrucciones" value={formData.instrucciones} onChange={handleChange} placeholder="Instrucciones" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
+        <select name="metodoPago" value={formData.metodoPago} onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]">
           <option value="">Selecciona un método</option>
           <option value="paypal">PayPal</option>
           <option value="banco">Banco</option>
           <option value="western_union">Western Union</option>
           <option value="yappy">Yappy</option>
         </select>
-        <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700">Enviar Documento</button>
+        <button type="submit" className="bg-[#002855] hover:bg-[#005073] text-white py-2 px-4 rounded-lg transition duration-300">Enviar Documento</button>
       </form>
     </div>
   );

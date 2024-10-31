@@ -1,9 +1,9 @@
 import React from 'react';
-import { FaFacebook, FaInstagram } from 'react-icons/fa';  // Importamos los íconos
+import { FaFacebook, FaInstagram } from 'react-icons/fa';
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 text-white py-10">
+    <footer className="bg-gradient-to-r from-[#002855] to-[#00A1E0] text-white py-10">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
         {/* Información del Portal */}
         <div>
@@ -19,7 +19,7 @@ const Footer = () => {
           <ul className="space-y-2">
             <li><span className="font-semibold">Dirección:</span> Río Abajo calle 5ta, Edif. LA QUINTA local C4 Ciudad de Panamá, Panamá</li>
             <li><span className="font-semibold">Correo Electrónico:</span> info@portaldecartelescientificos.org</li>
-            <li><span className="font-semibold">Teléfono:</span>+507 6645-7685/+507 208-4689</li>
+            <li><span className="font-semibold">Teléfono:</span> +507 6645-7685/+507 208-4689</li>
           </ul>
         </div>
 
@@ -39,7 +39,7 @@ const Footer = () => {
               className="hover:text-gray-300 transition duration-300"
               aria-label="X"
             >
-              <img src="/img/x.png" alt="X Logo" className="w-8 h-8" /> {/* Imagen de X */}
+              <img src="/img/x.png" alt="X Logo" className="w-8 h-8" />
             </a>
             <a
               href="https://instagram.com"

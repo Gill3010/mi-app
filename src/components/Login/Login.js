@@ -27,7 +27,6 @@ const Login = () => {
 
   const handleGoogleLoginSuccess = async (response) => {
     console.log('Token de Google:', response.credential);
-    // Guardar el token de Google en localStorage
     localStorage.setItem('token', response.credential);
     alert('¡Inicio de sesión con Google exitoso!');
     navigate('/');  // Redirigir a la página de inicio después de iniciar sesión
@@ -39,7 +38,6 @@ const Login = () => {
       const credential = FacebookAuthProvider.credentialFromResult(result);
       const accessToken = credential.accessToken;
       console.log('Inicio de sesión con Facebook exitoso:', result.user);
-      // Guardar el token de Facebook en localStorage
       localStorage.setItem('token', accessToken);
       alert('¡Inicio de sesión con Facebook exitoso!');
       navigate('/');  // Redirigir a la página de inicio después de iniciar sesión
@@ -50,7 +48,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-[#002855] to-[#00A1E0] text-white">
       <h2 className="text-4xl font-bold mb-8">Iniciar Sesión</h2>
       {error && <p className="text-red-500 mb-4">{error}</p>}
 
@@ -63,7 +61,7 @@ const Login = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]"
           />
         </div>
 
@@ -75,11 +73,11 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]"
           />
         </div>
 
-        <button type="submit" className="w-full bg-indigo-600 text-white py-3 rounded-lg text-lg hover:bg-indigo-700 transition duration-300">
+        <button type="submit" className="w-full bg-[#002855] text-white py-3 rounded-lg text-lg hover:bg-[#005073] transition duration-300">
           Iniciar Sesión
         </button>
       </form>
@@ -101,7 +99,7 @@ const Login = () => {
       </div>
 
       <div className="mt-6">
-        <p>¿No tienes una cuenta? <a href="/register" className="text-indigo-200 hover:underline">Crea una</a></p>
+        <p>¿No tienes una cuenta? <a href="/register" className="text-blue-200 hover:underline">Crea una</a></p>
       </div>
     </div>
   );

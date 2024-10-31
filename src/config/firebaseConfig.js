@@ -7,7 +7,7 @@ import {
   signOut,
   signInWithPopup,
   fetchSignInMethodsForEmail,
-  GoogleAuthProvider,
+  GoogleAuthProvider, // Import GoogleAuthProvider for Google Sign-In
   FacebookAuthProvider
 } from "firebase/auth";
 import { 
@@ -76,6 +76,20 @@ export const logoutUser = async () => {
   } catch (error) {
     console.error("Error al cerrar sesión:", error);
     throw new Error('Error al cerrar sesión. Intenta de nuevo.');
+  }
+};
+
+// Function to sign in with Google
+export const signInWithGoogle = async () => {
+  const googleProvider = new GoogleAuthProvider();
+  
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    console.log("Inicio de sesión exitoso con Google:", result.user);
+    return result.user;
+  } catch (error) {
+    console.error("Error en el inicio de sesión con Google:", error);
+    throw new Error('Error en el inicio de sesión con Google. Intenta de nuevo.');
   }
 };
 

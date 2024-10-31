@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../../output.css';  // Ajusta la ruta para llegar a output.css desde el componente Slider
+import '../../output.css';
 
 const Slider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -10,13 +10,12 @@ const Slider = () => {
     { id: 4, image: require('./images/Imagen4.webp'), title: 'Slide 4', link: '/Login' }
   ];
 
-  // Cambia automáticamente al siguiente slide cada 3 segundos
   useEffect(() => {
     const interval = setInterval(() => {
       nextSlide();
-    }, 3000); // Cambia cada 3 segundos
+    }, 3000);
 
-    return () => clearInterval(interval); // Limpia el intervalo cuando el componente se desmonta
+    return () => clearInterval(interval);
   }, [currentSlide]);
 
   const nextSlide = () => {
@@ -28,7 +27,7 @@ const Slider = () => {
   };
 
   return (
-    <div className="relative w-full max-w-4xl mx-auto overflow-hidden rounded-lg shadow-lg">
+    <div className="relative w-full overflow-hidden rounded-lg shadow-lg">
       {/* Slides */}
       <div
         className="flex transition-transform duration-700 ease-in-out"
@@ -39,13 +38,13 @@ const Slider = () => {
             <img 
               src={slide.image} 
               alt={slide.title} 
-              className="w-full h-64 md:h-80 object-cover rounded-lg" 
+              className="w-full h-64 md:h-80 object-cover" 
             />
             {/* Botón de más información */}
             <div className="absolute bottom-4 left-4">
               <a 
                 href={slide.link} 
-                className="bg-blue-600 text-white px-4 py-2 rounded-full shadow-md hover:bg-blue-700 transition-colors"
+                className="bg-[#002855] text-white px-4 py-2 rounded-full shadow-md hover:bg-[#005073] transition-colors"
               >
                 Saber más
               </a>
@@ -54,10 +53,10 @@ const Slider = () => {
         ))}
       </div>
 
-      {/* Botones de navegación con íconos */}
+      {/* Botones de navegación */}
       <button
         onClick={prevSlide}
-        className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-900 text-white p-4 rounded-full hover:bg-gray-700 shadow-lg"
+        className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-[#002855] text-white p-4 rounded-full hover:bg-[#005073] shadow-lg"
         aria-label="Previous Slide"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -66,7 +65,7 @@ const Slider = () => {
       </button>
       <button
         onClick={nextSlide}
-        className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-900 text-white p-4 rounded-full hover:bg-gray-700 shadow-lg"
+        className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-[#002855] text-white p-4 rounded-full hover:bg-[#005073] shadow-lg"
         aria-label="Next Slide"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">

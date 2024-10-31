@@ -2,7 +2,7 @@ import React from 'react';
 
 const DeclaracionAccesoAbierto = () => {
   return (
-    <div className="bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 p-8">
+    <div className="bg-gradient-to-r from-[#002855] to-[#00A1E0] p-8">
       <div className="bg-white p-6 rounded-lg shadow-lg max-w-4xl mx-auto">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Declaración de Acceso Abierto</h2>
         <p className="text-gray-600 mb-4">

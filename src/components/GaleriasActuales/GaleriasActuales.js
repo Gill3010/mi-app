@@ -27,7 +27,6 @@ const GaleriasActuales = () => {
 
   const currentUserId = auth.currentUser ? auth.currentUser.uid : null;
 
-  // Función para incrementar vistas de la publicación
   const incrementarVistas = async (id, vistasActuales) => {
     try {
       await updatePublication(id, { vistas: vistasActuales + 1 });
@@ -36,18 +35,15 @@ const GaleriasActuales = () => {
     }
   };
 
-  // Incrementar vistas cuando se monta el componente y se cargan las publicaciones
   useEffect(() => {
     galerias.forEach((galeria) => {
       incrementarVistas(galeria.id, galeria.vistas);
     });
   }, [galerias]);
 
-  // Función para incrementar likes de la publicación
   const incrementarLikes = async (id, likesActuales) => {
     try {
       await updatePublication(id, { likes: likesActuales + 1 });
-      // Actualizar el estado local para reflejar el cambio
       setGalerias(prevGalerias =>
         prevGalerias.map(galeria => 
           galeria.id === id ? { ...galeria, likes: likesActuales + 1 } : galeria
@@ -58,7 +54,6 @@ const GaleriasActuales = () => {
     }
   };
 
-  // Función para eliminar una publicación
   const handleDelete = async (id) => {
     if (window.confirm("¿Estás seguro de que quieres eliminar esta publicación?")) {
       try {
@@ -71,19 +66,18 @@ const GaleriasActuales = () => {
     }
   };
 
-  // Función para redirigir al usuario a la página de edición con los datos de la publicación
   const handleEdit = (galeria) => {
     navigate('/EditarPublicacion', { state: { galeria } });
   };
 
-  if (loading) return <p>Cargando galerías...</p>;
+  if (loading) return <p className="text-center text-[#002855]">Cargando galerías...</p>;
 
   return (
-    <div className="p-4 max-w-5xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Galerías Actuales</h2>
+    <div className="p-8 max-w-5xl mx-auto">
+      <h2 className="text-2xl font-bold mb-4 text-[#002855]">Galerías Actuales</h2>
       {error && <p className="text-red-500">{error}</p>}
       {galerias.length === 0 && !error ? (
-        <p>No hay galerías disponibles en este momento.</p>
+        <p className="text-center text-gray-700">No hay galerías disponibles en este momento.</p>
       ) : (
         <div className="grid gap-6 md:grid-cols-1">
           {galerias.map((galeria) => (
@@ -97,7 +91,7 @@ const GaleriasActuales = () => {
               </div>
               <div className="md:w-2/3 p-4 flex flex-col justify-between">
                 <div>
-                  <h3 className="text-xl font-semibold">{galeria.tituloInvestigacion}</h3>
+                  <h3 className="text-xl font-semibold text-[#002855]">{galeria.tituloInvestigacion}</h3>
                   <p className="text-gray-600 mb-1">
                     <strong>Autor:</strong> {galeria.nombreAutor} {galeria.apellidoAutor}
                   </p>
