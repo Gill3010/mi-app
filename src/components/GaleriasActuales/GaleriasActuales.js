@@ -7,6 +7,7 @@ const GaleriasActuales = () => {
   const [galerias, setGalerias] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState(null); // Estado para controlar la imagen ampliada
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -70,6 +71,14 @@ const GaleriasActuales = () => {
     navigate('/EditarPublicacion', { state: { galeria } });
   };
 
+  const openModal = (imageUrl) => {
+    setSelectedImage(imageUrl);
+  };
+
+  const closeModal = () => {
+    setSelectedImage(null);
+  };
+
   if (loading) return <p className="text-center text-[#002855]">Cargando galerías...</p>;
 
   return (
@@ -77,42 +86,47 @@ const GaleriasActuales = () => {
       <h2 className="text-2xl font-bold mb-4 text-[#002855]">Galerías Actuales</h2>
       {error && <p className="text-red-500">{error}</p>}
       {galerias.length === 0 && !error ? (
-        <p className="text-center text-gray-700">No hay galerías disponibles en este momento.</p>
+        <p className="text-center text-[#002855]">No hay galerías disponibles en este momento.</p>
       ) : (
         <div className="grid gap-6 md:grid-cols-1">
           {galerias.map((galeria) => (
-            <div key={galeria.id} className="flex flex-col md:flex-row border p-4 rounded shadow bg-white">
+            <div key={galeria.id} className="flex flex-col md:flex-row border p-4 rounded shadow bg-[#002855] text-white">
               <div className="md:w-1/3 p-2">
                 {galeria.imagen ? (
-                  <img src={galeria.imagen} alt="Imagen de la publicación" className="rounded w-full h-full object-cover" />
+                  <img 
+                    src={galeria.imagen} 
+                    alt="Imagen de la publicación" 
+                    className="rounded w-full h-full object-cover cursor-pointer" 
+                    onClick={() => openModal(galeria.imagen)} // Al hacer clic, abre el modal
+                  />
                 ) : (
-                  <div className="bg-gray-200 rounded w-full h-32 flex items-center justify-center">Sin Imagen</div>
+                  <div className="bg-gray-200 rounded w-full h-32 flex items-center justify-center text-[#002855]">Sin Imagen</div>
                 )}
               </div>
               <div className="md:w-2/3 p-4 flex flex-col justify-between">
                 <div>
-                  <h3 className="text-xl font-semibold text-[#002855]">{galeria.tituloInvestigacion}</h3>
-                  <p className="text-gray-600 mb-1">
+                  <h3 className="text-xl font-semibold">{galeria.tituloInvestigacion}</h3>
+                  <p className="mb-1">
                     <strong>Autor:</strong> {galeria.nombreAutor} {galeria.apellidoAutor}
                   </p>
-                  <p className="text-gray-600 mb-1">
+                  <p className="mb-1">
                     <strong>Institución:</strong> {galeria.institucion || 'No disponible'}
                   </p>
-                  <p className="text-gray-600 mb-1">
+                  <p className="mb-1">
                     <strong>Fecha de Publicación:</strong> {new Date(galeria.fechaPublicacion.seconds * 1000).toLocaleDateString()}
                   </p>
-                  <p className="text-gray-600 mb-1">
-                    <strong>ORCID:</strong> <a href={`https://orcid.org/${galeria.orcid}`} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">{galeria.orcid || 'No disponible'}</a>
+                  <p className="mb-1">
+                    <strong>ORCID:</strong> <a href={`https://orcid.org/${galeria.orcid}`} target="_blank" rel="noopener noreferrer" className="text-white underline">{galeria.orcid || 'No disponible'}</a>
                   </p>
                   {galeria.resumen && (
                     <p>
-                      <strong>Resumen:</strong> <a href={galeria.resumen} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">Ver documento</a>
+                      <strong>Resumen:</strong> <a href={galeria.resumen} target="_blank" rel="noopener noreferrer" className="text-white underline">Ver documento</a>
                     </p>
                   )}
-                  <p className="text-gray-600 mb-1">
+                  <p className="mb-1">
                     <strong>Vistas:</strong> {galeria.vistas} | <strong>Likes:</strong> {galeria.likes}
                   </p>
-                  <button onClick={() => incrementarLikes(galeria.id, galeria.likes)} className="text-blue-500 hover:text-blue-700">
+                  <button onClick={() => incrementarLikes(galeria.id, galeria.likes)} className="text-white hover:underline">
                     👍 Me gusta
                   </button>
                   {galeria.audio && (
@@ -124,10 +138,10 @@ const GaleriasActuales = () => {
                 </div>
                 {currentUserId === galeria.userId && (
                   <div className="flex space-x-4 mt-4">
-                    <button onClick={() => handleEdit(galeria)} className="text-yellow-500 hover:text-yellow-700">
+                    <button onClick={() => handleEdit(galeria)} className="text-yellow-300 hover:text-yellow-400">
                       ✏️ Editar
                     </button>
-                    <button onClick={() => handleDelete(galeria.id)} className="text-red-500 hover:text-red-700">
+                    <button onClick={() => handleDelete(galeria.id)} className="text-red-300 hover:text-red-400">
                       🗑️ Eliminar
                     </button>
                   </div>
@@ -135,6 +149,13 @@ const GaleriasActuales = () => {
               </div>
             </div>
           ))}
+        </div>
+      )}
+      
+      {/* Modal para la imagen ampliada */}
+      {selectedImage && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50" onClick={closeModal}>
+          <img src={selectedImage} alt="Imagen ampliada" className="max-w-full max-h-full" />
         </div>
       )}
     </div>

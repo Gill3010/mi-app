@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { updatePublication } from '../../config/firebaseConfig';
+import { updatePublication, uploadFile } from '../../config/firebaseConfig'; // Asegúrate de tener una función para subir archivos
 
 const EditarPublicacion = () => {
   const location = useLocation();
@@ -35,6 +35,18 @@ const EditarPublicacion = () => {
     });
   };
 
+  const handleFileChange = async (e) => {
+    const { name } = e.target;
+    const file = e.target.files[0];
+    if (file) {
+      const url = await uploadFile(file); // Suponiendo que uploadFile devuelve la URL del archivo subido
+      setFormData({
+        ...formData,
+        [name]: url,
+      });
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -57,9 +69,19 @@ const EditarPublicacion = () => {
         <input type="text" name="apellidoAutor" value={formData.apellidoAutor} onChange={handleChange} placeholder="Apellido del Autor" required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
         <input type="text" name="institucion" value={formData.institucion} onChange={handleChange} placeholder="Institución" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
         <input type="text" name="orcid" value={formData.orcid} onChange={handleChange} placeholder="ORCID" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
-        <input type="text" name="resumen" value={formData.resumen} onChange={handleChange} placeholder="Resumen (URL)" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
-        <input type="text" name="imagen" value={formData.imagen} onChange={handleChange} placeholder="URL de Imagen" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
-        <input type="text" name="audio" value={formData.audio} onChange={handleChange} placeholder="URL de Audio" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
+        
+        {/* Campo de archivo para el resumen */}
+        <label>Subir Resumen:</label>
+        <input type="file" name="resumen" onChange={handleFileChange} className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
+
+        {/* Campo de archivo para la imagen */}
+        <label>Subir Imagen:</label>
+        <input type="file" name="imagen" onChange={handleFileChange} className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
+
+        {/* Campo de archivo para el audio */}
+        <label>Subir Audio:</label>
+        <input type="file" name="audio" onChange={handleFileChange} className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
+
         <button type="submit" className="bg-[#002855] text-white py-2 px-4 rounded-lg hover:bg-[#005073] transition duration-300">Guardar Cambios</button>
       </form>
     </div>
