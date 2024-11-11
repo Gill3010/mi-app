@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { Provider } from 'react-redux';  // Importar el Provider de Redux
-import store from './redux/store';  // Importar el store de Redux
-
+import { Provider } from 'react-redux';
+import store from './redux/store';
+import Metrics from './components/Metrics/Metrics';
 import Navbar from './components/Navbar/Navbar';
 import Slider from './components/Slider/Slider';
 import SearchBar from './components/SearchBar/SearchBar';
@@ -16,7 +16,7 @@ import LicenciasPublicacion from './components/LicenciasPublicacion/LicenciasPub
 import Comunicacion from './components/Comunicacion/Comunicacion';
 import Antiplagio from './components/Antiplagio/Antiplagio';
 import CriteriosEticosPublicacion from './components/CriteriosEticosPublicacion/CriteriosEticosPublicacion';
-import DeclaracionPrivacidad from './components/DeclaracionPrivacidad/DeclaracionPrivacidad'; 
+import DeclaracionPrivacidad from './components/DeclaracionPrivacidad/DeclaracionPrivacidad';
 import ReferenciasBibliograficas from './components/ReferenciasBibliograficas/ReferenciasBibliograficas';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
@@ -29,29 +29,31 @@ import NormasAPA from './components/NormasAPA/NormasAPA';
 import Eventos from './components/Eventos/Eventos';
 import FormularioEnvio from './components/FormularioEnvio/FormularioEnvio';
 import GaleriasActuales from './components/GaleriasActuales/GaleriasActuales';
-import EditarPublicacion from './components/EditarPublicacion/EditarPublicacion';  // Nueva importación
+import EditarPublicacion from './components/EditarPublicacion/EditarPublicacion';
 
 const App = () => {
   return (
     <Provider store={store}>
       <Router>
-        {/* Div con Tailwind para agregar un layout común */}
         <div className="min-h-screen flex flex-col">
           <Navbar />
-          {/* Contenedor principal */}
           <div className="flex-grow">
             <Routes>
-              {/* Ruta principal con Slider y SearchBar */}
               <Route 
                 path="/" 
                 element={
                   <div>
+                    {/* Slider */}
                     <Slider />
+                    
+                    {/* Métricas */}
+                    <Metrics />
+                    
+                    {/* Motor de Búsqueda */}
                     <SearchBar />
                   </div>
                 } 
               />
-              {/* Rutas adicionales */}
               <Route path="/resultados" element={<Resultados />} />
               <Route path="/nosotros" element={<Nosotros />} />
               <Route path="/declaracion-acceso-abierto" element={<DeclaracionAccesoAbierto />} />
@@ -74,7 +76,7 @@ const App = () => {
               <Route path="/Eventos" element={<Eventos />} />
               <Route path="/FormularioEnvio" element={<FormularioEnvio />} />
               <Route path="/GaleriasActuales" element={<GaleriasActuales />} />
-              <Route path="/EditarPublicacion" element={<EditarPublicacion />} />  {/* Nueva ruta de edición */}
+              <Route path="/EditarPublicacion" element={<EditarPublicacion />} />
             </Routes>
           </div>
           <Footer />

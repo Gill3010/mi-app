@@ -21,6 +21,7 @@ const FormularioEnvio = () => {
     imagen: null,
     resumen: null,
     audio: null,
+    doi: '', // Agregado campo Doi
   });
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -97,6 +98,7 @@ const FormularioEnvio = () => {
         <input type="text" name="orcid" value={formData.orcid} onChange={handleChange} placeholder="ORCID" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
         <input type="text" name="pais" value={formData.pais} onChange={handleChange} placeholder="País de Origen" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
         <input type="text" name="tituloInvestigacion" value={formData.tituloInvestigacion} onChange={handleChange} placeholder="Título de la Investigación" required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
+        <input type="text" name="doi" value={formData.doi} onChange={handleChange} placeholder="DOI" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
         <input type="file" name="imagen" onChange={handleChange} className="w-full px-4 py-2 border rounded-lg" accept="image/*" />
         <input type="file" name="resumen" onChange={handleChange} className="w-full px-4 py-2 border rounded-lg" accept=".pdf,.doc,.docx" />
         <input type="file" name="audio" onChange={handleChange} className="w-full px-4 py-2 border rounded-lg" accept="audio/*" />
