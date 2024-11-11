@@ -1,12 +1,14 @@
 import React from 'react';
-import equipo1 from './images/Farnum.jpeg'; 
+import equipo1 from './images/Farnum.jpeg';
 import equipo2 from './images/Tania.jpeg';
 import equipo3 from './images/Monica.jpeg';
 import equipo4 from './images/Israel.jpeg';
 import equipo5 from './images/Jose.jpeg';
 import equipo6 from './images/Sosimo.jpeg';
 import equipo7 from './images/Lourdes.jpeg';
-import equipo8 from  './images/Sandra.jpeg';
+import equipo8 from './images/Sandra.jpeg';
+import { FaEnvelope, FaPhone, FaOrcid } from 'react-icons/fa';
+
 const Nosotros = () => {
   return (
     <div className="bg-gradient-to-r from-[#002855] to-[#00A1E0] p-6 md:p-12 text-[#002855]">
@@ -36,7 +38,7 @@ const Nosotros = () => {
             { image: equipo5, name: "Ing. José Murillo", title: "Analista de Sistema y Seguridad Informática", email: "jose.murillot@up.ac.pa", phone: "+507 6320-6113", orcid: "https://orcid.org/0009-0007-1212-718X" },
             { image: equipo6, name: "Dr. Sósimo Poma", title: "Evaluador Académico", email: "evaluadoracademico@portaldecartelescientificos.org", phone: "+51 980-981-906", orcid: "https://orcid.org/0000-0002-5999-5212" },
             { image: equipo7, name: "Dra. Lourdes Céspedes", title: "Evaluadora Académica", email: "evaluadoracademico@portaldecartelescientificos.org", phone: "+51 948-477-669", orcid: "https://orcid.org/0000-0002-4358-8575" },
-            { image: equipo8, name: "Dra. Sandra Bedoya Marulanda", title: "Aliada Estratégica Universitaria", email: "aiu.alianzauniversitaria@gmail.com", phone: "+57 3168316782", orcid: "0009-0005-7307-8233"}
+            { image: equipo8, name: "Dra. Sandra Bedoya Marulanda", title: "Alianza Estratégica Universitaria", email: "aiu.alianzauniversitaria@gmail.com", phone: "+57 3168316782", orcid: "0009-0005-7307-8233"}
           ].map(member => (
             <div key={member.name} className="bg-[#002855] text-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition duration-300 transform hover:scale-105 flex flex-col items-center sm:flex-row sm:items-start">
               <img 
@@ -47,10 +49,14 @@ const Nosotros = () => {
               <div className="text-center sm:text-left">
                 <h4 className="text-xl font-bold mb-2">{member.name}</h4>
                 <p className="text-sm">{member.title}</p>
-                <p className="mt-2 text-sm truncate max-w-xs">{member.email}</p>
-                <p className="mt-1 text-sm">{member.phone}</p>
-                <a href={member.orcid} className="hover:underline mt-1 text-[#4A90E2] transition-colors duration-300 hover:text-blue-300" target="_blank" rel="noopener noreferrer">
-                  ORCID
+                <div className="mt-2 text-sm flex items-center">
+                  <FaEnvelope className="mr-2" /> {member.email}
+                </div>
+                <div className="mt-1 text-sm flex items-center">
+                  <FaPhone className="mr-2" /> {member.phone}
+                </div>
+                <a href={member.orcid} className="hover:underline mt-1 text-[#4A90E2] transition-colors duration-300 hover:text-blue-300 flex items-center" target="_blank" rel="noopener noreferrer">
+                  <FaOrcid className="mr-2" /> ORCID
                 </a>
               </div>
             </div>

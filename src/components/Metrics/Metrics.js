@@ -43,32 +43,32 @@ const Metrics = () => {
   }, []);
 
   return (
-    <div className="bg-gradient-to-r from-[#f5faff] to-[#e0f7ff] shadow-lg rounded-lg p-6 mt-8 max-w-5xl mx-auto text-[#002855]">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 text-center">
+    <div className="bg-gradient-to-r from-[#f0f9ff] to-[#cfe4ff] shadow-lg rounded-lg p-8 mt-10 max-w-5xl mx-auto text-[#002855] overflow-x-auto">
+      <div className="flex gap-6 text-center">
         {/* Publicaciones */}
-        <div className="p-4 bg-white rounded-lg shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-105 hover:bg-[#e9f5ff]">
-          <h3 className="text-2xl sm:text-3xl font-bold text-[#002855]">{metrics.totalPublications}</h3>
-          <p className="text-base font-medium text-[#004080]">Publicaciones</p>
+        <div className="min-w-[150px] p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105 hover:bg-[#eaf4ff]">
+          <h3 className="text-4xl font-extrabold text-[#004080]">{metrics.totalPublications}</h3>
+          <p className="mt-2 text-lg font-semibold text-[#0060a0]">Publicaciones</p>
         </div>
         {/* Vistas Totales */}
-        <div className="p-4 bg-white rounded-lg shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-105 hover:bg-[#e9f5ff]">
-          <h3 className="text-2xl sm:text-3xl font-bold text-[#002855]">{metrics.totalViews}</h3>
-          <p className="text-base font-medium text-[#004080]">Vistas Totales</p>
+        <div className="min-w-[150px] p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105 hover:bg-[#eaf4ff]">
+          <h3 className="text-4xl font-extrabold text-[#004080]">{metrics.totalViews}</h3>
+          <p className="mt-2 text-lg font-semibold text-[#0060a0]">Vistas Totales</p>
         </div>
         {/* Likes Totales */}
-        <div className="p-4 bg-white rounded-lg shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-105 hover:bg-[#e9f5ff]">
-          <h3 className="text-2xl sm:text-3xl font-bold text-[#002855]">{metrics.totalLikes}</h3>
-          <p className="text-base font-medium text-[#004080]">Likes Totales</p>
+        <div className="min-w-[150px] p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105 hover:bg-[#eaf4ff]">
+          <h3 className="text-4xl font-extrabold text-[#004080]">{metrics.totalLikes}</h3>
+          <p className="mt-2 text-lg font-semibold text-[#0060a0]">Likes Totales</p>
         </div>
         {/* Veces Compartidas */}
-        <div className="p-4 bg-white rounded-lg shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-105 hover:bg-[#e9f5ff]">
-          <h3 className="text-2xl sm:text-3xl font-bold text-[#002855]">{metrics.totalShares}</h3>
-          <p className="text-base font-medium text-[#004080]">Veces Compartidas</p>
+        <div className="min-w-[150px] p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105 hover:bg-[#eaf4ff]">
+          <h3 className="text-4xl font-extrabold text-[#004080]">{metrics.totalShares}</h3>
+          <p className="mt-2 text-lg font-semibold text-[#0060a0]">Veces Compartidas</p>
         </div>
         {/* Citas Totales */}
-        <div className="p-4 bg-white rounded-lg shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-105 hover:bg-[#e9f5ff]">
-          <h3 className="text-2xl sm:text-3xl font-bold text-[#002855]">{metrics.totalCitations}</h3>
-          <p className="text-base font-medium text-[#004080]">Citas Totales (DOI)</p>
+        <div className="min-w-[150px] p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105 hover:bg-[#eaf4ff]">
+          <h3 className="text-4xl font-extrabold text-[#004080]">{metrics.totalCitations}</h3>
+          <p className="mt-2 text-lg font-semibold text-[#0060a0]">Citas Totales (DOI)</p>
         </div>
       </div>
     </div>

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { getPublications, deletePublication, updatePublication } from '../../config/firebaseConfig';
 import { auth } from '../../config/firebaseConfig';
 import { useNavigate } from 'react-router-dom';
-import { FiShare2, FiEye, FiHeart, FiShare } from 'react-icons/fi';
-import doiLogo from './DOI_logo.svg.png'; // Icono de DOI
-import orcidLogo from './orcid_logo2.png'; // Icono de ORCID
+import { FiShare2, FiEye, FiHeart, FiShare, FiUser } from 'react-icons/fi';
+import { FaQuoteLeft } from 'react-icons/fa'; // Icono de comillas
+import './GaleriasActuales.css'; // Asegúrate de tener este archivo CSS para los tooltips personalizados
 
 const GaleriasActuales = () => {
   const [galerias, setGalerias] = useState([]);
@@ -97,30 +97,30 @@ const GaleriasActuales = () => {
   if (loading) return <p className="text-center text-[#002855]">Cargando galerías...</p>;
 
   return (
-    <div className="p-4 md:p-8 max-w-5xl mx-auto bg-gradient-to-b from-[#f5faff] to-[#e0f7ff] min-h-screen overflow-x-hidden">
-      <h2 className="text-3xl md:text-4xl font-extrabold mb-6 text-center text-[#002855]">Galerías Actuales</h2>
-      {error && <p className="text-red-500">{error}</p>}
+    <div className="p-6 md:p-12 max-w-6xl mx-auto bg-gray-100 min-h-screen">
+      <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-center text-blue-900">Galerías de Investigación</h2>
+      {error && <p className="text-red-500 text-center">{error}</p>}
       {galerias.length === 0 && !error ? (
-        <p className="text-center text-[#002855]">No hay galerías disponibles en este momento.</p>
+        <p className="text-center text-blue-900">No hay galerías disponibles en este momento.</p>
       ) : (
-        <div className="grid gap-6 md:grid-cols-1">
+        <div className="grid gap-8 md:grid-cols-1">
           {galerias.map((galeria) => (
-            <div key={galeria.id} className="relative flex flex-col md:flex-row border border-[#4A90E2] bg-gradient-to-r from-white to-blue-50 p-6 rounded-lg shadow-lg hover:shadow-2xl transition duration-300 border-2">
-              <div className="md:w-1/3 p-2">
+            <div key={galeria.id} className="relative flex flex-col md:flex-row bg-white border border-gray-300 p-8 rounded-lg shadow-lg transition hover:shadow-2xl duration-300">
+              <div className="md:w-1/3 mb-6 md:mb-0 p-2">
                 {galeria.imagen ? (
                   <img 
                     src={galeria.imagen} 
                     alt="Imagen de la publicación" 
-                    className="rounded-lg w-full h-48 md:h-full object-cover cursor-pointer shadow-lg hover:shadow-2xl transition duration-300 transform hover:scale-105"
+                    className="rounded-lg w-full h-48 md:h-full object-cover cursor-pointer transition-transform duration-300 transform hover:scale-105"
                     onClick={() => openModal(galeria.imagen)}
                   />
                 ) : (
-                  <div className="bg-gray-200 rounded w-full h-48 md:h-32 flex items-center justify-center text-[#002855]">Sin Imagen</div>
+                  <div className="bg-gray-200 rounded-lg w-full h-48 md:h-full flex items-center justify-center text-blue-900">Sin Imagen</div>
                 )}
               </div>
-              <div className="md:w-2/3 p-4 md:p-6 flex flex-col justify-between">
-                <div className="text-[#002855] space-y-2">
-                  <h3 className="text-2xl font-bold hover:underline hover:text-blue-700 cursor-pointer">
+              <div className="md:w-2/3 p-4 flex flex-col justify-between">
+                <div className="text-blue-900 space-y-3">
+                  <h3 className="text-2xl font-semibold hover:text-blue-800 transition cursor-pointer">
                     <span className="relative group">
                       Título de la investigación
                       <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 w-max px-2 py-1 text-xs text-white bg-black rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -128,10 +128,10 @@ const GaleriasActuales = () => {
                       </span>
                     </span>
                   </h3>
-                  <p className="text-sm md:text-base text-blue-800">
+                  <p className="text-sm md:text-base">
                     <strong>DOI:</strong> {galeria.doi}
                   </p>
-                  <p className="text-sm md:text-base text-gray-600">
+                  <p className="text-sm md:text-base">
                     <strong>Autor:</strong> {galeria.nombreAutor} {galeria.apellidoAutor}
                   </p>
                   <p className="text-sm md:text-base">
@@ -147,8 +147,8 @@ const GaleriasActuales = () => {
                   <p className="text-sm md:text-base"><strong>Fecha de Publicación:</strong> {new Date(galeria.fechaPublicacion.seconds * 1000).toLocaleDateString()}</p>
                   <p className="text-sm md:text-base">
                     <strong>ORCID:</strong>{' '}
-                    <a href={`https://orcid.org/${galeria.orcid}`} target="_blank" rel="noopener noreferrer" className="text-[#4A90E2] inline-flex items-center">
-                      <img src={orcidLogo} alt="ORCID Icon" className="inline-block w-5 h-5 mr-1" />
+                    <a href={`https://orcid.org/${galeria.orcid}`} target="_blank" rel="noopener noreferrer" className="text-blue-700 inline-flex items-center">
+                      <FiUser className="w-5 h-5 mr-1" /> Ver perfil
                     </a>
                   </p>
                   {galeria.resumen && (
@@ -157,34 +157,38 @@ const GaleriasActuales = () => {
                     </p>
                   )}
                   {galeria.audio && (
-                    <audio controls className="mt-2">
+                    <audio controls className="mt-4 w-full">
                       <source src={galeria.audio} type="audio/mp3" />
                       Tu navegador no soporta el elemento de audio.
                     </audio>
                   )}
                 </div>
 
-                <div className="absolute bottom-4 right-4 bg-[#004080] bg-opacity-90 text-white rounded-lg p-2 md:p-4 flex justify-around md:space-x-4 items-center shadow-lg transition duration-300">
-                  <div className="flex items-center space-x-1">
-                    <FiEye className="text-lg" />
-                    <span className="text-sm">{galeria.vistas || 0}</span>
+                <div className="flex space-x-6 mt-6 text-blue-700 bg-white rounded-lg border border-gray-300 p-3 shadow-sm">
+                  <div className="tooltip flex items-center space-x-1">
+                    <FiEye className="text-xl hover:text-blue-500 transition-colors cursor-pointer" />
+                    <span className="text-base">{galeria.vistas || 0}</span>
+                    <span className="tooltiptext">Vistas</span>
                   </div>
-                  <div className="flex items-center space-x-1">
-                    <FiHeart onClick={() => incrementarLikes(galeria.id, galeria.likes)} className="cursor-pointer text-lg hover:text-red-400" />
-                    <span className="text-sm">{galeria.likes || 0}</span>
+                  <div className="tooltip flex items-center space-x-1 cursor-pointer" onClick={() => incrementarLikes(galeria.id, galeria.likes)}>
+                    <FiHeart className="text-xl hover:text-red-400 transition-colors" />
+                    <span className="text-base">{galeria.likes || 0}</span>
+                    <span className="tooltiptext">Likes</span>
                   </div>
-                  <div className="flex items-center space-x-1">
-                    <FiShare onClick={() => handleShare(galeria)} className="cursor-pointer text-lg hover:text-[#4A90E2]" />
-                    <span className="text-sm">{galeria.compartido || 0}</span>
+                  <div className="tooltip flex items-center space-x-1 cursor-pointer" onClick={() => handleShare(galeria)}>
+                    <FiShare className="text-xl hover:text-blue-500 transition-colors" />
+                    <span className="text-base">{galeria.compartido || 0}</span>
+                    <span className="tooltiptext">Compartir</span>
                   </div>
-                  <div className="flex items-center space-x-1">
-                    <img src={doiLogo} alt="DOI Icon" className="w-5 h-5" />
-                    <span className="text-sm">{galeria.citas || 0}</span>
+                  <div className="tooltip flex items-center space-x-1">
+                    <FaQuoteLeft className="text-xl hover:text-blue-500 transition-colors" />
+                    <span className="text-base">{galeria.citas || 0}</span>
+                    <span className="tooltiptext">Citas</span>
                   </div>
                 </div>
 
                 {currentUserId === galeria.userId && (
-                  <div className="flex space-x-4 mt-2 md:mt-4 text-[#002855]">
+                  <div className="flex space-x-4 mt-4 text-blue-900">
                     <button onClick={() => handleEdit(galeria)} className="text-yellow-500 hover:text-yellow-600 font-semibold">
                       ✏️ Editar
                     </button>

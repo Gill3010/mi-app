@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaFacebook, FaInstagram } from 'react-icons/fa';
+import { FaFacebook, FaInstagram, FaLinkedin, FaMapMarkerAlt, FaEnvelope, FaPhone } from 'react-icons/fa';
 
 const Footer = () => {
   return (
@@ -17,9 +17,18 @@ const Footer = () => {
         <div>
           <h3 className="text-xl font-bold mb-3">Contáctanos</h3>
           <ul className="space-y-2">
-            <li><span className="font-semibold">Dirección:</span> Mirador del Pacífico, San Miguelito, Local 70 Ciudad de Panamá, Panamá</li>
-            <li><span className="font-semibold">Correo Electrónico:</span> info@portaldecartelescientificos.org</li>
-            <li><span className="font-semibold">Teléfono:</span> +507 6645-7685 | +507 208-4689</li>
+            <li className="flex items-center">
+              <FaMapMarkerAlt className="mr-2" />
+              Mirador del Pacífico, San Miguelito, Local 70 Ciudad de Panamá, Panamá
+            </li>
+            <li className="flex items-center">
+              <FaEnvelope className="mr-2" />
+              info@portaldecartelescientificos.org
+            </li>
+            <li className="flex items-center">
+              <FaPhone className="mr-2" />
+              +507 6645-7685 | +507 208-4689
+            </li>
           </ul>
         </div>
 
@@ -47,6 +56,13 @@ const Footer = () => {
               aria-label="Instagram"
             >
               <FaInstagram size={30} />
+            </a>
+            <a
+              href="https://linkedin.com"
+              className="hover:text-blue-500 transition duration-300"
+              aria-label="LinkedIn"
+            >
+              <FaLinkedin size={30} />
             </a>
           </div>
         </div>
