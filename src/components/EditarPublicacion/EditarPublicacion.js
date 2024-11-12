@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { updatePublication, uploadFile } from '../../config/firebaseConfig'; // Asegúrate de tener una función para subir archivos
+import { updatePublication, updatePastPublication, uploadFile } from '../../config/firebaseConfig'; // Asegúrate de tener una función para subir archivos
 
 const EditarPublicacion = () => {
   const location = useLocation();
   const navigate = useNavigate();
   
   const galeria = location.state?.galeria;
+  const isPastPublication = location.state?.isPastPublication || false; // Verificar si es una publicación anterior
 
   useEffect(() => {
     if (!galeria) {
@@ -51,9 +52,16 @@ const EditarPublicacion = () => {
     e.preventDefault();
 
     try {
-      await updatePublication(galeria.id, formData);
+      if (isPastPublication) {
+        // Usar la función para actualizar en "pastPublications"
+        await updatePastPublication(galeria.id, formData);
+      } else {
+        // Usar la función para actualizar en "publicaciones"
+        await updatePublication(galeria.id, formData);
+      }
+
       alert('Publicación actualizada con éxito');
-      navigate('/GaleriasActuales');
+      navigate(isPastPublication ? '/GaleriasAnteriores' : '/GaleriasActuales');
     } catch (error) {
       console.error("Error al actualizar la publicación:", error);
       alert('No se pudo actualizar la publicación. Inténtalo de nuevo.');

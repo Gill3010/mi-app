@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { addPublication, auth } from '../../config/firebaseConfig';
+import { addPublication, addPastPublication, auth } from '../../config/firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
@@ -12,7 +12,7 @@ const FormularioEnvio = () => {
     institucion: '',
     orcid: '',
     pais: '',
-    galeria: '',
+    galeria: 'actual', // Nuevo campo para seleccionar la galería
     instrucciones: '',
     metodoPago: '',
     vistas: 0,
@@ -78,19 +78,33 @@ const FormularioEnvio = () => {
       const resumenUrl = formData.resumen ? await uploadFile(formData.resumen, 'resumenes') : null;
       const audioUrl = formData.audio ? await uploadFile(formData.audio, 'audios') : null;
 
-      await addPublication({
-        ...formData,
-        imagen: imageUrl,
-        resumen: resumenUrl,
-        audio: audioUrl,
-        fechaPublicacion: new Date(),
-        vistas: formData.vistas,
-        likes: formData.likes,
-        userId,
-      });
+      // Enviar a la colección seleccionada (actual o anterior)
+      if (formData.galeria === 'actual') {
+        await addPublication({
+          ...formData,
+          imagen: imageUrl,
+          resumen: resumenUrl,
+          audio: audioUrl,
+          fechaPublicacion: new Date(),
+          vistas: formData.vistas,
+          likes: formData.likes,
+          userId,
+        });
+      } else {
+        await addPastPublication({
+          ...formData,
+          imagen: imageUrl,
+          resumen: resumenUrl,
+          audio: audioUrl,
+          fechaPublicacion: new Date(),
+          vistas: formData.vistas,
+          likes: formData.likes,
+          userId,
+        });
+      }
 
       alert('Formulario enviado con éxito');
-      navigate('/GaleriasActuales');
+      navigate(formData.galeria === 'actual' ? '/GaleriasActuales' : '/GaleriasAnteriores');
     } catch (error) {
       console.error("Error al enviar el formulario:", error);
       setError('Error al enviar el formulario. Intenta de nuevo.');
@@ -109,6 +123,13 @@ const FormularioEnvio = () => {
         <input type="text" name="institucion" value={formData.institucion} onChange={handleChange} placeholder="Institución" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
         <input type="text" name="orcid" value={formData.orcid} onChange={handleChange} placeholder="ORCID" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
         <input type="text" name="pais" value={formData.pais} onChange={handleChange} placeholder="País de Origen" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
+        
+        {/* Nueva opción para seleccionar la galería */}
+        <select name="galeria" value={formData.galeria} onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]">
+          <option value="actual">Galería Actual</option>
+          <option value="anterior">Galería Anterior</option>
+        </select>
+        
         <input type="text" name="tituloInvestigacion" value={formData.tituloInvestigacion} onChange={handleChange} placeholder="Título de la Investigación" required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
         <input type="text" name="doi" value={formData.doi} onChange={handleChange} placeholder="DOI" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
         <input type="file" name="imagen" onChange={handleChange} className="w-full px-4 py-2 border rounded-lg" accept="image/*" />

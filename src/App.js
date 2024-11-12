@@ -29,8 +29,9 @@ import NormasAPA from './components/NormasAPA/NormasAPA';
 import Eventos from './components/Eventos/Eventos';
 import FormularioEnvio from './components/FormularioEnvio/FormularioEnvio';
 import GaleriasActuales from './components/GaleriasActuales/GaleriasActuales';
+import GaleriasAnteriores from './components/GaleriasAnteriores/GaleriasAnteriores';
 import EditarPublicacion from './components/EditarPublicacion/EditarPublicacion';
-import Logout from './components/Logout/Logout'; // Importa el componente Logout
+import Logout from './components/Logout/Logout';
 
 const App = () => {
   return (
@@ -72,8 +73,9 @@ const App = () => {
               <Route path="/Eventos" element={<Eventos />} />
               <Route path="/FormularioEnvio" element={<FormularioEnvio />} />
               <Route path="/GaleriasActuales" element={<GaleriasActuales />} />
+              <Route path="/GaleriasAnteriores" element={<GaleriasAnteriores />} />
               <Route path="/EditarPublicacion" element={<EditarPublicacion />} />
-              <Route path="/Logout" element={<Logout />} /> {/* Nueva ruta de Logout */}
+              <Route path="/Logout" element={<Logout />} />
             </Routes>
           </div>
           <Footer />

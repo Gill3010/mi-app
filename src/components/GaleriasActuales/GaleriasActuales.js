@@ -90,15 +90,30 @@ const GaleriasActuales = () => {
     setSelectedImage(null);
   };
 
+  // Aquí es donde incrementamos el contador de "veces compartidas" en Firestore
   const handleShare = (galeria) => {
     if (navigator.share) {
       navigator.share({
         title: galeria.tituloInvestigacion,
         text: `Consulta esta publicación: ${galeria.tituloInvestigacion} - DOI: ${galeria.doi}`,
         url: window.location.href
+      }).then(() => {
+        // Si la acción de compartir es exitosa, incrementamos el contador de veces compartidas
+        incrementShareCount(galeria.id, galeria.compartido);
       }).catch((error) => console.error('Error al compartir:', error));
     } else {
       alert("La función de compartir no está disponible en este navegador.");
+    }
+  };
+
+  // Función para actualizar el contador de veces compartidas en Firestore
+  const incrementShareCount = async (id, currentShareCount) => {
+    const newShareCount = currentShareCount + 1;  // Incrementamos el contador
+    try {
+      await updatePublication(id, { compartido: newShareCount });
+      console.log(`Contador de veces compartidas actualizado: ${newShareCount}`);
+    } catch (error) {
+      console.error('Error al actualizar el contador de veces compartidas:', error);
     }
   };
 
@@ -106,7 +121,7 @@ const GaleriasActuales = () => {
 
   return (
     <div className="p-6 md:p-12 max-w-6xl mx-auto bg-gray-100 min-h-screen">
-      <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-center text-blue-900">Segundo Encuentro de Investigaciones Cualitativas Vol 1 - 1</h2>
+      <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-center text-blue-900">Galerías Actuales Vol 1-2</h2>
       {error && <p className="text-red-500 text-center">{error}</p>}
       {galerias.length === 0 && !error ? (
         <p className="text-center text-blue-900">No hay galerías disponibles en este momento.</p>

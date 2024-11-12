@@ -187,3 +187,58 @@ export const deletePublication = async (id) => {
     throw new Error("No se pudo eliminar la publicación.");
   }
 };
+
+// --- New functions for "pastPublications" collection ---
+
+// Function to add a new document to the "pastPublications" collection in Firestore
+export const addPastPublication = async (data) => {
+  try {
+    const docRef = await addDoc(collection(db, "pastPublications"), {
+      ...data,
+      vistas: 0,
+      likes: 0,
+      fechaPublicacion: new Date(),
+    });
+    console.log("Documento de galería anterior añadido con ID:", docRef.id);
+    return docRef;
+  } catch (error) {
+    console.error("Error al añadir galería anterior:", error);
+    throw new Error('Error al añadir galería anterior. Intenta de nuevo.');
+  }
+};
+
+// Function to fetch all documents from the "pastPublications" collection
+export const getPastPublications = async () => {
+  try {
+    const querySnapshot = await getDocs(collection(db, "pastPublications"));
+    const publications = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    console.log("Galerías anteriores obtenidas:", publications);
+    return publications;
+  } catch (error) {
+    console.error("Error al obtener galerías anteriores:", error);
+    throw new Error('Error al obtener galerías anteriores. Intenta de nuevo.');
+  }
+};
+
+// Function to update a document in the "pastPublications" collection
+export const updatePastPublication = async (docId, data) => {
+  try {
+    const docRef = doc(db, "pastPublications", docId);
+    await updateDoc(docRef, data);
+    console.log("Documento de galería anterior actualizado con éxito.");
+  } catch (error) {
+    console.error("Error al actualizar el documento de galería anterior:", error);
+    throw new Error('Error al actualizar la galería anterior. Intenta de nuevo.');
+  }
+};
+
+// Function to delete a document from the "pastPublications" collection
+export const deletePastPublication = async (id) => {
+  try {
+    await deleteDoc(doc(db, "pastPublications", id));
+    console.log("Galería anterior eliminada con éxito.");
+  } catch (error) {
+    console.error("Error al eliminar la galería anterior:", error);
+    throw new Error("No se pudo eliminar la galería anterior.");
+  }
+};

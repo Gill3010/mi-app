@@ -13,7 +13,7 @@ const SearchBar = () => {
   useEffect(() => {
     const handler = setTimeout(() => {
       if (query) {
-        dispatch(search(query));
+        dispatch(search(query)); // Esto llama a la acción search con el query
       }
     }, 500);
 
@@ -51,7 +51,7 @@ const SearchBar = () => {
           <ul>
             {results.map((item) => (
               <li key={item.id} className="border-b border-gray-200 py-2">
-                <h3 className="text-lg font-semibold text-[#002855]">{item.titulo_investigacion}</h3>
+                <h3 className="text-lg font-semibold text-[#002855]">{item.tituloInvestigacion}</h3>
                 <p>{item.nombreAutor} {item.apellidoAutor}</p>
                 <p className="text-sm text-gray-500">{item.institucion}</p>
               </li>

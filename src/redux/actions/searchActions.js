@@ -1,5 +1,5 @@
 import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../config/firebaseConfig'; // Asegúrate de tener configurado Firestore en firebaseConfig.js 
+import { db } from '../../config/firebaseConfig'; // Asegúrate de tener configurado Firestore en firebaseConfig.js
 
 // Acción para iniciar la búsqueda en Firestore
 export const search = (searchTerm) => async (dispatch) => {
@@ -7,19 +7,34 @@ export const search = (searchTerm) => async (dispatch) => {
 
   try {
     // Obtiene todos los documentos de la colección "publicaciones"
-    const querySnapshot = await getDocs(collection(db, 'publicaciones'));
+    const publicacionesSnapshot = await getDocs(collection(db, 'publicaciones'));
+    const pastPublicationsSnapshot = await getDocs(collection(db, 'pastPublications')); // Obtener también de "pastPublications"
 
     // Filtra los resultados en función del término de búsqueda
-    const results = querySnapshot.docs
+    const publicacionesResults = publicacionesSnapshot.docs
       .map((doc) => ({
         id: doc.id,
         ...doc.data()
       }))
-      .filter((item) => 
+      .filter((item) =>
         item.tituloInvestigacion.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.nombreAutor.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.apellidoAutor.toLowerCase().includes(searchTerm.toLowerCase())
       );
+
+    const pastPublicationsResults = pastPublicationsSnapshot.docs
+      .map((doc) => ({
+        id: doc.id,
+        ...doc.data()
+      }))
+      .filter((item) =>
+        item.tituloInvestigacion.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.nombreAutor.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.apellidoAutor.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
+    // Combina ambos conjuntos de resultados
+    const results = [...publicacionesResults, ...pastPublicationsResults];
 
     // Despacha los resultados al reducer
     dispatch({ type: 'SEARCH_SUCCESS', payload: results });
