@@ -17,6 +17,14 @@ const GaleriasActuales = () => {
     const fetchPublications = async () => {
       try {
         const publications = await getPublications();
+        
+        // Ordenar publicaciones alfabéticamente por nombre y apellido del autor
+        publications.sort((a, b) => {
+          const nameA = `${a.nombreAutor} ${a.apellidoAutor}`.toLowerCase();
+          const nameB = `${b.nombreAutor} ${b.apellidoAutor}`.toLowerCase();
+          return nameA.localeCompare(nameB);
+        });
+
         setGalerias(publications);
       } catch (error) {
         console.error("Error al obtener las publicaciones:", error);
@@ -98,7 +106,7 @@ const GaleriasActuales = () => {
 
   return (
     <div className="p-6 md:p-12 max-w-6xl mx-auto bg-gray-100 min-h-screen">
-      <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-center text-blue-900">Segundo Encuentro de Investigaciones Cualitativas</h2>
+      <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-center text-blue-900">Segundo Encuentro de Investigaciones Cualitativas Vol 1 - 1</h2>
       {error && <p className="text-red-500 text-center">{error}</p>}
       {galerias.length === 0 && !error ? (
         <p className="text-center text-blue-900">No hay galerías disponibles en este momento.</p>

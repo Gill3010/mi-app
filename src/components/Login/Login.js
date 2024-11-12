@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth, loginUser } from '../../config/firebaseConfig';
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
-import { FacebookAuthProvider, signInWithPopup } from 'firebase/auth';
+import { GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from 'firebase/auth';
+import { FaGoogle, FaFacebookF } from 'react-icons/fa';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -10,6 +10,7 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   
+  const googleProvider = new GoogleAuthProvider();
   const facebookProvider = new FacebookAuthProvider();
 
   const handleLogin = async (e) => {
@@ -25,11 +26,19 @@ const Login = () => {
     }
   };
 
-  const handleGoogleLoginSuccess = async (response) => {
-    console.log('Token de Google:', response.credential);
-    localStorage.setItem('token', response.credential);
-    alert('¡Inicio de sesión con Google exitoso!');
-    navigate('/');  // Redirigir a la página de inicio después de iniciar sesión
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      console.log('Inicio de sesión con Google exitoso:', result.user);
+      localStorage.setItem('token', token);
+      alert('¡Inicio de sesión con Google exitoso!');
+      navigate('/');  // Redirigir a la página de inicio después de iniciar sesión
+    } catch (error) {
+      console.error('Error en el inicio de sesión con Google:', error);
+      setError('Error en el inicio de sesión con Google. Por favor intenta de nuevo.');
+    }
   };
 
   const handleFacebookLogin = async () => {
@@ -83,18 +92,16 @@ const Login = () => {
       </form>
 
       <div className="mt-8 w-full max-w-md">
-        <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
-          <GoogleLogin
-            onSuccess={handleGoogleLoginSuccess}
-            onError={() => setError('Error en el inicio de sesión con Google.')}
-            className="w-full"
-          />
-        </GoogleOAuthProvider>
+        <button
+          onClick={handleGoogleLogin}
+          className="w-full mt-4 bg-red-500 text-white py-3 rounded-lg text-lg flex items-center justify-center hover:bg-red-600 transition duration-300">
+          <FaGoogle className="mr-2" /> Iniciar sesión con Google
+        </button>
 
         <button
           onClick={handleFacebookLogin}
-          className="w-full mt-4 bg-blue-600 text-white py-3 rounded-lg text-lg hover:bg-blue-700 transition duration-300">
-          Iniciar sesión con Facebook
+          className="w-full mt-4 bg-blue-600 text-white py-3 rounded-lg text-lg flex items-center justify-center hover:bg-blue-700 transition duration-300">
+          <FaFacebookF className="mr-2" /> Iniciar sesión con Facebook
         </button>
       </div>
 

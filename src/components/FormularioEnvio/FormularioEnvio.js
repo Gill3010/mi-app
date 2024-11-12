@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { addPublication, auth } from '../../config/firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -21,11 +21,23 @@ const FormularioEnvio = () => {
     imagen: null,
     resumen: null,
     audio: null,
-    doi: '', // Agregado campo Doi
+    doi: '',
   });
   const [error, setError] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
   const storage = getStorage();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (user) {
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;

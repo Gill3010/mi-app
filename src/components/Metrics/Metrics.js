@@ -8,6 +8,7 @@ const Metrics = () => {
     totalLikes: 0,
     totalShares: 0,
     totalCitations: 0,
+    totalEvents: 0,
   });
 
   useEffect(() => {
@@ -19,12 +20,14 @@ const Metrics = () => {
         let totalLikes = 0;
         let totalShares = 0;
         let totalCitations = 0;
+        let totalEvents = 0;
 
         publications.forEach((pub) => {
           totalViews += pub.vistas || 0;
           totalLikes += pub.likes || 0;
           totalShares += pub.compartido || 0;
           totalCitations += pub.citado || 0;
+          totalEvents += pub.eventos || 0;
         });
 
         setMetrics({
@@ -33,6 +36,7 @@ const Metrics = () => {
           totalLikes,
           totalShares,
           totalCitations,
+          totalEvents,
         });
       } catch (error) {
         console.error("Error al obtener las métricas:", error);
@@ -43,33 +47,26 @@ const Metrics = () => {
   }, []);
 
   return (
-    <div className="bg-gradient-to-r from-[#f0f9ff] to-[#cfe4ff] shadow-lg rounded-lg p-8 mt-10 max-w-5xl mx-auto text-[#002855] overflow-x-auto">
-      <div className="flex gap-6 text-center">
-        {/* Publicaciones */}
-        <div className="min-w-[150px] p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105 hover:bg-[#eaf4ff]">
-          <h3 className="text-4xl font-extrabold text-[#004080]">{metrics.totalPublications}</h3>
-          <p className="mt-2 text-lg font-semibold text-[#0060a0]">Publicaciones</p>
-        </div>
-        {/* Vistas Totales */}
-        <div className="min-w-[150px] p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105 hover:bg-[#eaf4ff]">
-          <h3 className="text-4xl font-extrabold text-[#004080]">{metrics.totalViews}</h3>
-          <p className="mt-2 text-lg font-semibold text-[#0060a0]">Vistas Totales</p>
-        </div>
-        {/* Likes Totales */}
-        <div className="min-w-[150px] p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105 hover:bg-[#eaf4ff]">
-          <h3 className="text-4xl font-extrabold text-[#004080]">{metrics.totalLikes}</h3>
-          <p className="mt-2 text-lg font-semibold text-[#0060a0]">Likes Totales</p>
-        </div>
-        {/* Veces Compartidas */}
-        <div className="min-w-[150px] p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105 hover:bg-[#eaf4ff]">
-          <h3 className="text-4xl font-extrabold text-[#004080]">{metrics.totalShares}</h3>
-          <p className="mt-2 text-lg font-semibold text-[#0060a0]">Veces Compartidas</p>
-        </div>
-        {/* Citas Totales */}
-        <div className="min-w-[150px] p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105 hover:bg-[#eaf4ff]">
-          <h3 className="text-4xl font-extrabold text-[#004080]">{metrics.totalCitations}</h3>
-          <p className="mt-2 text-lg font-semibold text-[#0060a0]">Citas Totales (DOI)</p>
-        </div>
+    <div className="bg-gradient-to-r from-[#f9fcff] to-[#d1e8ff] shadow-xl rounded-lg p-10 mt-12 max-w-5xl mx-auto text-[#002855]">
+      <h2 className="text-4xl font-bold text-center text-[#004080] mb-8">Resumen de Métricas</h2>
+      <div className="flex gap-8 text-center overflow-x-auto pb-4">
+        {/* Metric cards */}
+        {[
+          { label: 'Colecciones', value: metrics.totalPublications },
+          { label: 'Vistas Totales', value: metrics.totalViews },
+          { label: 'Likes Totales', value: metrics.totalLikes },
+          { label: 'Veces Compartidas', value: metrics.totalShares },
+          { label: 'Citas Totales (DOI)', value: metrics.totalCitations },
+          { label: 'Eventos', value: metrics.totalEvents },
+        ].map((metric, index) => (
+          <div
+            key={index}
+            className="flex-shrink-0 w-40 sm:w-48 md:w-56 flex flex-col items-center p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-2 hover:bg-[#e9f3ff] border border-transparent hover:border-[#d0e5ff]"
+          >
+            <h3 className="text-5xl font-extrabold text-[#003366]">{metric.value}</h3>
+            <p className="mt-3 text-lg font-medium text-[#005599]">{metric.label}</p>
+          </div>
+        ))}
       </div>
     </div>
   );

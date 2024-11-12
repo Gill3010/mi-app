@@ -49,8 +49,9 @@ const Nosotros = () => {
               <div className="text-center sm:text-left">
                 <h4 className="text-xl font-bold mb-2">{member.name}</h4>
                 <p className="text-sm">{member.title}</p>
-                <div className="mt-2 text-sm flex items-center">
-                  <FaEnvelope className="mr-2" /> {member.email}
+                <div className="mt-2 text-sm flex items-center break-words">
+                  <FaEnvelope className="mr-2" />
+                  <span className="break-all">{member.email}</span>
                 </div>
                 <div className="mt-1 text-sm flex items-center">
                   <FaPhone className="mr-2" /> {member.phone}

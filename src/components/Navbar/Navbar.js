@@ -130,7 +130,7 @@ const Navbar = () => {
             <li><NavLink to="/Login" className="text-white hover:bg-[#005073] block px-4 py-2">Ingresar</NavLink></li>
             <li><NavLink to="/registro" className="text-white hover:bg-[#005073] block px-4 py-2">Crear Perfil</NavLink></li>
             <li><NavLink to="/recuperar-cuenta" className="text-white hover:bg-[#005073] block px-4 py-2">Editar Perfil</NavLink></li>
-            <li><NavLink to="/recuperar-cuenta" className="text-white hover:bg-[#005073] block px-4 py-2">Cerrar Sesión</NavLink></li>
+            <li><NavLink to="/Logout" className="text-white hover:bg-[#005073] block px-4 py-2">Cerrar Sesión</NavLink></li>
             <li><NavLink to="/FormularioEnvio" className="text-white hover:bg-[#005073] block px-4 py-2">Formulario</NavLink></li>
           </ul>
         </li>

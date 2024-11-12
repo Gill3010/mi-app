@@ -30,6 +30,7 @@ import Eventos from './components/Eventos/Eventos';
 import FormularioEnvio from './components/FormularioEnvio/FormularioEnvio';
 import GaleriasActuales from './components/GaleriasActuales/GaleriasActuales';
 import EditarPublicacion from './components/EditarPublicacion/EditarPublicacion';
+import Logout from './components/Logout/Logout'; // Importa el componente Logout
 
 const App = () => {
   return (
@@ -43,13 +44,8 @@ const App = () => {
                 path="/" 
                 element={
                   <div>
-                    {/* Slider */}
                     <Slider />
-                    
-                    {/* Métricas */}
                     <Metrics />
-                    
-                    {/* Motor de Búsqueda */}
                     <SearchBar />
                   </div>
                 } 
@@ -77,6 +73,7 @@ const App = () => {
               <Route path="/FormularioEnvio" element={<FormularioEnvio />} />
               <Route path="/GaleriasActuales" element={<GaleriasActuales />} />
               <Route path="/EditarPublicacion" element={<EditarPublicacion />} />
+              <Route path="/Logout" element={<Logout />} /> {/* Nueva ruta de Logout */}
             </Routes>
           </div>
           <Footer />
