@@ -3,8 +3,12 @@ import { getPublications, deletePublication, updatePublication } from '../../con
 import { auth } from '../../config/firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import { FiShare2, FiEye, FiHeart, FiShare, FiUser } from 'react-icons/fi';
-import { FaQuoteLeft } from 'react-icons/fa';
+import { FaQuoteLeft, FaShareAlt } from 'react-icons/fa'; // Cambié FiShare por FaShareAlt para el ícono de compartir
 import './GaleriasActuales.css';
+
+// Asegúrate de importar las funciones necesarias de Firestore
+import { doc, updateDoc, increment } from 'firebase/firestore';
+import { db } from '../../config/firebaseConfig'; // Asegúrate de exportar db desde firebaseConfig.js
 
 const GaleriasActuales = () => {
   const [galerias, setGalerias] = useState([]);
@@ -39,9 +43,12 @@ const GaleriasActuales = () => {
 
   const currentUserId = auth.currentUser ? auth.currentUser.uid : null;
 
-  const incrementarVistas = async (id, vistasActuales) => {
+  const incrementarVistas = async (id) => {
+    const docRef = doc(db, "publicaciones", id);  // O "pastPublications"
     try {
-      await updatePublication(id, { vistas: vistasActuales + 1 });
+      await updateDoc(docRef, {
+        vistas: increment(1)
+      });
     } catch (error) {
       console.error("Error al incrementar vistas:", error);
     }
@@ -49,16 +56,19 @@ const GaleriasActuales = () => {
 
   useEffect(() => {
     galerias.forEach((galeria) => {
-      incrementarVistas(galeria.id, galeria.vistas);
+      incrementarVistas(galeria.id);
     });
   }, [galerias]);
 
-  const incrementarLikes = async (id, likesActuales) => {
+  const incrementarLikes = async (id) => {
+    const docRef = doc(db, "publicaciones", id);
     try {
-      await updatePublication(id, { likes: likesActuales + 1 });
+      await updateDoc(docRef, {
+        likes: increment(1)
+      });
       setGalerias(prevGalerias =>
         prevGalerias.map(galeria => 
-          galeria.id === id ? { ...galeria, likes: likesActuales + 1 } : galeria
+          galeria.id === id ? { ...galeria, likes: galeria.likes + 1 } : galeria
         )
       );
     } catch (error) {
@@ -102,6 +112,7 @@ const GaleriasActuales = () => {
         incrementShareCount(galeria.id, galeria.compartido);
       }).catch((error) => console.error('Error al compartir:', error));
     } else {
+      incrementShareCount(galeria.id, galeria.compartido); // Aumenta el contador sin compartir
       alert("La función de compartir no está disponible en este navegador.");
     }
   };
@@ -109,8 +120,9 @@ const GaleriasActuales = () => {
   // Función para actualizar el contador de veces compartidas en Firestore
   const incrementShareCount = async (id, currentShareCount) => {
     const newShareCount = currentShareCount + 1;  // Incrementamos el contador
+    const docRef = doc(db, "publicaciones", id);
     try {
-      await updatePublication(id, { compartido: newShareCount });
+      await updateDoc(docRef, { compartido: newShareCount });
       console.log(`Contador de veces compartidas actualizado: ${newShareCount}`);
     } catch (error) {
       console.error('Error al actualizar el contador de veces compartidas:', error);
@@ -121,7 +133,10 @@ const GaleriasActuales = () => {
 
   return (
     <div className="p-6 md:p-12 max-w-6xl mx-auto bg-gray-100 min-h-screen">
-      <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-center text-blue-900">Galerías Actuales Vol 1-2</h2>
+      <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-center text-blue-900 bg-gradient-to-r from-indigo-500 to-teal-400 text-transparent bg-clip-text shadow-lg">
+        Vol 1-2 Galería Actual
+      </h2>
+
       {error && <p className="text-red-500 text-center">{error}</p>}
       {galerias.length === 0 && !error ? (
         <p className="text-center text-blue-900">No hay galerías disponibles en este momento.</p>
@@ -181,24 +196,24 @@ const GaleriasActuales = () => {
                   )}
                 </div>
 
-                <div className="flex space-x-4 sm:space-x-6 mt-4 text-blue-700 bg-white rounded-lg border border-gray-300 p-3 shadow-sm">
+                <div className="flex space-x-4 sm:space-x-6 mt-4 text-[#002855] bg-[#006D5B] rounded-lg border border-gray-300 p-3 shadow-sm">
                   <div className="tooltip flex items-center space-x-1">
-                    <FiEye className="text-lg sm:text-xl hover:text-blue-500 transition-colors cursor-pointer" />
+                    <FiEye className="text-lg sm:text-xl hover:text-[#006D5B] transition-colors cursor-pointer" />
                     <span className="text-xs sm:text-base">{galeria.vistas || 0}</span>
                     <span className="tooltiptext">Vistas</span>
                   </div>
-                  <div className="tooltip flex items-center space-x-1 cursor-pointer" onClick={() => incrementarLikes(galeria.id, galeria.likes)}>
+                  <div className="tooltip flex items-center space-x-1 cursor-pointer" onClick={() => incrementarLikes(galeria.id)}>
                     <FiHeart className="text-lg sm:text-xl hover:text-red-400 transition-colors" />
                     <span className="text-xs sm:text-base">{galeria.likes || 0}</span>
                     <span className="tooltiptext">Likes</span>
                   </div>
                   <div className="tooltip flex items-center space-x-1 cursor-pointer" onClick={() => handleShare(galeria)}>
-                    <FiShare className="text-lg sm:text-xl hover:text-blue-500 transition-colors" />
+                    <FaShareAlt className="text-lg sm:text-xl hover:text-[#006D5B] transition-colors" />
                     <span className="text-xs sm:text-base">{galeria.compartido || 0}</span>
                     <span className="tooltiptext w-20">Compartir</span>
                   </div>
                   <div className="tooltip flex items-center space-x-1">
-                    <FaQuoteLeft className="text-lg sm:text-xl hover:text-blue-500 transition-colors" />
+                    <FaQuoteLeft className="text-lg sm:text-xl hover:text-[#006D5B] transition-colors" />
                     <span className="text-xs sm:text-base">{galeria.citas || 0}</span>
                     <span className="tooltiptext">Citas</span>
                   </div>

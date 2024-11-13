@@ -2,9 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { getPastPublications, deletePastPublication, updatePastPublication } from '../../config/firebaseConfig';
 import { auth } from '../../config/firebaseConfig';
 import { useNavigate } from 'react-router-dom';
-import { FiShare2, FiEye, FiHeart, FiShare, FiUser } from 'react-icons/fi';
-import { FaQuoteLeft } from 'react-icons/fa';
+import { FiEye, FiHeart, FiUser } from 'react-icons/fi';
+import { FaQuoteLeft, FaShareAlt } from 'react-icons/fa';  // Usamos FaShareAlt para el ícono de compartir
 import './GaleriasAnteriores.css';
+
+// Asegúrate de importar las funciones necesarias de Firestore
+import { doc, updateDoc, increment } from 'firebase/firestore';
+import { db } from '../../config/firebaseConfig'; // Asegúrate de exportar db desde firebaseConfig.js
 
 const GaleriasAnteriores = () => {
   const [galerias, setGalerias] = useState([]);
@@ -38,9 +42,12 @@ const GaleriasAnteriores = () => {
 
   const currentUserId = auth.currentUser ? auth.currentUser.uid : null;
 
-  const incrementarVistas = async (id, vistasActuales) => {
+  const incrementarVistas = async (id) => {
+    const docRef = doc(db, "pastPublications", id);  // O "publicaciones"
     try {
-      await updatePastPublication(id, { vistas: vistasActuales + 1 });
+      await updateDoc(docRef, {
+        vistas: increment(1)
+      });
     } catch (error) {
       console.error("Error al incrementar vistas:", error);
     }
@@ -48,16 +55,19 @@ const GaleriasAnteriores = () => {
 
   useEffect(() => {
     galerias.forEach((galeria) => {
-      incrementarVistas(galeria.id, galeria.vistas);
+      incrementarVistas(galeria.id);
     });
   }, [galerias]);
 
-  const incrementarLikes = async (id, likesActuales) => {
+  const incrementarLikes = async (id) => {
+    const docRef = doc(db, "pastPublications", id);
     try {
-      await updatePastPublication(id, { likes: likesActuales + 1 });
+      await updateDoc(docRef, {
+        likes: increment(1)
+      });
       setGalerias(prevGalerias =>
         prevGalerias.map(galeria => 
-          galeria.id === id ? { ...galeria, likes: likesActuales + 1 } : galeria
+          galeria.id === id ? { ...galeria, likes: galeria.likes + 1 } : galeria
         )
       );
     } catch (error) {
@@ -68,7 +78,7 @@ const GaleriasAnteriores = () => {
   const handleDelete = async (id) => {
     if (window.confirm("¿Estás seguro de que quieres eliminar esta publicación?")) {
       try {
-        await deletePastPublication(id); // Usar la función para eliminar en "pastPublications"
+        await deletePastPublication(id);
         setGalerias(galerias.filter(galeria => galeria.id !== id));
       } catch (error) {
         console.error("Error al eliminar la publicación:", error);
@@ -78,7 +88,7 @@ const GaleriasAnteriores = () => {
   };
 
   const handleEdit = (galeria) => {
-    navigate('/EditarPublicacion', { state: { galeria, isPastPublication: true } }); // Pasar "isPastPublication" como true
+    navigate('/EditarPublicacion', { state: { galeria, isPastPublication: true } }); 
   };
 
   const openModal = (imageUrl) => {
@@ -96,7 +106,6 @@ const GaleriasAnteriores = () => {
         text: `Consulta esta publicación: ${galeria.tituloInvestigacion} - DOI: ${galeria.doi}`,
         url: window.location.href
       }).then(() => {
-        // Si la acción de compartir es exitosa, actualizamos el contador de "compartido"
         incrementShareCount(galeria.id, galeria.compartido);
       }).catch((error) => console.error('Error al compartir:', error));
     } else {
@@ -104,11 +113,11 @@ const GaleriasAnteriores = () => {
     }
   };
 
-  // Función para incrementar el contador de veces compartidas en Firestore
   const incrementShareCount = async (id, currentShareCount) => {
-    const newShareCount = currentShareCount + 1;  // Incrementamos el contador
+    const newShareCount = currentShareCount + 1; 
+    const docRef = doc(db, "pastPublications", id);
     try {
-      await updatePastPublication(id, { compartido: newShareCount });  // Actualizamos Firestore con el nuevo contador
+      await updateDoc(docRef, { compartido: newShareCount });
       console.log(`Contador de veces compartidas actualizado: ${newShareCount}`);
     } catch (error) {
       console.error('Error al actualizar el contador de veces compartidas:', error);
@@ -119,7 +128,14 @@ const GaleriasAnteriores = () => {
 
   return (
     <div className="p-6 md:p-12 max-w-6xl mx-auto bg-gray-100 min-h-screen">
-      <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-center text-blue-900">II Encuentro de Investigaciones Cualitativas Vol 1-1</h2>
+      <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-center text-blue-900 bg-gradient-to-r from-indigo-500 to-teal-400 text-transparent bg-clip-text shadow-lg">
+        Vol 1-1 II Encuentro de Investigaciones Cualitativas
+      </h2>
+
+      <p className="text-center text-xl font-semibold text-transparent bg-gradient-to-r from-indigo-500 to-teal-400 bg-clip-text mt-4 shadow-md p-2 rounded-md">
+        Del 16 al 20 de septiembre del 2024
+      </p>
+
       {error && <p className="text-red-500 text-center">{error}</p>}
       {galerias.length === 0 && !error ? (
         <p className="text-center text-blue-900">No hay galerías anteriores disponibles en este momento.</p>
@@ -149,8 +165,7 @@ const GaleriasAnteriores = () => {
                   </h3>
                   <p><strong>DOI:</strong> {galeria.doi}</p>
                   <p><strong>Autor:</strong> {galeria.nombreAutor} {galeria.apellidoAutor}</p>
-                  
-                  {/* Agregado el ORCID debajo del autor */}
+
                   {galeria.orcid && (
                     <p className="text-xs sm:text-sm md:text-base">
                       <strong>ORCID:</strong>{' '}
@@ -161,7 +176,7 @@ const GaleriasAnteriores = () => {
                   )}
                   
                   <p className="relative group cursor-pointer">
-                    <strong>Afiliación:</strong> 
+                    <strong>Afiliación</strong> 
                     <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 w-max px-2 py-1 text-xs text-white bg-black rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
                       {galeria.institucion || "No disponible"}
                     </span>
@@ -181,9 +196,9 @@ const GaleriasAnteriores = () => {
                     </audio>
                   )}
                 </div>
-                <div className="flex space-x-4 sm:space-x-6 mt-4 text-blue-700 bg-white rounded-lg border border-gray-300 p-3 shadow-sm">
+                <div className="flex space-x-4 sm:space-x-6 mt-4 text-[#002855] bg-[#006D5B] rounded-lg border border-gray-300 p-3 shadow-sm">
                   <div className="tooltip flex items-center space-x-1">
-                    <FiEye className="text-lg sm:text-xl hover:text-blue-500 transition-colors cursor-pointer" />
+                    <FiEye className="text-lg sm:text-xl hover:text-[#006D5B] transition-colors cursor-pointer" />
                     <span>{galeria.vistas || 0}</span>
                     <span className="tooltiptext">Vistas</span>
                   </div>
@@ -193,11 +208,12 @@ const GaleriasAnteriores = () => {
                     <span className="tooltiptext">Likes</span>
                   </div>
                   <div className="tooltip flex items-center space-x-1 cursor-pointer" onClick={() => handleShare(galeria)}>
-                    <FiShare className="text-lg sm:text-xl hover:text-blue-500 transition-colors" />
+                    <FaShareAlt className="text-lg sm:text-xl hover:text-[#006D5B] transition-colors" />
+                    <span className="text-xs sm:text-base">{galeria.compartido || 0}</span>
                     <span className="tooltiptext w-20">Compartir</span>
                   </div>
                   <div className="tooltip flex items-center space-x-1">
-                    <FaQuoteLeft className="text-lg sm:text-xl hover:text-blue-500 transition-colors" />
+                    <FaQuoteLeft className="text-lg sm:text-xl hover:text-[#006D5B] transition-colors" />
                     <span>{galeria.citas || 0}</span>
                     <span className="tooltiptext">Citas</span>
                   </div>

@@ -109,7 +109,7 @@ const Navbar = () => {
             className="block py-2 px-4 text-white hover:bg-[#006D5B] rounded-md"
             onClick={() => toggleSubmenu('galeria')}
           >
-            Galería
+            Galerías
           </a>
           <ul className={`${openSubmenu === 'galeria' ? 'block' : 'hidden'} bg-gray-800 p-2 space-y-1`}>
             <li><NavLink to="/GaleriasActuales" className="text-white hover:bg-[#005073] block px-4 py-2">Actuales</NavLink></li>
