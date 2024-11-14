@@ -12,7 +12,7 @@ const Diseños = () => {
         {/* Diseño 1 */}
         <div className="bg-white shadow-md rounded-lg overflow-hidden">
           <img 
-            src="img/Diseños.webp" 
+            src="/assets/Diseños.webp" 
             alt="Diseño 1" 
             className="w-full h-64 object-cover"
           />
@@ -27,7 +27,7 @@ const Diseños = () => {
         {/* Diseño 2 */}
         <div className="bg-white shadow-md rounded-lg overflow-hidden">
           <img 
-            src="img/Diseños.webp" 
+            src="/assets/Diseños.webp" 
             alt="Diseño 2" 
             className="w-full h-64 object-cover"
           />
@@ -42,7 +42,7 @@ const Diseños = () => {
         {/* Diseño 3 */}
         <div className="bg-white shadow-md rounded-lg overflow-hidden">
           <img 
-            src="img/Diseños.webp" 
+            src="/assets/Diseños.webp" 
             alt="Diseño 3" 
             className="w-full h-64 object-cover"
           />

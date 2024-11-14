@@ -14,6 +14,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isRedirecting, setIsRedirecting] = useState(false); // Estado de redirección
   const navigate = useNavigate();
 
   const googleProvider = new GoogleAuthProvider();
@@ -48,11 +49,15 @@ const Login = () => {
           error.message ||
             'Error en el inicio de sesión con Facebook. Por favor intenta de nuevo.'
         );
+      } finally {
+        setIsRedirecting(false); // Finalizar el proceso de redirección
       }
     };
 
-    handleRedirectResult();
-  }, [navigate]);
+    if (isRedirecting) {
+      handleRedirectResult();
+    }
+  }, [navigate, isRedirecting]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -84,6 +89,7 @@ const Login = () => {
 
   const handleFacebookLogin = async () => {
     try {
+      setIsRedirecting(true); // Iniciar el estado de redirección
       if (isMobileOrSafari) {
         // Usar signInWithRedirect en dispositivos móviles y Safari
         await signInWithRedirect(auth, facebookProvider);
@@ -103,6 +109,7 @@ const Login = () => {
         error.message ||
           'Error en el inicio de sesión con Facebook. Por favor intenta de nuevo.'
       );
+      setIsRedirecting(false); // Finalizar el estado de redirección en caso de error
     }
   };
 
@@ -110,6 +117,7 @@ const Login = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-[#002855] to-[#00A1E0] text-white">
       <h2 className="text-4xl font-bold mb-8">Iniciar Sesión</h2>
       {error && <p className="text-red-500 mb-4">{error}</p>}
+      {isRedirecting && <p className="text-yellow-300 mb-4">Redirigiendo a Facebook...</p>} {/* Estado de redirección */}
 
       <form
         onSubmit={handleLogin}
