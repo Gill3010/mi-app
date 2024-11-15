@@ -59,14 +59,7 @@ const Resultados = () => {
   };
 
   const handleShare = async (id, title) => {
-    // Incrementa el contador en Firebase
-    const docRef = doc(db, "publicaciones", id);
-    await updateDoc(docRef, {
-      compartido: increment(1),
-    });
-    dispatch(search(query));
-
-    // Intenta compartir usando la API de Web Share
+    // Primero intenta compartir la publicación
     if (navigator.share) {
       try {
         await navigator.share({
@@ -74,11 +67,28 @@ const Resultados = () => {
           text: `Consulta esta publicación: ${title}`,
           url: window.location.href,
         });
+
+        // Si la acción de compartir es exitosa, incrementa el contador
+        incrementShareCount(id);
       } catch (error) {
         console.error("Error al compartir:", error);
+        // Aquí puedes manejar el error si la función de compartir falla.
       }
     } else {
       alert("La función de compartir no está disponible en este navegador.");
+    }
+  };
+
+  // Función para incrementar el contador de veces compartidas
+  const incrementShareCount = async (id) => {
+    const docRef = doc(db, "publicaciones", id);
+    try {
+      await updateDoc(docRef, {
+        compartido: increment(1), // Incrementa el contador de compartidos
+      });
+      dispatch(search(query));
+    } catch (error) {
+      console.error('Error al actualizar el contador de veces compartidas:', error);
     }
   };
 

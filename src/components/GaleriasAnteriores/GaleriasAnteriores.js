@@ -3,12 +3,11 @@ import { getPastPublications, deletePastPublication, updatePastPublication } fro
 import { auth } from '../../config/firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import { FiEye, FiHeart, FiUser } from 'react-icons/fi';
-import { FaQuoteLeft, FaShareAlt } from 'react-icons/fa';  // Usamos FaShareAlt para el ícono de compartir
+import { FaQuoteLeft, FaShareAlt } from 'react-icons/fa';
 import './GaleriasAnteriores.css';
 
-// Asegúrate de importar las funciones necesarias de Firestore
 import { doc, updateDoc, increment } from 'firebase/firestore';
-import { db } from '../../config/firebaseConfig'; // Asegúrate de exportar db desde firebaseConfig.js
+import { db } from '../../config/firebaseConfig';
 
 const GaleriasAnteriores = () => {
   const [galerias, setGalerias] = useState([]);
@@ -43,35 +42,62 @@ const GaleriasAnteriores = () => {
   const currentUserId = auth.currentUser ? auth.currentUser.uid : null;
 
   const incrementarVistas = async (id) => {
-    const docRef = doc(db, "pastPublications", id);  // O "publicaciones"
+    const docRef = doc(db, "pastPublications", id);
     try {
-      await updateDoc(docRef, {
-        vistas: increment(1)
-      });
+      await updateDoc(docRef, { vistas: increment(1) });
+      setGalerias(prevGalerias =>
+        prevGalerias.map(galeria =>
+          galeria.id === id ? { ...galeria, vistas: (galeria.vistas || 0) + 1 } : galeria
+        )
+      );
     } catch (error) {
       console.error("Error al incrementar vistas:", error);
     }
   };
 
-  useEffect(() => {
-    galerias.forEach((galeria) => {
-      incrementarVistas(galeria.id);
-    });
-  }, [galerias]);
-
   const incrementarLikes = async (id) => {
     const docRef = doc(db, "pastPublications", id);
     try {
-      await updateDoc(docRef, {
-        likes: increment(1)
-      });
+      await updateDoc(docRef, { likes: increment(1) });
       setGalerias(prevGalerias =>
-        prevGalerias.map(galeria => 
-          galeria.id === id ? { ...galeria, likes: galeria.likes + 1 } : galeria
+        prevGalerias.map(galeria =>
+          galeria.id === id ? { ...galeria, likes: (galeria.likes || 0) + 1 } : galeria
         )
       );
     } catch (error) {
       console.error("Error al incrementar likes:", error);
+    }
+  };
+
+  const handleShare = async (galeria) => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: galeria.tituloInvestigacion,
+          text: `Consulta esta publicación: ${galeria.tituloInvestigacion} - DOI: ${galeria.doi}`,
+          url: window.location.href,
+        });
+        incrementShareCount(galeria.id);
+      } catch (error) {
+        console.error("Error al compartir:", error);
+      }
+    } else {
+      incrementShareCount(galeria.id);
+      alert("La función de compartir no está disponible en este navegador.");
+    }
+  };
+
+  const incrementShareCount = async (id) => {
+    const docRef = doc(db, "pastPublications", id);
+    try {
+      await updateDoc(docRef, { compartido: increment(1) });
+      setGalerias(prevGalerias =>
+        prevGalerias.map(galeria =>
+          galeria.id === id ? { ...galeria, compartido: (galeria.compartido || 0) + 1 } : galeria
+        )
+      );
+    } catch (error) {
+      console.error('Error al actualizar el contador de veces compartidas:', error);
     }
   };
 
@@ -88,7 +114,7 @@ const GaleriasAnteriores = () => {
   };
 
   const handleEdit = (galeria) => {
-    navigate('/EditarPublicacion', { state: { galeria, isPastPublication: true } }); 
+    navigate('/EditarPublicacion', { state: { galeria, isPastPublication: true } });
   };
 
   const openModal = (imageUrl) => {
@@ -97,31 +123,6 @@ const GaleriasAnteriores = () => {
 
   const closeModal = () => {
     setSelectedImage(null);
-  };
-
-  const handleShare = (galeria) => {
-    if (navigator.share) {
-      navigator.share({
-        title: galeria.tituloInvestigacion,
-        text: `Consulta esta publicación: ${galeria.tituloInvestigacion} - DOI: ${galeria.doi}`,
-        url: window.location.href
-      }).then(() => {
-        incrementShareCount(galeria.id, galeria.compartido);
-      }).catch((error) => console.error('Error al compartir:', error));
-    } else {
-      alert("La función de compartir no está disponible en este navegador.");
-    }
-  };
-
-  const incrementShareCount = async (id, currentShareCount) => {
-    const newShareCount = currentShareCount + 1; 
-    const docRef = doc(db, "pastPublications", id);
-    try {
-      await updateDoc(docRef, { compartido: newShareCount });
-      console.log(`Contador de veces compartidas actualizado: ${newShareCount}`);
-    } catch (error) {
-      console.error('Error al actualizar el contador de veces compartidas:', error);
-    }
   };
 
   if (loading) return <p className="text-center text-[#002855]">Cargando galerías anteriores...</p>;
@@ -196,15 +197,16 @@ const GaleriasAnteriores = () => {
                     </audio>
                   )}
                 </div>
+
                 <div className="flex space-x-4 sm:space-x-6 mt-4 text-[#002855] bg-[#006D5B] rounded-lg border border-gray-300 p-3 shadow-sm">
-                  <div className="tooltip flex items-center space-x-1">
-                    <FiEye className="text-lg sm:text-xl hover:text-[#006D5B] transition-colors cursor-pointer" />
-                    <span>{galeria.vistas || 0}</span>
+                  <div className="tooltip flex items-center space-x-1 cursor-pointer" onClick={() => incrementarVistas(galeria.id)}>
+                    <FiEye className="text-lg sm:text-xl hover:text-[#006D5B] transition-colors" />
+                    <span className="text-xs sm:text-base">{galeria.vistas || 0}</span>
                     <span className="tooltiptext">Vistas</span>
                   </div>
-                  <div className="tooltip flex items-center space-x-1 cursor-pointer" onClick={() => incrementarLikes(galeria.id, galeria.likes)}>
+                  <div className="tooltip flex items-center space-x-1 cursor-pointer" onClick={() => incrementarLikes(galeria.id)}>
                     <FiHeart className="text-lg sm:text-xl hover:text-red-400 transition-colors" />
-                    <span>{galeria.likes || 0}</span>
+                    <span className="text-xs sm:text-base">{galeria.likes || 0}</span>
                     <span className="tooltiptext">Likes</span>
                   </div>
                   <div className="tooltip flex items-center space-x-1 cursor-pointer" onClick={() => handleShare(galeria)}>
@@ -214,10 +216,11 @@ const GaleriasAnteriores = () => {
                   </div>
                   <div className="tooltip flex items-center space-x-1">
                     <FaQuoteLeft className="text-lg sm:text-xl hover:text-[#006D5B] transition-colors" />
-                    <span>{galeria.citas || 0}</span>
+                    <span className="text-xs sm:text-base">{galeria.citas || 0}</span>
                     <span className="tooltiptext">Citas</span>
                   </div>
                 </div>
+
                 {currentUserId === galeria.userId && (
                   <div className="flex space-x-2 sm:space-x-4 mt-4 text-blue-900">
                     <button onClick={() => handleEdit(galeria)} className="text-yellow-500 hover:text-yellow-600 font-semibold">

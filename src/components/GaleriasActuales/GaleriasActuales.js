@@ -49,16 +49,15 @@ const GaleriasActuales = () => {
       await updateDoc(docRef, {
         vistas: increment(1)
       });
+      setGalerias(prevGalerias =>
+        prevGalerias.map(galeria => 
+          galeria.id === id ? { ...galeria, vistas: (galeria.vistas || 0) + 1 } : galeria
+        )
+      );
     } catch (error) {
       console.error("Error al incrementar vistas:", error);
     }
   };
-
-  useEffect(() => {
-    galerias.forEach((galeria) => {
-      incrementarVistas(galeria.id);
-    });
-  }, [galerias]);
 
   const incrementarLikes = async (id) => {
     const docRef = doc(db, "publicaciones", id);
@@ -68,11 +67,44 @@ const GaleriasActuales = () => {
       });
       setGalerias(prevGalerias =>
         prevGalerias.map(galeria => 
-          galeria.id === id ? { ...galeria, likes: galeria.likes + 1 } : galeria
+          galeria.id === id ? { ...galeria, likes: (galeria.likes || 0) + 1 } : galeria
         )
       );
     } catch (error) {
       console.error("Error al incrementar likes:", error);
+    }
+  };
+
+  const handleShare = async (galeria) => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: galeria.tituloInvestigacion,
+          text: `Consulta esta publicación: ${galeria.tituloInvestigacion} - DOI: ${galeria.doi}`,
+          url: window.location.href
+        });
+        incrementShareCount(galeria.id, galeria.compartido);
+      } catch (error) {
+        console.error("Error al compartir:", error);
+      }
+    } else {
+      incrementShareCount(galeria.id, galeria.compartido); // Aumenta el contador sin compartir
+      alert("La función de compartir no está disponible en este navegador.");
+    }
+  };
+
+  const incrementShareCount = async (id, currentShareCount) => {
+    const newShareCount = currentShareCount + 1;  // Incrementamos el contador
+    const docRef = doc(db, "publicaciones", id);
+    try {
+      await updateDoc(docRef, { compartido: newShareCount });
+      setGalerias(prevGalerias =>
+        prevGalerias.map(galeria =>
+          galeria.id === id ? { ...galeria, compartido: (galeria.compartido || 0) + 1 } : galeria
+        )
+      );
+    } catch (error) {
+      console.error('Error al actualizar el contador de veces compartidas:', error);
     }
   };
 
@@ -98,35 +130,6 @@ const GaleriasActuales = () => {
 
   const closeModal = () => {
     setSelectedImage(null);
-  };
-
-  // Aquí es donde incrementamos el contador de "veces compartidas" en Firestore
-  const handleShare = (galeria) => {
-    if (navigator.share) {
-      navigator.share({
-        title: galeria.tituloInvestigacion,
-        text: `Consulta esta publicación: ${galeria.tituloInvestigacion} - DOI: ${galeria.doi}`,
-        url: window.location.href
-      }).then(() => {
-        // Si la acción de compartir es exitosa, incrementamos el contador de veces compartidas
-        incrementShareCount(galeria.id, galeria.compartido);
-      }).catch((error) => console.error('Error al compartir:', error));
-    } else {
-      incrementShareCount(galeria.id, galeria.compartido); // Aumenta el contador sin compartir
-      alert("La función de compartir no está disponible en este navegador.");
-    }
-  };
-
-  // Función para actualizar el contador de veces compartidas en Firestore
-  const incrementShareCount = async (id, currentShareCount) => {
-    const newShareCount = currentShareCount + 1;  // Incrementamos el contador
-    const docRef = doc(db, "publicaciones", id);
-    try {
-      await updateDoc(docRef, { compartido: newShareCount });
-      console.log(`Contador de veces compartidas actualizado: ${newShareCount}`);
-    } catch (error) {
-      console.error('Error al actualizar el contador de veces compartidas:', error);
-    }
   };
 
   if (loading) return <p className="text-center text-[#002855]">Cargando galerías...</p>;
@@ -164,12 +167,8 @@ const GaleriasActuales = () => {
                       {galeria.tituloInvestigacion}
                     </span>
                   </h3>
-                  <p className="text-xs sm:text-sm md:text-base">
-                    <strong>DOI:</strong> {galeria.doi}
-                  </p>
-                  <p className="text-xs sm:text-sm md:text-base">
-                    <strong>Autor:</strong> {galeria.nombreAutor} {galeria.apellidoAutor}
-                  </p>
+                  <p className="text-xs sm:text-sm md:text-base"><strong>DOI:</strong> {galeria.doi}</p>
+                  <p className="text-xs sm:text-sm md:text-base"><strong>Autor:</strong> {galeria.nombreAutor} {galeria.apellidoAutor}</p>
                   <p className="text-xs sm:text-sm md:text-base">
                     <strong>ORCID:</strong>{' '}
                     <a href={`https://orcid.org/${galeria.orcid}`} target="_blank" rel="noopener noreferrer" className="text-blue-700 inline-flex items-center">
@@ -197,8 +196,8 @@ const GaleriasActuales = () => {
                 </div>
 
                 <div className="flex space-x-4 sm:space-x-6 mt-4 text-[#002855] bg-[#006D5B] rounded-lg border border-gray-300 p-3 shadow-sm">
-                  <div className="tooltip flex items-center space-x-1">
-                    <FiEye className="text-lg sm:text-xl hover:text-[#006D5B] transition-colors cursor-pointer" />
+                  <div className="tooltip flex items-center space-x-1 cursor-pointer" onClick={() => incrementarVistas(galeria.id)}>
+                    <FiEye className="text-lg sm:text-xl hover:text-[#006D5B] transition-colors" />
                     <span className="text-xs sm:text-base">{galeria.vistas || 0}</span>
                     <span className="tooltiptext">Vistas</span>
                   </div>
