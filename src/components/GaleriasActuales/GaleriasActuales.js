@@ -3,12 +3,10 @@ import { getPublications, deletePublication, updatePublication } from '../../con
 import { auth } from '../../config/firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import { FiShare2, FiEye, FiHeart, FiShare, FiUser } from 'react-icons/fi';
-import { FaQuoteLeft, FaShareAlt } from 'react-icons/fa'; // Cambié FiShare por FaShareAlt para el ícono de compartir
+import { FaQuoteLeft, FaShareAlt } from 'react-icons/fa';
 import './GaleriasActuales.css';
-
-// Asegúrate de importar las funciones necesarias de Firestore
 import { doc, updateDoc, increment } from 'firebase/firestore';
-import { db } from '../../config/firebaseConfig'; // Asegúrate de exportar db desde firebaseConfig.js
+import { db } from '../../config/firebaseConfig';
 
 const GaleriasActuales = () => {
   const [galerias, setGalerias] = useState([]);
@@ -21,14 +19,11 @@ const GaleriasActuales = () => {
     const fetchPublications = async () => {
       try {
         const publications = await getPublications();
-        
-        // Ordenar publicaciones alfabéticamente por nombre y apellido del autor
         publications.sort((a, b) => {
           const nameA = `${a.nombreAutor} ${a.apellidoAutor}`.toLowerCase();
           const nameB = `${b.nombreAutor} ${b.apellidoAutor}`.toLowerCase();
           return nameA.localeCompare(nameB);
         });
-
         setGalerias(publications);
       } catch (error) {
         console.error("Error al obtener las publicaciones:", error);
@@ -37,74 +32,37 @@ const GaleriasActuales = () => {
         setLoading(false);
       }
     };
-
     fetchPublications();
   }, []);
 
   const currentUserId = auth.currentUser ? auth.currentUser.uid : null;
 
   const incrementarVistas = async (id) => {
-    const docRef = doc(db, "publicaciones", id);  // O "pastPublications"
+    const docRef = doc(db, "publicaciones", id);
     try {
-      await updateDoc(docRef, {
-        vistas: increment(1)
-      });
-      setGalerias(prevGalerias =>
-        prevGalerias.map(galeria => 
-          galeria.id === id ? { ...galeria, vistas: (galeria.vistas || 0) + 1 } : galeria
-        )
-      );
+      await updateDoc(docRef, { vistas: increment(1) });
     } catch (error) {
       console.error("Error al incrementar vistas:", error);
     }
   };
 
+  useEffect(() => {
+    galerias.forEach((galeria) => {
+      incrementarVistas(galeria.id);
+    });
+  }, [galerias]);
+
   const incrementarLikes = async (id) => {
     const docRef = doc(db, "publicaciones", id);
     try {
-      await updateDoc(docRef, {
-        likes: increment(1)
-      });
+      await updateDoc(docRef, { likes: increment(1) });
       setGalerias(prevGalerias =>
         prevGalerias.map(galeria => 
-          galeria.id === id ? { ...galeria, likes: (galeria.likes || 0) + 1 } : galeria
+          galeria.id === id ? { ...galeria, likes: galeria.likes + 1 } : galeria
         )
       );
     } catch (error) {
       console.error("Error al incrementar likes:", error);
-    }
-  };
-
-  const handleShare = async (galeria) => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: galeria.tituloInvestigacion,
-          text: `Consulta esta publicación: ${galeria.tituloInvestigacion} - DOI: ${galeria.doi}`,
-          url: window.location.href
-        });
-        incrementShareCount(galeria.id, galeria.compartido);
-      } catch (error) {
-        console.error("Error al compartir:", error);
-      }
-    } else {
-      incrementShareCount(galeria.id, galeria.compartido); // Aumenta el contador sin compartir
-      alert("La función de compartir no está disponible en este navegador.");
-    }
-  };
-
-  const incrementShareCount = async (id, currentShareCount) => {
-    const newShareCount = currentShareCount + 1;  // Incrementamos el contador
-    const docRef = doc(db, "publicaciones", id);
-    try {
-      await updateDoc(docRef, { compartido: newShareCount });
-      setGalerias(prevGalerias =>
-        prevGalerias.map(galeria =>
-          galeria.id === id ? { ...galeria, compartido: (galeria.compartido || 0) + 1 } : galeria
-        )
-      );
-    } catch (error) {
-      console.error('Error al actualizar el contador de veces compartidas:', error);
     }
   };
 
@@ -132,6 +90,32 @@ const GaleriasActuales = () => {
     setSelectedImage(null);
   };
 
+  const handleShare = (galeria) => {
+    if (navigator.share) {
+      navigator.share({
+        title: galeria.tituloInvestigacion,
+        text: `Consulta esta publicación: ${galeria.tituloInvestigacion} - DOI: ${galeria.doi}`,
+        url: window.location.href
+      }).then(() => {
+        incrementShareCount(galeria.id, galeria.compartido);
+      }).catch((error) => console.error('Error al compartir:', error));
+    } else {
+      incrementShareCount(galeria.id, galeria.compartido);
+      alert("La función de compartir no está disponible en este navegador.");
+    }
+  };
+
+  const incrementShareCount = async (id, currentShareCount) => {
+    const newShareCount = currentShareCount + 1;
+    const docRef = doc(db, "publicaciones", id);
+    try {
+      await updateDoc(docRef, { compartido: newShareCount });
+      console.log(`Contador de veces compartidas actualizado: ${newShareCount}`);
+    } catch (error) {
+      console.error('Error al actualizar el contador de veces compartidas:', error);
+    }
+  };
+
   if (loading) return <p className="text-center text-[#002855]">Cargando galerías...</p>;
 
   return (
@@ -149,12 +133,14 @@ const GaleriasActuales = () => {
             <div key={galeria.id} className="relative flex flex-col md:flex-row bg-white border border-gray-300 p-4 sm:p-6 rounded-lg shadow-lg transition hover:shadow-2xl duration-300">
               <div className="md:w-1/3 mb-4 sm:mb-6 md:mb-0 p-2">
                 {galeria.imagen ? (
-                  <img 
-                    src={galeria.imagen} 
-                    alt="Imagen de la publicación" 
-                    className="rounded-lg w-full h-48 sm:h-56 md:h-full object-cover cursor-pointer transition-transform duration-300 transform hover:scale-105"
-                    onClick={() => openModal(galeria.imagen)}
-                  />
+                  <div className="w-full aspect-square md:aspect-auto">
+                    <img 
+                      src={galeria.imagen} 
+                      alt="Imagen de la publicación" 
+                      className="rounded-lg w-full h-full object-contain md:object-cover cursor-pointer transition-transform duration-300 transform hover:scale-105"
+                      onClick={() => openModal(galeria.imagen)}
+                    />
+                  </div>
                 ) : (
                   <div className="bg-gray-200 rounded-lg w-full h-48 md:h-full flex items-center justify-center text-blue-900">Sin Imagen</div>
                 )}
@@ -167,8 +153,12 @@ const GaleriasActuales = () => {
                       {galeria.tituloInvestigacion}
                     </span>
                   </h3>
-                  <p className="text-xs sm:text-sm md:text-base"><strong>DOI:</strong> {galeria.doi}</p>
-                  <p className="text-xs sm:text-sm md:text-base"><strong>Autor:</strong> {galeria.nombreAutor} {galeria.apellidoAutor}</p>
+                  <p className="text-xs sm:text-sm md:text-base">
+                    <strong>DOI:</strong> {galeria.doi}
+                  </p>
+                  <p className="text-xs sm:text-sm md:text-base">
+                    <strong>Autor:</strong> {galeria.nombreAutor} {galeria.apellidoAutor}
+                  </p>
                   <p className="text-xs sm:text-sm md:text-base">
                     <strong>ORCID:</strong>{' '}
                     <a href={`https://orcid.org/${galeria.orcid}`} target="_blank" rel="noopener noreferrer" className="text-blue-700 inline-flex items-center">
@@ -196,8 +186,8 @@ const GaleriasActuales = () => {
                 </div>
 
                 <div className="flex space-x-4 sm:space-x-6 mt-4 text-[#002855] bg-[#006D5B] rounded-lg border border-gray-300 p-3 shadow-sm">
-                  <div className="tooltip flex items-center space-x-1 cursor-pointer" onClick={() => incrementarVistas(galeria.id)}>
-                    <FiEye className="text-lg sm:text-xl hover:text-[#006D5B] transition-colors" />
+                  <div className="tooltip flex items-center space-x-1">
+                    <FiEye className="text-lg sm:text-xl hover:text-[#006D5B] transition-colors cursor-pointer" />
                     <span className="text-xs sm:text-base">{galeria.vistas || 0}</span>
                     <span className="tooltiptext">Vistas</span>
                   </div>
@@ -233,7 +223,7 @@ const GaleriasActuales = () => {
           ))}
         </div>
       )}
-      
+
       {selectedImage && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50 p-4 overflow-hidden" onClick={closeModal}>
           <img src={selectedImage} alt="Imagen ampliada" className="max-w-full max-h-full rounded-lg shadow-lg object-contain" />

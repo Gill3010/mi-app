@@ -22,6 +22,8 @@ import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import Salas from './components/Salas/Salas';
 import Cursos from './components/Cursos/Cursos';
+import CursosProgramacion from './components/CursosProgramacion/CursosProgramacion';
+import CursosParaEditores from './components/CursosParaEditores/CursosParaEditores'; // Importación añadida
 import Informacion from './components/Informacion/Informacion';
 import Diseños from './components/Diseños/Diseños';
 import Redaccion from './components/Redaccion/Redaccion';
@@ -31,6 +33,7 @@ import FormularioEnvio from './components/FormularioEnvio/FormularioEnvio';
 import GaleriasActuales from './components/GaleriasActuales/GaleriasActuales';
 import GaleriasAnteriores from './components/GaleriasAnteriores/GaleriasAnteriores';
 import EditarPublicacion from './components/EditarPublicacion/EditarPublicacion';
+import CursosDeEspanol from './components/CursosDeEspanol/CursosDeEspanol';
 import Logout from './components/Logout/Logout';
 
 const App = () => {
@@ -65,7 +68,18 @@ const App = () => {
               <Route path="/Login" element={<Login />} />
               <Route path="/Register" element={<Register />} />
               <Route path="/Salas" element={<Salas />} />
-              <Route path="/Cursos" element={<Cursos />} />
+              {/* Ruta para Cursos, Cursos de Programación y Cursos para Editores */}
+              <Route 
+                path="/Cursos" 
+                element={
+                  <div>
+                    <Cursos />
+                    <CursosProgramacion />
+                    <CursosParaEditores /> {/* Agregado debajo de Cursos y CursosProgramacion */}
+                    <CursosDeEspanol />
+                  </div>
+                } 
+              />
               <Route path="/Informacion" element={<Informacion />} />
               <Route path="/Diseños" element={<Diseños />} />
               <Route path="/Redaccion" element={<Redaccion />} />

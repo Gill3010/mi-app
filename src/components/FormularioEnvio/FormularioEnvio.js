@@ -127,7 +127,7 @@ const FormularioEnvio = () => {
         {/* Nueva opción para seleccionar la galería */}
         <select name="galeria" value={formData.galeria} onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]">
           <option value="actual">Galería Actual</option>
-          <option value="anterior">Galería Anterior</option>
+          <option value="anterior">II Encuentro de Investigaciones Cualitativas</option>
         </select>
         
         <input type="text" name="tituloInvestigacion" value={formData.tituloInvestigacion} onChange={handleChange} placeholder="Título de la Investigación" required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]" />
