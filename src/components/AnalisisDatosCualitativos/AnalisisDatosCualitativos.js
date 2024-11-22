@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // Para redirección dinámica
 import { db } from '../../config/firebaseConfig'; // Configuración de Firebase
