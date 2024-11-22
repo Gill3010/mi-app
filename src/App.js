@@ -22,8 +22,8 @@ import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import Salas from './components/Salas/Salas';
 import Cursos from './components/Cursos/Cursos';
-import CursosProgramacion from './components/CursosProgramacion/CursosProgramacion';
-import CursosParaEditores from './components/CursosParaEditores/CursosParaEditores'; // Importación añadida
+import UsoAtlasTi from './components/UsoAtlasTi/UsoAtlasTi';
+import AnalisisDatosCualitativos from './components/AnalisisDatosCualitativos/AnalisisDatosCualitativos';
 import Informacion from './components/Informacion/Informacion';
 import Diseños from './components/Diseños/Diseños';
 import Redaccion from './components/Redaccion/Redaccion';
@@ -33,8 +33,12 @@ import FormularioEnvio from './components/FormularioEnvio/FormularioEnvio';
 import GaleriasActuales from './components/GaleriasActuales/GaleriasActuales';
 import GaleriasAnteriores from './components/GaleriasAnteriores/GaleriasAnteriores';
 import EditarPublicacion from './components/EditarPublicacion/EditarPublicacion';
-import CursosDeEspanol from './components/CursosDeEspanol/CursosDeEspanol';
+import BusquedaSistematizada from './components/BusquedaSistematizada/BusquedaSistematizada';
 import Logout from './components/Logout/Logout';
+import FormularioCrearCurso from './components/FormularioCrearCurso/FormularioCrearCurso'; 
+import GestionFondos from './components/GestionFondos/GestionFondos';
+import CulturaReciclaje from './components/CulturaReciclaje/CulturaReciclaje';
+import DetallesCurso from './components/DetallesCurso/DetallesCurso'; // Nueva importación
 
 const App = () => {
   return (
@@ -68,15 +72,16 @@ const App = () => {
               <Route path="/Login" element={<Login />} />
               <Route path="/Register" element={<Register />} />
               <Route path="/Salas" element={<Salas />} />
-              {/* Ruta para Cursos, Cursos de Programación y Cursos para Editores */}
               <Route 
                 path="/Cursos" 
                 element={
                   <div>
                     <Cursos />
-                    <CursosProgramacion />
-                    <CursosParaEditores /> {/* Agregado debajo de Cursos y CursosProgramacion */}
-                    <CursosDeEspanol />
+                    <UsoAtlasTi />
+                    <AnalisisDatosCualitativos />
+                    <BusquedaSistematizada />
+                    <GestionFondos />
+                    <CulturaReciclaje />
                   </div>
                 } 
               />
@@ -90,6 +95,10 @@ const App = () => {
               <Route path="/GaleriasAnteriores" element={<GaleriasAnteriores />} />
               <Route path="/EditarPublicacion" element={<EditarPublicacion />} />
               <Route path="/Logout" element={<Logout />} />
+              <Route path="/crear-curso" element={<FormularioCrearCurso />} />
+
+              {/* Nueva ruta dinámica para detalles del curso */}
+              <Route path="/detalles-curso/:id" element={<DetallesCurso />} />
             </Routes>
           </div>
           <Footer />

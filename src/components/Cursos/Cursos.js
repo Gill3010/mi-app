@@ -1,11 +1,39 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Para redirección dinámica
+import { db } from '../../config/firebaseConfig'; // Asegúrate de que este archivo esté correctamente configurado
+import { collection, getDocs } from 'firebase/firestore';
 
 const Cursos = () => {
   const carouselRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
-  const [currentVideo, setCurrentVideo] = useState(null);
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate(); // Hook para redirección
+
+  // Función para obtener los cursos desde Firestore
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        console.log('Fetching courses from Firestore...');
+        const querySnapshot = await getDocs(collection(db, 'cursos')); // Asegúrate de usar la colección correcta
+        const cursosData = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        console.log('Cursos obtenidos de Firestore:', cursosData); // Verifica los datos obtenidos
+        setCourses(cursosData);
+      } catch (error) {
+        console.error('Error al obtener los cursos:', error); // Error al consultar Firestore
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCourses();
+  }, []);
 
   const handleMouseDown = (e) => {
     setIsDragging(true);
@@ -28,12 +56,12 @@ const Cursos = () => {
   const handleTouchStart = (e) => {
     setIsDragging(true);
     setStartX(e.touches[0].pageX - carouselRef.current.offsetLeft);
-    setScrollLeft(carouselRef.current.scrollLeft);
+    setScrollLeft(e.currentTarget.scrollLeft);
   };
 
   const handleTouchMove = (e) => {
     if (!isDragging) return;
-    const x = e.touches[0].pageX - carouselRef.current.offsetLeft;
+    const x = e.touches[0].pageX - e.currentTarget.offsetLeft;
     const walk = (x - startX) * 2;
     carouselRef.current.scrollLeft = scrollLeft - walk;
   };
@@ -42,100 +70,32 @@ const Cursos = () => {
     setIsDragging(false);
   };
 
-  const handleImageClick = (videoUrl) => {
-    setCurrentVideo(videoUrl);
+  const handleCourseClick = (id) => {
+    // Redirigir al componente de detalles del curso con el ID
+    navigate(`/detalles-curso/${id}`);
   };
 
-  const courses = [
-    {
-      id: 1,
-      title: 'Curso 1',
-      description: 'Introducción al curso en línea.',
-      video: 'videos/curso1.mp4',
-      file: 'files/curso1.pdf',
-      audio: 'audio/curso1.mp3',
-      image: 'img/Cursos.webp',
-    },
-    {
-      id: 2,
-      title: 'Curso 2',
-      description: 'Curso avanzado para mejorar habilidades.',
-      video: 'videos/curso2.mp4',
-      file: 'files/curso2.pdf',
-      audio: 'audio/curso2.mp3',
-      image: 'img/Cursos.webp',
-    },
-    {
-      id: 3,
-      title: 'Curso 3',
-      description: 'Curso especializado en tecnología avanzada.',
-      video: 'videos/curso3.mp4',
-      file: 'files/curso3.pdf',
-      audio: 'audio/curso3.mp3',
-      image: 'img/Cursos.webp',
-    },
-    {
-      id: 4,
-      title: 'Curso 4',
-      description: 'Domina herramientas de gestión.',
-      video: 'videos/curso4.mp4',
-      file: 'files/curso4.pdf',
-      audio: 'audio/curso4.mp3',
-      image: 'img/Cursos.webp',
-    },
-    {
-      id: 5,
-      title: 'Curso 5',
-      description: 'Aprende conceptos de diseño.',
-      video: 'videos/curso5.mp4',
-      file: 'files/curso5.pdf',
-      audio: 'audio/curso5.mp3',
-      image: 'img/Cursos.webp',
-    },
-    {
-      id: 6,
-      title: 'Curso 6',
-      description: 'Explora técnicas avanzadas de desarrollo.',
-      video: 'videos/curso6.mp4',
-      file: 'files/curso6.pdf',
-      audio: 'audio/curso6.mp3',
-      image: 'img/Cursos.webp',
-    },
-    {
-      id: 7,
-      title: 'Curso 7',
-      description: 'Descubre métodos de análisis de datos.',
-      video: 'videos/curso7.mp4',
-      file: 'files/curso7.pdf',
-      audio: 'audio/curso7.mp3',
-      image: 'img/Cursos.webp',
-    },
-    {
-      id: 8,
-      title: 'Curso 8',
-      description: 'Mejora tus habilidades de liderazgo.',
-      video: 'videos/curso8.mp4',
-      file: 'files/curso8.pdf',
-      audio: 'audio/curso8.mp3',
-      image: 'img/Cursos.webp',
-    },
-  ];
+  if (loading) {
+    console.log('Cargando cursos...'); // Indicador de carga
+    return <p className="text-center text-xl">Cargando cursos...</p>;
+  }
+
+  if (courses.length === 0) {
+    console.log('No hay cursos disponibles.'); // Cuando no hay cursos
+    return <p className="text-center text-xl">No hay cursos disponibles en este momento.</p>;
+  }
 
   return (
     <div className="p-6 md:p-12 max-w-6xl mx-auto bg-gray-100 min-h-screen">
-      {/* Caja del título con sombra más intensa */}
       <h1 className="text-3xl md:text-4xl font-extrabold mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 shadow-xl p-6 bg-white rounded-lg">
         Cursos
       </h1>
-
-      {/* Caja de la descripción con una sombra menos intensa */}
       <div className="text-center p-4 bg-white rounded-lg shadow-md mb-8">
         <p className="text-lg md:text-xl font-medium text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400">
           Explora nuestros cursos en línea diseñados para tu crecimiento profesional y personal.
         </p>
       </div>
 
-      {/* Contenedor del carrusel */}
       <div
         ref={carouselRef}
         className="flex overflow-x-auto space-x-6 scroll-smooth scrollbar-hide"
@@ -151,56 +111,23 @@ const Cursos = () => {
         {courses.map((course) => (
           <div
             key={course.id}
-            className="min-w-[300px] flex flex-col bg-white border border-gray-300 p-4 rounded-lg shadow-lg"
+            className="min-w-[300px] flex flex-col bg-white border border-gray-300 p-4 rounded-lg shadow-lg cursor-pointer"
+            onClick={() => handleCourseClick(course.id)} // Redirigir al hacer clic
           >
             <img
-              src={course.image}
-              alt={course.title}
-              className="rounded-lg w-full h-64 object-cover cursor-pointer"
-              onClick={() => handleImageClick(course.video)}
+              src={course.imagen}
+              alt={course.titulo}
+              className="rounded-lg w-full h-64 object-cover"
             />
             <div className="p-4">
-              <h2 className="text-xl font-semibold text-blue-900">{course.title}</h2>
-              <p className="text-gray-600 mt-2 text-sm">{course.description}</p>
-              <div className="mt-4 space-y-2">
-                <a
-                  href={course.file}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-500 underline text-sm"
-                >
-                  Descargar archivo
-                </a>
-                <audio controls className="w-full">
-                  <source src={course.audio} type="audio/mp3" />
-                  Tu navegador no soporta el elemento de audio.
-                </audio>
-              </div>
+              <h2 className="text-xl font-semibold text-blue-900">{course.titulo}</h2>
+              <p className="text-gray-600 mt-2 text-sm">{course.descripcion}</p>
+              <p className="text-gray-800 mt-4 font-bold">
+                Precio: ${course.precio.toFixed(2)} USD
+              </p>
             </div>
           </div>
         ))}
-      </div>
-
-      {/* Modal para el video */}
-      {currentVideo && (
-        <div
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50 p-4"
-          onClick={() => setCurrentVideo(null)}
-        >
-          <video
-            src={currentVideo}
-            controls
-            autoPlay
-            className="max-w-full max-h-full rounded-lg shadow-lg"
-          />
-        </div>
-      )}
-
-      {/* Botón para mostrar todos los cursos */}
-      <div className="text-center mt-8">
-        <button className="px-6 py-3 bg-blue-900 text-white font-semibold rounded-lg shadow-md hover:bg-blue-800 transition duration-300">
-          Mostrar todos los cursos
-        </button>
       </div>
     </div>
   );
