@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { auth, db, storage } from '../../config/firebaseConfig';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 
 function CrearPerfilDocente() {
@@ -9,7 +9,36 @@ function CrearPerfilDocente() {
   const [especializacion, setEspecializacion] = useState('');
   const [anioEstudio, setAnioEstudio] = useState('');
   const [fotoPerfil, setFotoPerfil] = useState(null);
-  const [mensajeExito, setMensajeExito] = useState('');  // Estado para el mensaje de éxito
+  const [mensajeExito, setMensajeExito] = useState('');
+  const [mensajeError, setMensajeError] = useState('');
+  const [esDocente, setEsDocente] = useState(false); // Estado para verificar si el usuario es docente
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((usuario) => {
+      console.log("Usuario autenticado:", usuario);
+      if (usuario) {
+        // Verificar el rol del usuario (Docente o Estudiante)
+        const verificarRol = async () => {
+          const userRef = doc(db, 'users', usuario.uid); // Suponiendo que los roles están en la colección 'users'
+          const userDoc = await getDoc(userRef);
+
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            if (userData.role === 'Docente') {
+              setEsDocente(true); // Si es docente, permitir acceso
+            } else {
+              setEsDocente(false); // Si no es docente, bloquear acceso
+            }
+          } else {
+            setMensajeError("No se encontró el perfil del usuario.");
+          }
+        };
+        verificarRol();
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const handleFileChange = (e) => {
     setFotoPerfil(e.target.files[0]);
@@ -22,39 +51,63 @@ function CrearPerfilDocente() {
     if (usuario) {
       const perfilData = {
         nombre,
-        email: usuario.email, // Usamos el email del usuario autenticado
+        email: usuario.email,
         descripcion,
         especializacion,
         anioEstudio,
       };
 
-      if (fotoPerfil) {
-        const storageRef = ref(storage, `perfilFotos/${usuario.uid}/${fotoPerfil.name}`);
-        const uploadTask = uploadBytesResumable(storageRef, fotoPerfil);
-        uploadTask.on(
-          "state_changed",
-          null,
-          (error) => console.error("Error al cargar la foto:", error),
-          async () => {
-            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-            perfilData.fotoPerfil = downloadURL;
-            await setDoc(doc(db, 'perfiles', usuario.uid), perfilData);
-            setMensajeExito("Perfil de Docente creado con éxito"); // Mostrar mensaje de éxito
-          }
-        );
-      } else {
-        // Si no se carga una foto, solo guardamos los otros datos
-        await setDoc(doc(db, 'perfiles', usuario.uid), perfilData);
-        setMensajeExito("Perfil de Docente creado con éxito"); // Mostrar mensaje de éxito
+      try {
+        if (fotoPerfil) {
+          const storageRef = ref(storage, `perfilFotos/${usuario.uid}/${fotoPerfil.name}`);
+          const uploadTask = uploadBytesResumable(storageRef, fotoPerfil);
+          uploadTask.on(
+            "state_changed",
+            null,
+            (error) => {
+              console.error("Error al cargar la foto:", error);
+              setMensajeError("Error al cargar la foto. Intenta nuevamente.");
+            },
+            async () => {
+              const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+              perfilData.fotoPerfil = downloadURL;
+              await setDoc(doc(db, 'perfiles', usuario.uid), perfilData);
+              setMensajeExito("Perfil de Docente creado con éxito");
+            }
+          );
+        } else {
+          await setDoc(doc(db, 'perfiles', usuario.uid), perfilData);
+          setMensajeExito("Perfil de Docente creado con éxito");
+        }
+      } catch (error) {
+        console.error("Error al actualizar el perfil:", error);
+        setMensajeError("Error al actualizar el perfil. Intenta nuevamente.");
       }
     }
   };
 
+  // Si el usuario no es docente, mostramos un mensaje de acceso denegado
+  if (!esDocente) {
+    return (
+      <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-lg">
+        <h2 className="text-2xl font-bold text-center mb-6">Acceso Denegado</h2>
+        <p className="text-center text-red-500">Solo los usuarios con el rol de Docente pueden crear un perfil de docente.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-lg">
       <h2 className="text-2xl font-bold text-center mb-6">Crear Perfil de Docente</h2>
+
+      {/* Mostrar mensaje de éxito */}
+      {mensajeExito && <div className="text-green-500 mb-4">{mensajeExito}</div>}
+
+      {/* Mostrar mensaje de error */}
+      {mensajeError && <div className="text-red-500 mb-4">{mensajeError}</div>}
+
       <form onSubmit={handleSubmit}>
-        {/* Nombre */}
+        {/* Campo de nombre */}
         <div className="mb-4">
           <label htmlFor="nombre" className="block text-sm font-semibold text-gray-700">Nombre</label>
           <input
@@ -63,11 +116,12 @@ function CrearPerfilDocente() {
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
             className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+            placeholder="Ingresa tu nombre"
             required
           />
         </div>
 
-        {/* Descripción */}
+        {/* Campo de descripción */}
         <div className="mb-4">
           <label htmlFor="descripcion" className="block text-sm font-semibold text-gray-700">Descripción</label>
           <textarea
@@ -75,11 +129,12 @@ function CrearPerfilDocente() {
             value={descripcion}
             onChange={(e) => setDescripcion(e.target.value)}
             className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+            placeholder="Cuéntanos un poco sobre ti"
             required
           ></textarea>
         </div>
 
-        {/* Especialización */}
+        {/* Campo de especialización */}
         <div className="mb-4">
           <label htmlFor="especializacion" className="block text-sm font-semibold text-gray-700">Especialización</label>
           <input
@@ -88,11 +143,12 @@ function CrearPerfilDocente() {
             value={especializacion}
             onChange={(e) => setEspecializacion(e.target.value)}
             className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+            placeholder="Ingresa tu especialización"
             required
           />
         </div>
 
-        {/* Año de Estudio */}
+        {/* Campo de año de estudio */}
         <div className="mb-4">
           <label htmlFor="anioEstudio" className="block text-sm font-semibold text-gray-700">Año de Estudio</label>
           <input
@@ -101,11 +157,12 @@ function CrearPerfilDocente() {
             value={anioEstudio}
             onChange={(e) => setAnioEstudio(e.target.value)}
             className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+            placeholder="Ingresa tu año de estudio"
             required
           />
         </div>
 
-        {/* Foto de Perfil */}
+        {/* Campo para foto de perfil */}
         <div className="mb-4">
           <label htmlFor="fotoPerfil" className="block text-sm font-semibold text-gray-700">Foto de Perfil</label>
           <input
@@ -117,7 +174,7 @@ function CrearPerfilDocente() {
           />
         </div>
 
-        {/* Botón de Guardar */}
+        {/* Botón de envío */}
         <div className="mb-4">
           <button
             type="submit"
@@ -127,13 +184,6 @@ function CrearPerfilDocente() {
           </button>
         </div>
       </form>
-
-      {/* Mostrar mensaje de éxito */}
-      {mensajeExito && (
-        <div className="mt-4 text-green-500 text-center">
-          {mensajeExito}
-        </div>
-      )}
     </div>
   );
 }

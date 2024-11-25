@@ -62,8 +62,14 @@ const Register = () => {
           role, // Guardar el rol seleccionado
           createdAt: new Date().toISOString(), // Fecha de creación
         });
-        setSuccessMessage('¡Registro exitoso! Redirigiendo a la página de inicio de sesión...');
-        setTimeout(() => navigate('/login'), 2000); // Redirigir después de 2 segundos
+        setSuccessMessage('¡Registro exitoso! Redirigiendo...');
+
+        // Redirigir según el rol
+        if (role === 'Docente') {
+          setTimeout(() => navigate('/crear-perfil-docente'), 2000);
+        } else {
+          setTimeout(() => navigate('/crear-perfil-estudiante'), 2000);
+        }
       }
     } catch (error) {
       console.error('Error en el registro:', error);

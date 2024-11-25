@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { auth, db, storage } from '../../config/firebaseConfig';
-import { updateProfile } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 
@@ -15,20 +14,31 @@ function CrearPerfilEstudiante() {
   const [mensajeExito, setMensajeExito] = useState('');
   const [mensajeError, setMensajeError] = useState('');
 
-  // Cargar los datos del perfil del usuario
+  // Cargar los datos del perfil del usuario y verificar su rol
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((usuario) => {
-      console.log("Usuario autenticado:", usuario); // Verifica si el usuario es null o no
+      console.log("Usuario autenticado:", usuario);
       if (usuario) {
         setUser(usuario);
         setEmail(usuario.email);
-        cargarPerfil(usuario.uid);
+
+        // Verificar si el rol del usuario es 'Estudiante'
+        const userRef = doc(db, 'users', usuario.uid); // Suponiendo que los roles están en la colección 'users'
+        getDoc(userRef).then((docSnap) => {
+          if (docSnap.exists()) {
+            const userData = docSnap.data();
+            if (userData.role !== 'Estudiante') {
+              setMensajeError("No tienes permisos para crear un perfil de estudiante.");
+            } else {
+              cargarPerfil(usuario.uid);  // Solo cargar el perfil si el rol es 'Estudiante'
+            }
+          }
+        });
       } else {
         console.log("No hay usuario autenticado");
       }
     });
 
-    // Limpieza del efecto
     return () => unsubscribe();
   }, []);
 
@@ -94,7 +104,6 @@ function CrearPerfilEstudiante() {
             }
           );
         } else {
-          // Si no se carga una nueva foto, solo actualizar los otros datos
           console.log("No se ha cargado foto. Solo actualizando otros datos...");
           await setDoc(doc(db, 'perfiles', user.uid), perfilData);
           console.log("Perfil de Estudiante actualizado con éxito sin foto");
@@ -110,13 +119,17 @@ function CrearPerfilEstudiante() {
   return (
     <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-lg">
       <h2 className="text-2xl font-bold text-center mb-6">Crear Perfil de Estudiante</h2>
-      
+
       {/* Mostrar mensaje de éxito */}
-      {mensajeExito && <div className="text-green-500 mb-4">{mensajeExito}</div>}
-      
+      {mensajeExito ? (
+        <div className="text-green-500 mb-4">{mensajeExito}</div>
+      ) : null}
+
       {/* Mostrar mensaje de error */}
-      {mensajeError && <div className="text-red-500 mb-4">{mensajeError}</div>}
-      
+      {mensajeError ? (
+        <div className="text-red-500 mb-4">{mensajeError}</div>
+      ) : null}
+
       <form onSubmit={handleSubmit}>
         {/* Campo de nombre */}
         <div className="mb-4">
