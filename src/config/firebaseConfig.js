@@ -17,9 +17,11 @@ import {
   getDocs, 
   updateDoc, 
   doc, 
-  deleteDoc, // Import deleteDoc for deleting documents
-  getDoc // Import getDoc for fetching a single document by ID
+  deleteDoc, 
+  getDoc, 
+  setDoc // Asegúrate de importar setDoc
 } from "firebase/firestore";
+
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"; // Import Storage
 
 // Your web app's Firebase configuration
@@ -49,6 +51,10 @@ export const registerUser = async (email, password) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     console.log("Usuario registrado:", userCredential.user);
+
+    // Call to create the user's profile in Firestore
+    await createUserProfile(userCredential.user);
+    
     return userCredential;
   } catch (error) {
     console.error("Error al registrar:", error);
@@ -185,6 +191,51 @@ export const deletePublication = async (id) => {
   } catch (error) {
     console.error("Error al eliminar la publicación:", error);
     throw new Error("No se pudo eliminar la publicación.");
+  }
+};
+
+// --- New functions for "perfiles" collection ---
+
+// Function to create a user profile in the "perfiles" collection
+export const createUserProfile = async (user) => {
+  try {
+    const userProfileRef = doc(db, "perfiles", user.uid);
+
+    // Check if the profile already exists, if not, create one
+    const userProfileSnapshot = await getDoc(userProfileRef);
+    if (!userProfileSnapshot.exists()) {
+      await setDoc(userProfileRef, {
+        nombre: "", // Placeholder name, could be updated later
+        email: user.email,
+        descripcion: "", // Empty initially, can be edited
+        especializacion: "", // Empty, could be filled by the user
+        anioEstudio: 1, // Default value, can be updated later
+        fotoPerfil: "" // URL of the profile picture, can be uploaded later
+      });
+      console.log("Perfil creado para el usuario:", user.uid);
+    } else {
+      console.log("El perfil ya existe.");
+    }
+  } catch (error) {
+    console.error("Error al crear el perfil:", error);
+    throw new Error("Error al crear el perfil. Intenta de nuevo.");
+  }
+};
+
+// Function to get the user profile from the "perfiles" collection
+export const getUserProfile = async (userId) => {
+  try {
+    const userProfileRef = doc(db, "perfiles", userId);
+    const userProfileSnapshot = await getDoc(userProfileRef);
+
+    if (userProfileSnapshot.exists()) {
+      return { id: userProfileSnapshot.id, ...userProfileSnapshot.data() };
+    } else {
+      throw new Error("No se encontró el perfil.");
+    }
+  } catch (error) {
+    console.error("Error al obtener el perfil:", error);
+    throw new Error("No se pudo obtener el perfil.");
   }
 };
 

@@ -179,7 +179,7 @@ const Login = () => {
         <p>
           ¿No tienes una cuenta?{' '}
           <a href="/register" className="text-blue-200 hover:underline">
-            Crea una
+            Crea una como Docente ó Estudiante
           </a>
         </p>
       </div>

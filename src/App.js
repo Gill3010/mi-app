@@ -38,7 +38,13 @@ import Logout from './components/Logout/Logout';
 import FormularioCrearCurso from './components/FormularioCrearCurso/FormularioCrearCurso'; 
 import GestionFondos from './components/GestionFondos/GestionFondos';
 import CulturaReciclaje from './components/CulturaReciclaje/CulturaReciclaje';
-import DetallesCurso from './components/DetallesCurso/DetallesCurso'; // Nueva importación
+import DetallesCurso from './components/DetallesCurso/DetallesCurso'; 
+import CrearPerfilEstudiante from './components/CrearPerfilEstudiante/CrearPerfilEstudiante'; // Importación del nuevo componente
+import MostrarPerfilEstudiante from './components/MostrarPerfilEstudiante/MostrarPerfilEstudiante'; // Importación del componente para mostrar el perfil
+
+// Agregar el perfil docente y mostrar perfil docente
+import CrearPerfilDocente from  './components/CrearPerfilDocente/CrearPerfilDocente'; // Nuevo componente para crear perfil de docente
+import MostrarPerfilDocente from './components/MostrarPerfilDocente/MostrarPerfilDocente'; // Nuevo componente para mostrar perfil de docente
 
 const App = () => {
   return (
@@ -48,16 +54,8 @@ const App = () => {
           <Navbar />
           <div className="flex-grow">
             <Routes>
-              <Route 
-                path="/" 
-                element={
-                  <div>
-                    <Slider />
-                    <Metrics />
-                    <SearchBar />
-                  </div>
-                } 
-              />
+              {/* Rutas existentes */}
+              <Route path="/" element={<div><Slider /><Metrics /><SearchBar /></div>} />
               <Route path="/resultados" element={<Resultados />} />
               <Route path="/nosotros" element={<Nosotros />} />
               <Route path="/declaracion-acceso-abierto" element={<DeclaracionAccesoAbierto />} />
@@ -72,19 +70,7 @@ const App = () => {
               <Route path="/Login" element={<Login />} />
               <Route path="/Register" element={<Register />} />
               <Route path="/Salas" element={<Salas />} />
-              <Route 
-                path="/Cursos" 
-                element={
-                  <div>
-                    <Cursos />
-                    <UsoAtlasTi />
-                    <AnalisisDatosCualitativos />
-                    <BusquedaSistematizada />
-                    <GestionFondos />
-                    <CulturaReciclaje />
-                  </div>
-                } 
-              />
+              <Route path="/Cursos" element={<div><Cursos /><UsoAtlasTi /><AnalisisDatosCualitativos /><BusquedaSistematizada /><GestionFondos /><CulturaReciclaje /></div>} />
               <Route path="/Informacion" element={<Informacion />} />
               <Route path="/Diseños" element={<Diseños />} />
               <Route path="/Redaccion" element={<Redaccion />} />
@@ -97,7 +83,15 @@ const App = () => {
               <Route path="/Logout" element={<Logout />} />
               <Route path="/crear-curso" element={<FormularioCrearCurso />} />
 
-              {/* Nueva ruta dinámica para detalles del curso */}
+              {/* Rutas para perfil de estudiante */}
+              <Route path="/crear-perfil-estudiante" element={<CrearPerfilEstudiante />} />
+              <Route path="/perfil-estudiante" element={<MostrarPerfilEstudiante />} />
+
+              {/* Nuevas rutas para el perfil de docente */}
+              <Route path="/crear-perfil-docente" element={<CrearPerfilDocente />} />
+              <Route path="/perfil-docente" element={<MostrarPerfilDocente />} />
+
+              {/* Rutas para detalles del curso */}
               <Route path="/detalles-curso/:id" element={<DetallesCurso />} />
             </Routes>
           </div>
