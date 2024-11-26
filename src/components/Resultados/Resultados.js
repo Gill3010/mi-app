@@ -93,8 +93,8 @@ const Resultados = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-8">
-      <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-center text-blue-900 bg-gradient-to-r from-indigo-500 to-teal-400 text-transparent bg-clip-text shadow-lg">
+    <div className="max-w-4xl mx-auto p-8 bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] text-white">
+      <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 shadow-lg">
         Resultados de la Búsqueda
       </h2>
       
@@ -160,7 +160,7 @@ const Resultados = () => {
 
                 <button 
                   onClick={() => handleDetailsClick(item.id)}
-                  className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
+                  className="mt-4 px-4 py-2 bg-[#002855] text-white rounded-md hover:bg-[#005073] focus:outline-none"
                 >
                   Ver detalles
                 </button>

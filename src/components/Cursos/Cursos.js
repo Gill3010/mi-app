@@ -86,7 +86,7 @@ const Cursos = () => {
   }
 
   return (
-    <div className="p-6 md:p-12 max-w-6xl mx-auto bg-gray-100 min-h-screen">
+    <div className="p-6 md:p-12 max-w-6xl mx-auto bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50]">
       <h1 className="text-3xl md:text-4xl font-extrabold mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 shadow-xl p-6 bg-white rounded-lg">
         Cursos
       </h1>
@@ -111,7 +111,7 @@ const Cursos = () => {
         {courses.map((course) => (
           <div
             key={course.id}
-            className="min-w-[300px] flex flex-col bg-white border border-gray-300 p-4 rounded-lg shadow-lg cursor-pointer"
+            className="min-w-[300px] flex flex-col bg-white border border-[#002855] p-4 rounded-lg shadow-lg cursor-pointer hover:shadow-2xl transition duration-300 transform hover:scale-105 hover:bg-[#005073]"
             onClick={() => handleCourseClick(course.id)} // Redirigir al hacer clic
           >
             <img
@@ -120,10 +120,10 @@ const Cursos = () => {
               className="rounded-lg w-full h-64 object-cover"
             />
             <div className="p-4">
-              <h2 className="text-xl font-semibold text-blue-900">{course.titulo}</h2>
+              <h2 className="text-xl font-semibold text-[#003366]">{course.titulo}</h2>
               <p className="text-gray-600 mt-2 text-sm">{course.descripcion}</p>
-              <p className="text-gray-800 mt-4 font-bold">
-                Precio: ${course.precio.toFixed(2)} USD
+              <p className="text-gray-800 mt-4 font-bold text-[#005599]">
+                Precio: {course.precio ? `$${course.precio.toFixed(2)}` : 'No disponible'}
               </p>
             </div>
           </div>

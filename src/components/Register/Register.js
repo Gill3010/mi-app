@@ -84,7 +84,7 @@ const Register = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-[#002855] to-[#00A1E0] text-white">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] text-white">
       <h2 className="text-4xl font-bold mb-8">Regístrate</h2>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       {successMessage && <p className="text-green-500 mb-4">{successMessage}</p>}

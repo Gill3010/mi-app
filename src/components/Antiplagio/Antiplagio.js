@@ -2,9 +2,9 @@ import React from 'react';
 
 const Antiplagio = () => {
   return (
-    <div className="bg-gradient-to-r from-[#002855] to-[#00A1E0] p-8">
-      <div className="bg-white p-6 rounded-lg shadow-lg max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Política Antiplagio</h2>
+    <div className="bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] p-8">
+      <div className="bg-white p-6 rounded-lg shadow-lg max-w-4xl mx-auto hover:shadow-2xl transition duration-300 transform hover:scale-105 hover:bg-[#f0f5f5]">
+        <h2 className="text-2xl font-bold text-[#003366] mb-4">Política Antiplagio</h2>
         <p className="text-gray-600 mb-4">
           En el Portal de Carteles Científicos, nos tomamos muy en serio el plagio. Nuestra política antiplagio garantiza que todos los trabajos de investigación enviados y publicados en nuestra plataforma sean originales y respeten los derechos de autor.
         </p>

@@ -114,8 +114,10 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-[#002855] to-[#00A1E0] text-white">
-      <h2 className="text-4xl font-bold mb-8">Iniciar Sesión</h2>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] text-white">
+      <h2 className="text-4xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400">
+        Iniciar Sesión
+      </h2>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       {isRedirecting && <p className="text-yellow-300 mb-4">Redirigiendo a Facebook...</p>} {/* Estado de redirección */}
 

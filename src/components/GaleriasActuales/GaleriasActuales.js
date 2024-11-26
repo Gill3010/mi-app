@@ -119,8 +119,8 @@ const GaleriasActuales = () => {
   if (loading) return <p className="text-center text-[#002855]">Cargando galerías...</p>;
 
   return (
-    <div className="p-6 md:p-12 max-w-6xl mx-auto bg-gray-100 min-h-screen">
-      <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-center text-blue-900 bg-gradient-to-r from-indigo-500 to-teal-400 text-transparent bg-clip-text shadow-lg">
+    <div className="p-6 md:p-12 max-w-6xl mx-auto bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] min-h-screen">
+      <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 shadow-lg">
         Vol 1-2 Galería Actual
       </h2>
 
@@ -130,7 +130,7 @@ const GaleriasActuales = () => {
       ) : (
         <div className="grid gap-8 sm:grid-cols-1">
           {galerias.map((galeria) => (
-            <div key={galeria.id} className="relative flex flex-col md:flex-row bg-white border border-gray-300 p-4 sm:p-6 rounded-lg shadow-lg transition hover:shadow-2xl duration-300">
+            <div key={galeria.id} className="relative flex flex-col md:flex-row bg-white border border-[#002855] p-4 sm:p-6 rounded-lg shadow-lg transition hover:shadow-2xl duration-300">
               <div className="md:w-1/3 mb-4 sm:mb-6 md:mb-0 p-2">
                 {galeria.imagen ? (
                   <div className="w-full aspect-square md:aspect-auto">
@@ -185,7 +185,7 @@ const GaleriasActuales = () => {
                   )}
                 </div>
 
-                <div className="flex space-x-4 sm:space-x-6 mt-4 text-[#002855] bg-[#006D5B] rounded-lg border border-gray-300 p-3 shadow-sm">
+                <div className="flex space-x-4 sm:space-x-6 mt-4 text-[#002855] bg-[#006D5B] rounded-lg border border-[#002855] p-3 shadow-sm">
                   <div className="tooltip flex items-center space-x-1">
                     <FiEye className="text-lg sm:text-xl hover:text-[#006D5B] transition-colors cursor-pointer" />
                     <span className="text-xs sm:text-base">{galeria.vistas || 0}</span>

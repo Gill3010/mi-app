@@ -20,6 +20,7 @@
     "express-session": "^1.18.0",
     "express-validator": "^7.2.0",
     "firebase": "^10.14.1",
+    "font-awesome": "^4.7.0",
     "formik": "^2.4.6",
     "google-auth-library": "^9.14.1",
     "jsonwebtoken": "^9.0.2",

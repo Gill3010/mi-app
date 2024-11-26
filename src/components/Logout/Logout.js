@@ -16,13 +16,15 @@ const Logout = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-[#f0f9ff] to-[#cfe4ff] text-center">
+    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] text-center">
       <FiSmile className="text-6xl text-[#FF6347] mb-4" /> {/* Icono de carita sonriente */}
-      <h2 className="text-2xl font-semibold text-[#004080] mb-2">¡Gracias por visitarnos!</h2>
+      <h2 className="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 mb-2">
+        ¡Gracias por visitarnos!
+      </h2>
       <p className="text-gray-600 mb-6">Esperamos verte de nuevo pronto. ¡Cuídate!</p>
       <button
         onClick={handleLogout}
-        className="px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold rounded-full shadow-lg hover:shadow-2xl hover:scale-105 transform transition duration-300 ease-in-out"
+        className="px-6 py-3 bg-[#002855] text-white font-semibold rounded-full shadow-lg hover:shadow-2xl hover:scale-105 transform transition duration-300 ease-in-out"
       >
         Cerrar sesión
       </button>

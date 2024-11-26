@@ -11,18 +11,18 @@ import { FaEnvelope, FaPhone, FaOrcid } from 'react-icons/fa';
 
 const Nosotros = () => {
   return (
-    <div className="bg-gradient-to-r from-[#002855] to-[#00A1E0] p-6 md:p-12 text-[#002855]">
-      <h2 className="text-4xl font-bold mb-8 text-center text-white">Sobre Nosotros</h2>
-      <p className="text-xl mb-12 text-center max-w-3xl mx-auto text-white">
+    <div className="bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] p-6 md:p-12 text-[#ffffff]">
+      <h2 className="text-4xl font-bold mb-8 text-center">Sobre Nosotros</h2>
+      <p className="text-xl mb-12 text-center max-w-3xl mx-auto">
         Bienvenidos a nuestra organización. Somos un equipo comprometido con la investigación y la innovación.
       </p>
       
       <section className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-12">
-        <div className="bg-[#002855] text-white p-6 md:p-8 rounded-lg shadow-lg hover:shadow-2xl hover:bg-[#004080] transition duration-300 transform hover:scale-105">
+        <div className="bg-[#1E3A8A] text-white p-6 md:p-8 rounded-lg shadow-lg hover:shadow-2xl hover:bg-[#003366] transition duration-300 transform hover:scale-105">
           <h3 className="text-2xl font-semibold mb-4">Nuestra Misión</h3>
           <p>Brindar soluciones innovadoras y accesibles a través de la investigación.</p>
         </div>
-        <div className="bg-[#002855] text-white p-6 md:p-8 rounded-lg shadow-lg hover:shadow-2xl hover:bg-[#004080] transition duration-300 transform hover:scale-105">
+        <div className="bg-[#1E3A8A] text-white p-6 md:p-8 rounded-lg shadow-lg hover:shadow-2xl hover:bg-[#003366] transition duration-300 transform hover:scale-105">
           <h3 className="text-2xl font-semibold mb-4">Nuestra Visión</h3>
           <p>Ser líderes en investigación y desarrollo en nuestra área de especialización.</p>
         </div>
@@ -40,7 +40,7 @@ const Nosotros = () => {
             { image: equipo7, name: "Dra. Lourdes Céspedes", title: "Evaluadora Académica", email: "evaluadoracademico@portaldecartelescientificos.org", phone: "+51 948-477-669", orcid: "https://orcid.org/0000-0002-4358-8575" },
             { image: equipo8, name: "Dra. Sandra Bedoya Marulanda", title: "Alianza Estratégica Universitaria", email: "aiu.alianzauniversitaria@gmail.com", phone: "+57 3168316782", orcid: "0009-0005-7307-8233"}
           ].map(member => (
-            <div key={member.name} className="bg-[#002855] text-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition duration-300 transform hover:scale-105 flex flex-col items-center sm:flex-row sm:items-start">
+            <div key={member.name} className="bg-[#1E3A8A] text-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition duration-300 transform hover:scale-105 flex flex-col items-center sm:flex-row sm:items-start">
               <img 
                 src={member.image} 
                 alt={member.name} 

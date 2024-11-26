@@ -79,156 +79,160 @@ const FormularioCrearCurso = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4">Crear Nuevo Curso</h2>
+    <div className="min-h-screen bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] flex items-center justify-center">
+      <div className="p-8 max-w-3xl mx-auto bg-white rounded-lg shadow-lg w-full">
+        <h2 className="text-2xl font-bold mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 shadow-xl">
+          Crear Nuevo Curso
+        </h2>
 
-      {/* Mensaje de éxito */}
-      {successMessage && (
-        <div className="mb-4 text-green-600 font-medium">
-          {successMessage}
-        </div>
-      )}
+        {/* Mensaje de éxito */}
+        {successMessage && (
+          <div className="mb-4 text-green-600 font-medium">
+            {successMessage}
+          </div>
+        )}
 
-      {/* Mensaje de error */}
-      {errorMessage && (
-        <div className="mb-4 text-red-600 font-medium">
-          {errorMessage}
-        </div>
-      )}
+        {/* Mensaje de error */}
+        {errorMessage && (
+          <div className="mb-4 text-red-600 font-medium">
+            {errorMessage}
+          </div>
+        )}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Campo para Título */}
-        <div>
-          <label htmlFor="titulo" className="block text-gray-700 font-medium mb-1">
-            Título del Curso
-          </label>
-          <input
-            type="text"
-            id="titulo"
-            name="titulo"
-            value={courseData.titulo}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded px-3 py-2"
-            required
-          />
-        </div>
+        <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-lg shadow-lg">
+          {/* Campo para Título */}
+          <div>
+            <label htmlFor="titulo" className="block text-[#002855] font-medium mb-1">
+              Título del Curso
+            </label>
+            <input
+              type="text"
+              id="titulo"
+              name="titulo"
+              value={courseData.titulo}
+              onChange={handleChange}
+              className="w-full border border-[#002855] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002855]"
+              required
+            />
+          </div>
 
-        {/* Campo para Descripción */}
-        <div>
-          <label htmlFor="descripcion" className="block text-gray-700 font-medium mb-1">
-            Descripción
-          </label>
-          <textarea
-            id="descripcion"
-            name="descripcion"
-            value={courseData.descripcion}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded px-3 py-2"
-            rows="4"
-            required
-          ></textarea>
-        </div>
+          {/* Campo para Descripción */}
+          <div>
+            <label htmlFor="descripcion" className="block text-[#002855] font-medium mb-1">
+              Descripción
+            </label>
+            <textarea
+              id="descripcion"
+              name="descripcion"
+              value={courseData.descripcion}
+              onChange={handleChange}
+              className="w-full border border-[#002855] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002855]"
+              rows="4"
+              required
+            ></textarea>
+          </div>
 
-        {/* Campo para Imagen */}
-        <div>
-          <label htmlFor="imagen" className="block text-gray-700 font-medium mb-1">
-            URL de la Imagen
-          </label>
-          <input
-            type="text"
-            id="imagen"
-            name="imagen"
-            value={courseData.imagen}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded px-3 py-2"
-            placeholder="https://ejemplo.com/imagen.jpg"
-            required
-          />
-        </div>
+          {/* Campo para Imagen */}
+          <div>
+            <label htmlFor="imagen" className="block text-[#002855] font-medium mb-1">
+              URL de la Imagen
+            </label>
+            <input
+              type="text"
+              id="imagen"
+              name="imagen"
+              value={courseData.imagen}
+              onChange={handleChange}
+              className="w-full border border-[#002855] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002855]"
+              placeholder="https://ejemplo.com/imagen.jpg"
+              required
+            />
+          </div>
 
-        {/* Campo para Precio */}
-        <div>
-          <label htmlFor="precio" className="block text-gray-700 font-medium mb-1">
-            Precio del Curso (USD)
-          </label>
-          <input
-            type="number"
-            id="precio"
-            name="precio"
-            value={courseData.precio}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded px-3 py-2"
-            placeholder="50"
-            required
-          />
-        </div>
+          {/* Campo para Precio */}
+          <div>
+            <label htmlFor="precio" className="block text-[#002855] font-medium mb-1">
+              Precio del Curso (USD)
+            </label>
+            <input
+              type="number"
+              id="precio"
+              name="precio"
+              value={courseData.precio}
+              onChange={handleChange}
+              className="w-full border border-[#002855] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002855]"
+              placeholder="50"
+              required
+            />
+          </div>
 
-        {/* Menú desplegable para Categoría */}
-        <div>
-          <label htmlFor="categoria" className="block text-gray-700 font-medium mb-1">
-            Categoría del Curso
-          </label>
-          <select
-            id="categoria"
-            name="categoria"
-            value={courseData.categoria}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded px-3 py-2"
-            required
+          {/* Menú desplegable para Categoría */}
+          <div>
+            <label htmlFor="categoria" className="block text-[#002855] font-medium mb-1">
+              Categoría del Curso
+            </label>
+            <select
+              id="categoria"
+              name="categoria"
+              value={courseData.categoria}
+              onChange={handleChange}
+              className="w-full border border-[#002855] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002855]"
+              required
+            >
+              <option value="">Seleccione una categoría</option>
+              <option value="Cursos">Cursos Generales</option>
+              <option value="BusquedaSistematizada">Búsqueda sistematizada de Información con Herramientas IA</option>
+              <option value="AnalisisDatosCualitativos">Análisis de datos cualitativos con apoyo de IA</option>
+              <option value="UsoAtlasTi">Uso de Atlas Ti en investigación científica</option>
+              <option value="GestionFondos">Gestión de Fondos para proyectos de Investigación</option>
+              <option value="CulturaReciclaje">Cultura de Reciclaje y Basura Cero</option>
+            </select>
+          </div>
+
+          {/* Campo para URL del Video */}
+          <div>
+            <label htmlFor="video" className="block text-[#002855] font-medium mb-1">
+              URL del Video
+            </label>
+            <input
+              type="text"
+              id="video"
+              name="video"
+              value={courseData.video}
+              onChange={handleChange}
+              className="w-full border border-[#002855] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002855]"
+              placeholder="https://ejemplo.com/video.mp4"
+              required
+            />
+          </div>
+
+          {/* Campo para Etiquetas */}
+          <div>
+            <label htmlFor="etiquetas" className="block text-[#002855] font-medium mb-1">
+              Etiquetas (separadas por comas)
+            </label>
+            <input
+              type="text"
+              id="etiquetas"
+              name="etiquetas"
+              value={courseData.etiquetas}
+              onChange={handleChange}
+              className="w-full border border-[#002855] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002855]"
+              placeholder="ejemplo1, ejemplo2, ejemplo3"
+              required
+            />
+          </div>
+
+          {/* Botón de Enviar */}
+          <button
+            type="submit"
+            className="w-full bg-[#002855] text-white font-medium py-2 rounded hover:bg-[#005073] transition duration-200"
+            disabled={loading}
           >
-            <option value="">Seleccione una categoría</option>
-            <option value="Cursos">Cursos Generales</option>
-            <option value="BusquedaSistematizada">Búsqueda sistematizada de Información con Herramientas IA</option>
-            <option value="AnalisisDatosCualitativos">Análisis de datos cualitativos con apoyo de IA</option>
-            <option value="UsoAtlasTi">Uso de Atlas Ti en investigación científica</option>
-            <option value="GestionFondos">Gestión de Fondos para proyectos de Investigación</option>
-            <option value="CulturaReciclaje">Cultura de Reciclaje y Basura Cero</option>
-          </select>
-        </div>
-
-        {/* Campo para URL del Video */}
-        <div>
-          <label htmlFor="video" className="block text-gray-700 font-medium mb-1">
-            URL del Video
-          </label>
-          <input
-            type="text"
-            id="video"
-            name="video"
-            value={courseData.video}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded px-3 py-2"
-            placeholder="https://ejemplo.com/video.mp4"
-            required
-          />
-        </div>
-
-        {/* Campo para Etiquetas */}
-        <div>
-          <label htmlFor="etiquetas" className="block text-gray-700 font-medium mb-1">
-            Etiquetas (separadas por comas)
-          </label>
-          <input
-            type="text"
-            id="etiquetas"
-            name="etiquetas"
-            value={courseData.etiquetas}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded px-3 py-2"
-            placeholder="ejemplo1, ejemplo2, ejemplo3"
-            required
-          />
-        </div>
-
-        {/* Botón de Enviar */}
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white font-medium py-2 rounded hover:bg-blue-700 transition duration-200"
-          disabled={loading}
-        >
-          {loading ? 'Creando...' : 'Crear Curso'}
-        </button>
-      </form>
+            {loading ? 'Creando...' : 'Crear Curso'}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

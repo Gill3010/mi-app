@@ -29,7 +29,7 @@ const SearchBar = () => {
   return (
     <div className="flex flex-col items-center mt-8 w-full max-w-lg mx-auto">
       <input
-        className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#002855] mb-4"
+        className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1E3A8A] mb-4"
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
@@ -37,7 +37,7 @@ const SearchBar = () => {
         id="search-input"
       />
       <button
-        className="bg-[#002855] hover:bg-[#005073] text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out"
+        className="bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] hover:bg-[#005073] text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out"
         onClick={handleSearch}
       >
         Buscar
@@ -51,7 +51,7 @@ const SearchBar = () => {
           <ul>
             {results.map((item) => (
               <li key={item.id} className="border-b border-gray-200 py-2">
-                <h3 className="text-lg font-semibold text-[#002855]">{item.tituloInvestigacion}</h3>
+                <h3 className="text-lg font-semibold text-[#1E3A8A]">{item.tituloInvestigacion}</h3>
                 <p>{item.nombreAutor} {item.apellidoAutor}</p>
                 <p className="text-sm text-gray-500">{item.institucion}</p>
               </li>

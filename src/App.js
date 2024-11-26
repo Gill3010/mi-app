@@ -55,7 +55,16 @@ const App = () => {
           <div className="flex-grow">
             <Routes>
               {/* Rutas existentes */}
-              <Route path="/" element={<div><Slider /><Metrics /><SearchBar /></div>} />
+              <Route 
+                path="/" 
+                element={
+                  <div>
+                    <Slider />
+                    <SearchBar /> {/* Moved up */}
+                    <Metrics /> {/* Moved down */}
+                  </div>
+                } 
+              />
               <Route path="/resultados" element={<Resultados />} />
               <Route path="/nosotros" element={<Nosotros />} />
               <Route path="/declaracion-acceso-abierto" element={<DeclaracionAccesoAbierto />} />
@@ -103,3 +112,4 @@ const App = () => {
 };
 
 export default App;
+

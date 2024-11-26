@@ -9,17 +9,14 @@ function MostrarPerfilDocente() {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((usuario) => {
-      console.log("Estado de autenticación cambiado:", usuario);
-
       if (usuario) {
-        // Si el usuario está autenticado, cargar su perfil desde Firestore
         const cargarPerfil = async () => {
           try {
-            const perfilRef = doc(db, 'perfiles', usuario.uid); // Accede al perfil del docente usando su UID
+            const perfilRef = doc(db, 'perfiles', usuario.uid);
             const perfilDoc = await getDoc(perfilRef);
 
             if (perfilDoc.exists()) {
-              setPerfil(perfilDoc.data()); // Establecer los datos del perfil del docente
+              setPerfil(perfilDoc.data());
             } else {
               setError("No se encontró el perfil.");
             }
@@ -38,7 +35,6 @@ function MostrarPerfilDocente() {
       }
     });
 
-    // Limpieza del efecto
     return () => unsubscribe();
   }, []);
 
@@ -51,59 +47,48 @@ function MostrarPerfilDocente() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-gradient-to-r from-green-50 to-green-100 rounded-lg shadow-xl">
-      <h2 className="text-3xl font-bold text-center mb-6 text-green-600">Mi Perfil de Docente</h2>
+    <div className="relative w-full bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] text-white p-6 rounded-lg shadow-xl flex items-center">
+      {/* Contenedor principal */}
+      <div className="flex flex-wrap justify-between items-center w-full">
+        {/* Información textual */}
+        <div className="w-full md:w-3/4 space-y-3">
+          <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400">{perfil.nombre}</h2>
+          <p className="text-sm italic">{perfil.tituloAcademico}</p>
+          <p className="text-sm">{perfil.especializacion}</p>
 
-      {perfil && (
-        <div className="space-y-6">
-          <div className="flex justify-center mb-4">
-            {perfil.fotoPerfil && (
-              <img
-                src={perfil.fotoPerfil}
-                alt="Foto de Perfil"
-                className="w-40 h-40 rounded-full border-4 border-green-500 shadow-lg"
-              />
-            )}
-          </div>
-
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <div className="mb-4">
-              <h3 className="text-xl font-semibold text-green-800">Nombre:</h3>
-              <p className="text-lg text-gray-700">{perfil.nombre}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <h3 className="text-md font-semibold text-[#003366]">Correo Electrónico:</h3>
+              <p className="text-sm">{perfil.email}</p>
             </div>
-
-            <div className="mb-4">
-              <h3 className="text-xl font-semibold text-green-800">Correo Electrónico:</h3>
-              <p className="text-lg text-gray-700">{perfil.email}</p>
+            <div>
+              <h3 className="text-md font-semibold text-[#003366]">Años de Experiencia:</h3>
+              <p className="text-sm">{perfil.añosExperiencia || 'No disponible'}</p>
             </div>
-
-            <div className="mb-4">
-              <h3 className="text-xl font-semibold text-green-800">Descripción:</h3>
-              <p className="text-lg text-gray-700">{perfil.descripcion}</p>
+            <div className="col-span-2">
+              <h3 className="text-md font-semibold text-[#003366]">Materias Impartidas:</h3>
+              <p className="text-sm">{perfil.materiasImpartidas}</p>
             </div>
-
-            <div className="mb-4">
-              <h3 className="text-xl font-semibold text-green-800">Especialización:</h3>
-              <p className="text-lg text-gray-700">{perfil.especializacion}</p>
-            </div>
-
-            <div className="mb-4">
-              <h3 className="text-xl font-semibold text-green-800">Título Académico:</h3>
-              <p className="text-lg text-gray-700">{perfil.tituloAcademico}</p>
-            </div>
-
-            <div className="mb-4">
-              <h3 className="text-xl font-semibold text-green-800">Años de Experiencia:</h3>
-              <p className="text-lg text-gray-700">{perfil.añosExperiencia}</p>
-            </div>
-
-            <div className="mb-4">
-              <h3 className="text-xl font-semibold text-green-800">Materias Impartidas:</h3>
-              <p className="text-lg text-gray-700">{perfil.materiasImpartidas}</p>
+            <div className="col-span-2">
+              <h3 className="text-md font-semibold text-[#003366]">Descripción:</h3>
+              <p className="text-sm">{perfil.descripcion}</p>
             </div>
           </div>
         </div>
-      )}
+
+        {/* Foto de perfil */}
+        {perfil.fotoPerfil && (
+          <div className="relative flex justify-center md:w-1/4">
+            <div className="relative w-40 h-40 rounded-full overflow-hidden border-4 border-white shadow-lg bg-gray-100">
+              <img
+                src={perfil.fotoPerfil}
+                alt="Foto de Perfil"
+                className="object-cover w-full h-full"
+              />
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

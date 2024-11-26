@@ -28,7 +28,7 @@ const BusquedaSistematizada = () => {
   };
 
   return (
-    <div className="p-6 md:p-12 max-w-6xl mx-auto bg-gray-100">
+    <div className="p-6 md:p-12 max-w-6xl mx-auto bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50]">
       <h2 className="text-3xl md:text-4xl font-extrabold mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 shadow-xl p-6 bg-white rounded-lg">
         Búsqueda sistematizada de Información con Herramientas IA
       </h2>
@@ -43,7 +43,7 @@ const BusquedaSistematizada = () => {
         {items.map((item) => (
           <div
             key={item.id}
-            className="min-w-[300px] flex flex-col bg-white border border-gray-300 p-4 rounded-lg shadow-lg cursor-pointer"
+            className="min-w-[300px] flex flex-col bg-white border border-[#002855] p-4 rounded-lg shadow-lg cursor-pointer hover:shadow-2xl transition duration-300 transform hover:scale-105 hover:bg-[#005073]"
             onClick={() => handleItemClick(item.id)} // Redirigir al hacer clic
           >
             <img
@@ -52,9 +52,9 @@ const BusquedaSistematizada = () => {
               className="rounded-lg w-full h-64 object-cover"
             />
             <div className="p-4">
-              <h3 className="text-xl font-semibold text-blue-900">{item.titulo}</h3>
+              <h3 className="text-xl font-semibold text-[#003366]">{item.titulo}</h3>
               <p className="text-gray-600 mt-2 text-sm">{item.descripcion}</p>
-              <p className="text-lg font-bold text-gray-800 mt-4">
+              <p className="text-lg font-bold text-[#005599] mt-4">
                 Precio: {item.precio ? `$${item.precio}` : 'No disponible'}
               </p>
             </div>

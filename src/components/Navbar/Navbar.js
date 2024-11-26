@@ -20,7 +20,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="relative bg-gradient-to-r from-[#002855] to-[#00A1E0] p-4">
+    <nav className="relative bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] p-4">
       {/* ISSN en la parte superior derecha */}
       <div className="absolute top-2 right-4 text-white text-sm font-bold">
         ISSN L 3072-970X
@@ -41,7 +41,6 @@ const Navbar = () => {
           </div>
         </div>
       </div>
- 
 
       {/* Menú principal y submenús */}
       <ul

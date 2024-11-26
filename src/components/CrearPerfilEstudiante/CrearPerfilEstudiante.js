@@ -122,109 +122,113 @@ function CrearPerfilEstudiante() {
   };
 
   return (
-    <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold text-center mb-6">Crear Perfil de Estudiante</h2>
+    <div className="min-h-screen bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] flex items-center justify-center">
+      <div className="p-8 max-w-3xl mx-auto bg-white rounded-lg shadow-lg w-full">
+        <h2 className="text-2xl font-bold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400">
+          Crear Perfil de Estudiante
+        </h2>
 
-      {/* Mostrar mensaje de éxito */}
-      {mensajeExito ? (
-        <div className="text-green-500 mb-4">{mensajeExito}</div>
-      ) : null}
+        {/* Mostrar mensaje de éxito */}
+        {mensajeExito ? (
+          <div className="text-green-500 mb-4">{mensajeExito}</div>
+        ) : null}
 
-      {/* Mostrar mensaje de error */}
-      {mensajeError ? (
-        <div className="text-red-500 mb-4">{mensajeError}</div>
-      ) : null}
+        {/* Mostrar mensaje de error */}
+        {mensajeError ? (
+          <div className="text-red-500 mb-4">{mensajeError}</div>
+        ) : null}
 
-      <form onSubmit={handleSubmit}>
-        {/* Campo de nombre */}
-        <div className="mb-4">
-          <label htmlFor="nombre" className="block text-sm font-semibold text-gray-700">Nombre</label>
-          <input
-            type="text"
-            id="nombre"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            placeholder="Ingresa tu nombre"
-            required
-          />
-        </div>
+        <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-lg">
+          {/* Campo de nombre */}
+          <div className="mb-4">
+            <label htmlFor="nombre" className="block text-sm font-semibold text-gray-700">Nombre</label>
+            <input
+              type="text"
+              id="nombre"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+              placeholder="Ingresa tu nombre"
+              required
+            />
+          </div>
 
-        {/* Campo de correo electrónico */}
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-semibold text-gray-700">Correo Electrónico</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            disabled
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-          />
-        </div>
+          {/* Campo de correo electrónico */}
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-sm font-semibold text-gray-700">Correo Electrónico</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              disabled
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+            />
+          </div>
 
-        {/* Campo de descripción */}
-        <div className="mb-4">
-          <label htmlFor="descripcion" className="block text-sm font-semibold text-gray-700">Descripción</label>
-          <textarea
-            id="descripcion"
-            value={descripcion}
-            onChange={(e) => setDescripcion(e.target.value)}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            placeholder="Cuéntanos un poco sobre ti"
-            required
-          ></textarea>
-        </div>
+          {/* Campo de descripción */}
+          <div className="mb-4">
+            <label htmlFor="descripcion" className="block text-sm font-semibold text-gray-700">Descripción</label>
+            <textarea
+              id="descripcion"
+              value={descripcion}
+              onChange={(e) => setDescripcion(e.target.value)}
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+              placeholder="Cuéntanos un poco sobre ti"
+              required
+            ></textarea>
+          </div>
 
-        {/* Campo de especialización */}
-        <div className="mb-4">
-          <label htmlFor="especializacion" className="block text-sm font-semibold text-gray-700">Especialización</label>
-          <input
-            type="text"
-            id="especializacion"
-            value={especializacion}
-            onChange={(e) => setEspecializacion(e.target.value)}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            placeholder="Ingresa tu especialización (ej. Ingeniería, Medicina, etc.)"
-            required
-          />
-        </div>
+          {/* Campo de especialización */}
+          <div className="mb-4">
+            <label htmlFor="especializacion" className="block text-sm font-semibold text-gray-700">Especialización</label>
+            <input
+              type="text"
+              id="especializacion"
+              value={especializacion}
+              onChange={(e) => setEspecializacion(e.target.value)}
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+              placeholder="Ingresa tu especialización (ej. Ingeniería, Medicina, etc.)"
+              required
+            />
+          </div>
 
-        {/* Campo de año de estudio */}
-        <div className="mb-4">
-          <label htmlFor="anioEstudio" className="block text-sm font-semibold text-gray-700">Año de Estudio</label>
-          <input
-            type="number"
-            id="anioEstudio"
-            value={anioEstudio}
-            onChange={(e) => setAnioEstudio(e.target.value)}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            placeholder="Ingresa tu año de estudio"
-            required
-          />
-        </div>
+          {/* Campo de año de estudio */}
+          <div className="mb-4">
+            <label htmlFor="anioEstudio" className="block text-sm font-semibold text-gray-700">Año de Estudio</label>
+            <input
+              type="number"
+              id="anioEstudio"
+              value={anioEstudio}
+              onChange={(e) => setAnioEstudio(e.target.value)}
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+              placeholder="Ingresa tu año de estudio"
+              required
+            />
+          </div>
 
-        {/* Campo para foto de perfil */}
-        <div className="mb-4">
-          <label htmlFor="fotoPerfil" className="block text-sm font-semibold text-gray-700">Foto de Perfil</label>
-          <input
-            type="file"
-            id="fotoPerfil"
-            onChange={handleFileChange}
-            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            accept="image/*"
-          />
-        </div>
+          {/* Campo para foto de perfil */}
+          <div className="mb-4">
+            <label htmlFor="fotoPerfil" className="block text-sm font-semibold text-gray-700">Foto de Perfil</label>
+            <input
+              type="file"
+              id="fotoPerfil"
+              onChange={handleFileChange}
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+              accept="image/*"
+            />
+          </div>
 
-        {/* Botón de envío */}
-        <div className="mb-4">
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
-          >
-            Guardar Perfil de Estudiante
-          </button>
-        </div>
-      </form>
+          {/* Botón de envío */}
+          <div className="mb-4">
+            <button
+              type="submit"
+              className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
+            >
+              Guardar Perfil de Estudiante
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
