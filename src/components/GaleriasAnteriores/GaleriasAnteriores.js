@@ -121,7 +121,7 @@ const GaleriasAnteriores = () => {
   if (loading) return <p className="text-center text-[#002855]">Cargando galerías anteriores...</p>;
 
   return (
-    <div className="p-6 md:p-12 max-w-6xl mx-auto bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] min-h-screen">
+    <div className="min-h-screen bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] p-6 md:p-12">
       <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 shadow-lg">
         Vol 1-1 II Encuentro de Investigaciones Cualitativas
       </h2>
@@ -210,7 +210,7 @@ const GaleriasAnteriores = () => {
                   </div>
                   <div className="tooltip flex items-center space-x-1">
                     <FaQuoteLeft className="text-lg sm:text-xl hover:text-[#006D5B] transition-colors" />
-                    <span>{galeria.citas || 0}</span>
+                    <span className="text-xs sm:text-base">{galeria.citas || 0}</span>
                     <span className="tooltiptext">Citas</span>
                   </div>
                 </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Para redirección dinámica
-import { db } from '../../config/firebaseConfig'; // Configuración de Firebase
+import { useNavigate } from 'react-router-dom';
+import { db } from '../../config/firebaseConfig';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
 
 const CulturaReciclaje = () => {
@@ -8,13 +8,12 @@ const CulturaReciclaje = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
-  const navigate = useNavigate(); // Hook para redirección
+  const navigate = useNavigate();
 
-  // Obtener datos filtrados en tiempo real desde Firestore
   useEffect(() => {
     const q = query(
-      collection(db, 'cursos'), // Usamos la colección 'cursos'
-      where('categoria', '==', 'CulturaReciclaje') // Filtrar por categoría 'CulturaReciclaje'
+      collection(db, 'cursos'),
+      where('categoria', '==', 'CulturaReciclaje')
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -22,7 +21,7 @@ const CulturaReciclaje = () => {
       setItems(itemsData);
     });
 
-    return () => unsubscribe(); // Limpiar la suscripción
+    return () => unsubscribe();
   }, []);
 
   const handleMouseDown = (e) => {
@@ -35,7 +34,7 @@ const CulturaReciclaje = () => {
     if (!isDragging) return;
     e.preventDefault();
     const x = e.pageX - e.currentTarget.offsetLeft;
-    const walk = (x - startX) * 2; // Velocidad del desplazamiento
+    const walk = (x - startX) * 2;
     e.currentTarget.scrollLeft = scrollLeft - walk;
   };
 
@@ -57,14 +56,13 @@ const CulturaReciclaje = () => {
   const handleTouchEnd = () => setIsDragging(false);
 
   const handleItemClick = (id) => {
-    // Redirigir al componente de detalles del curso con el ID
     navigate(`/detalles-curso/${id}`);
   };
 
   return (
-    <div className="p-6 md:p-12 max-w-6xl mx-auto bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50]">
+    <div className="min-h-screen w-full bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] p-6 md:p-12">
       {/* Título del componente */}
-      <h2 className="text-3xl md:text-4xl font-extrabold mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 shadow-xl p-6 bg-white rounded-lg">
+      <h2 className="text-3xl md:text-4xl font-extrabold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 shadow-xl p-6 bg-white rounded-lg">
         Cultura de Reciclaje y Basura Cero
       </h2>
 
@@ -91,7 +89,7 @@ const CulturaReciclaje = () => {
           <div
             key={item.id}
             className="min-w-[300px] flex flex-col bg-white border border-[#002855] p-4 rounded-lg shadow-lg cursor-pointer hover:shadow-2xl transition duration-300 transform hover:scale-105 hover:bg-[#005073]"
-            onClick={() => handleItemClick(item.id)} // Redirigir al hacer clic
+            onClick={() => handleItemClick(item.id)}
           >
             <img
               src={item.imagen}

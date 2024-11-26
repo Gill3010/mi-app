@@ -56,7 +56,11 @@ const Metrics = () => {
 
   return (
     <div className="bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] shadow-xl rounded-lg p-6 mt-8 max-w-5xl mx-auto text-white">
-      <div className="flex gap-6 sm:gap-8 text-center overflow-x-auto pb-6">
+      {/* Contenedor principal */}
+      <div
+        className="flex gap-6 sm:gap-8 text-center overflow-x-auto pb-6"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }} // Oculta la barra en navegadores modernos
+      >
         {[
           { label: 'Galerías', value: metrics.totalGalleries, icon: <FaImages /> },
           { label: 'Publicaciones', value: metrics.totalPublications, icon: <FaFileAlt /> },

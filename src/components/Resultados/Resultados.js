@@ -59,7 +59,6 @@ const Resultados = () => {
   };
 
   const handleShare = async (id, title) => {
-    // Primero intenta compartir la publicación
     if (navigator.share) {
       try {
         await navigator.share({
@@ -67,24 +66,20 @@ const Resultados = () => {
           text: `Consulta esta publicación: ${title}`,
           url: window.location.href,
         });
-
-        // Si la acción de compartir es exitosa, incrementa el contador
         incrementShareCount(id);
       } catch (error) {
         console.error("Error al compartir:", error);
-        // Aquí puedes manejar el error si la función de compartir falla.
       }
     } else {
       alert("La función de compartir no está disponible en este navegador.");
     }
   };
 
-  // Función para incrementar el contador de veces compartidas
   const incrementShareCount = async (id) => {
     const docRef = doc(db, "publicaciones", id);
     try {
       await updateDoc(docRef, {
-        compartido: increment(1), // Incrementa el contador de compartidos
+        compartido: increment(1),
       });
       dispatch(search(query));
     } catch (error) {
@@ -93,11 +88,11 @@ const Resultados = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-8 bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] text-white">
+    <div className="min-h-screen w-full bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] text-white p-8">
       <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 shadow-lg">
         Resultados de la Búsqueda
       </h2>
-      
+
       {loading && <p className="text-[#002855] text-center">Cargando resultados...</p>}
       {error && <p className="text-red-500 text-center">{error}</p>}
 
@@ -105,12 +100,12 @@ const Resultados = () => {
         {results && Array.isArray(results) && results.length > 0 ? (
           <ul className="space-y-6">
             {results.map((item) => (
-              <li 
-                key={item.id} 
+              <li
+                key={item.id}
                 className="p-6 border border-gray-200 rounded-lg hover:shadow-xl transition duration-300 ease-in-out hover:border-[#002855] relative bg-white text-[#002855]"
               >
                 <div className="absolute top-0 left-0 w-full h-1 bg-[#002855] rounded-t-lg"></div>
-                
+
                 {item.imagen && (
                   <img
                     src={item.imagen}
@@ -122,7 +117,7 @@ const Resultados = () => {
                     }}
                   />
                 )}
-                
+
                 <h3 className="text-xl font-semibold relative group cursor-pointer mb-1">
                   <strong>Título de la investigación</strong>
                   <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max px-3 py-1 text-xs text-white bg-black rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -131,34 +126,46 @@ const Resultados = () => {
                 </h3>
                 <p className="mb-2"><strong>DOI:</strong> {item.doi || "No disponible"}</p>
 
-                <p className="font-medium mb-1"><strong>Autor:</strong> {item.nombreAutor} {item.apellidoAutor}</p>
+                <p className="font-medium mb-1">
+                  <strong>Autor:</strong> {item.nombreAutor} {item.apellidoAutor}
+                </p>
                 <p className="flex items-center mb-1">
                   <strong>ORCID:</strong>{" "}
-                  <a href={`https://orcid.org/${item.orcid}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline flex items-center ml-1">
+                  <a
+                    href={`https://orcid.org/${item.orcid}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 underline flex items-center ml-1"
+                  >
                     <FiUser className="w-4 h-4 mr-1" /> Ver perfil
                   </a>
                 </p>
-                
+
                 <p className="relative group cursor-pointer mb-1">
                   <strong>Afiliación</strong>
                   <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max px-3 py-1 text-xs text-white bg-black rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     {item.institucion || "Afiliación no disponible"}
                   </span>
                 </p>
-                
-                <p className="mb-3"><strong>Fecha de Publicación:</strong> {formatDate(item.fechaPublicacion)}</p>
+
+                <p className="mb-3">
+                  <strong>Fecha de Publicación:</strong> {formatDate(item.fechaPublicacion)}
+                </p>
 
                 {item.resumen ? (
                   <p className="mb-3">
-                    <strong>Resumen:</strong> <a href={item.resumen} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">Ver documento</a>
+                    <strong>Resumen:</strong>{" "}
+                    <a href={item.resumen} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
+                      Ver documento
+                    </a>
                   </p>
                 ) : (
                   <p className="mb-3"><strong>Resumen no disponible</strong></p>
                 )}
-                
+
                 {item.audio && <audio controls src={item.audio} className="mt-4 w-full" />}
 
-                <button 
+                <button
                   onClick={() => handleDetailsClick(item.id)}
                   className="mt-4 px-4 py-2 bg-[#002855] text-white rounded-md hover:bg-[#005073] focus:outline-none"
                 >
@@ -169,25 +176,20 @@ const Resultados = () => {
                   <div className="tooltip flex items-center space-x-1 cursor-pointer" onClick={() => handleIncrementViews(item.id)}>
                     <FiEye className="text-lg hover:text-[#006D5B] transition-colors" />
                     <span className="text-sm">{item.vistas || 0}</span>
-                    <span className="tooltiptext">Vistas</span>
                   </div>
                   <div className="tooltip flex items-center space-x-1 cursor-pointer" onClick={() => handleIncrementLikes(item.id)}>
                     <FiHeart className="text-lg hover:text-red-400 transition-colors" />
                     <span className="text-sm">{item.likes || 0}</span>
-                    <span className="tooltiptext">Likes</span>
                   </div>
                   <div className="tooltip flex items-center space-x-1 cursor-pointer" onClick={() => handleShare(item.id, item.tituloInvestigacion)}>
                     <FaShareAlt className="text-lg hover:text-[#006D5B] transition-colors" />
                     <span className="text-sm">{item.compartido || 0}</span>
-                    <span className="tooltiptext w-24">Compartir</span>
                   </div>
                   <div className="tooltip flex items-center space-x-1">
                     <FaQuoteLeft className="text-lg hover:text-[#006D5B] transition-colors" />
                     <span className="text-sm">{item.citas || 0}</span>
-                    <span className="tooltiptext">Citas</span>
                   </div>
                 </div>
-
               </li>
             ))}
           </ul>
@@ -197,7 +199,10 @@ const Resultados = () => {
       </div>
 
       {selectedImage && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50 p-4 overflow-hidden" onClick={closeModal}>
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50 p-4 overflow-hidden"
+          onClick={closeModal}
+        >
           <img src={selectedImage} alt="Imagen ampliada" className="max-w-full max-h-full rounded-lg shadow-lg object-contain" />
         </div>
       )}

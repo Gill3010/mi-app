@@ -15,7 +15,7 @@ const Footer = () => {
 
         {/* Información de Contacto */}
         <div>
-          <h3 className="text-xl font-bold mb-3">Contáctanos</h3>
+          <h3 className="text-xl font-bold mb-3">Contáctenos</h3>
           <ul className="space-y-2">
             <li className="flex items-center">
               <FaMapMarkerAlt className="mr-2" />

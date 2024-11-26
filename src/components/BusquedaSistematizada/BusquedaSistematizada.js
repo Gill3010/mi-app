@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Para redirección dinámica
-import { db } from '../../config/firebaseConfig'; // Configuración de Firebase
+import { useNavigate } from 'react-router-dom';
+import { db } from '../../config/firebaseConfig';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
 
 const BusquedaSistematizada = () => {
   const [items, setItems] = useState([]);
-  const navigate = useNavigate(); // Hook para redirección
+  const navigate = useNavigate();
 
-  // Obtener datos filtrados en tiempo real desde Firestore
   useEffect(() => {
     const q = query(
-      collection(db, 'cursos'), // Usamos la colección 'cursos'
-      where('categoria', '==', 'BusquedaSistematizada') // Filtramos por categoría
+      collection(db, 'cursos'),
+      where('categoria', '==', 'BusquedaSistematizada')
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -19,32 +18,34 @@ const BusquedaSistematizada = () => {
       setItems(itemsData);
     });
 
-    return () => unsubscribe(); // Limpiar la suscripción
+    return () => unsubscribe();
   }, []);
 
   const handleItemClick = (id) => {
-    // Redirigir al componente de detalles del curso con el ID
     navigate(`/detalles-curso/${id}`);
   };
 
   return (
-    <div className="p-6 md:p-12 max-w-6xl mx-auto bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50]">
-      <h2 className="text-3xl md:text-4xl font-extrabold mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 shadow-xl p-6 bg-white rounded-lg">
+    <div className="min-h-screen w-full bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] p-6 md:p-12">
+      {/* Título del componente */}
+      <h2 className="text-3xl md:text-4xl font-extrabold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 shadow-xl p-6 bg-white rounded-lg">
         Búsqueda sistematizada de Información con Herramientas IA
       </h2>
 
+      {/* Descripción del componente */}
       <div className="text-center p-4 bg-white rounded-lg shadow-md mb-8">
         <p className="text-lg md:text-xl font-medium text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400">
           Descubre herramientas avanzadas de inteligencia artificial que optimizan la búsqueda de información y mejoran tu productividad.
         </p>
       </div>
 
+      {/* Carrusel */}
       <div className="flex overflow-x-auto space-x-6 scroll-smooth scrollbar-hide">
         {items.map((item) => (
           <div
             key={item.id}
             className="min-w-[300px] flex flex-col bg-white border border-[#002855] p-4 rounded-lg shadow-lg cursor-pointer hover:shadow-2xl transition duration-300 transform hover:scale-105 hover:bg-[#005073]"
-            onClick={() => handleItemClick(item.id)} // Redirigir al hacer clic
+            onClick={() => handleItemClick(item.id)}
           >
             <img
               src={item.imagen}

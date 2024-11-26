@@ -119,7 +119,7 @@ const GaleriasActuales = () => {
   if (loading) return <p className="text-center text-[#002855]">Cargando galerías...</p>;
 
   return (
-    <div className="p-6 md:p-12 max-w-6xl mx-auto bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] min-h-screen">
+    <div className="min-h-screen bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] p-6 md:p-12">
       <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 shadow-lg">
         Vol 1-2 Galería Actual
       </h2>

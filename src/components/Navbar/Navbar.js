@@ -112,7 +112,7 @@ const Navbar = () => {
           </a>
           <ul className={`${openSubmenu === 'galeria' ? 'block' : 'hidden'} bg-gray-800 p-2 space-y-1`}>
             <li><NavLink to="/GaleriasActuales" className="text-white hover:bg-[#005073] block px-4 py-2">Actuales</NavLink></li>
-            <li><NavLink to="/GaleriasAnteriores" className="text-white hover:bg-[#005073] block px-4 py-2">Anteriores</NavLink></li>
+            <li><NavLink to="/GaleriasAnteriores" className="text-white hover:bg-[#005073] block px-4 py-2">II Encuentro de Investigaciones Cualitativas</NavLink></li>
           </ul>
         </li>
 

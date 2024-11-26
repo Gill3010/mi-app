@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Para redirección dinámica
-import { db } from '../../config/firebaseConfig'; // Asegúrate de que este archivo esté correctamente configurado
+import { useNavigate } from 'react-router-dom';
+import { db } from '../../config/firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
 
 const Cursos = () => {
@@ -10,28 +10,23 @@ const Cursos = () => {
   const [scrollLeft, setScrollLeft] = useState(0);
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate(); // Hook para redirección
+  const navigate = useNavigate();
 
-  // Función para obtener los cursos desde Firestore
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        console.log('Fetching courses from Firestore...');
-        const querySnapshot = await getDocs(collection(db, 'cursos')); // Asegúrate de usar la colección correcta
+        const querySnapshot = await getDocs(collection(db, 'cursos'));
         const cursosData = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-
-        console.log('Cursos obtenidos de Firestore:', cursosData); // Verifica los datos obtenidos
         setCourses(cursosData);
       } catch (error) {
-        console.error('Error al obtener los cursos:', error); // Error al consultar Firestore
+        console.error('Error al obtener los cursos:', error);
       } finally {
         setLoading(false);
       }
     };
-
     fetchCourses();
   }, []);
 
@@ -45,13 +40,11 @@ const Cursos = () => {
     if (!isDragging) return;
     e.preventDefault();
     const x = e.pageX - carouselRef.current.offsetLeft;
-    const walk = (x - startX) * 2; // Velocidad del desplazamiento
+    const walk = (x - startX) * 2;
     carouselRef.current.scrollLeft = scrollLeft - walk;
   };
 
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
+  const handleMouseUp = () => setIsDragging(false);
 
   const handleTouchStart = (e) => {
     setIsDragging(true);
@@ -66,28 +59,23 @@ const Cursos = () => {
     carouselRef.current.scrollLeft = scrollLeft - walk;
   };
 
-  const handleTouchEnd = () => {
-    setIsDragging(false);
-  };
+  const handleTouchEnd = () => setIsDragging(false);
 
   const handleCourseClick = (id) => {
-    // Redirigir al componente de detalles del curso con el ID
     navigate(`/detalles-curso/${id}`);
   };
 
   if (loading) {
-    console.log('Cargando cursos...'); // Indicador de carga
     return <p className="text-center text-xl">Cargando cursos...</p>;
   }
 
   if (courses.length === 0) {
-    console.log('No hay cursos disponibles.'); // Cuando no hay cursos
     return <p className="text-center text-xl">No hay cursos disponibles en este momento.</p>;
   }
 
   return (
-    <div className="p-6 md:p-12 max-w-6xl mx-auto bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50]">
-      <h1 className="text-3xl md:text-4xl font-extrabold mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 shadow-xl p-6 bg-white rounded-lg">
+    <div className="min-h-screen w-full bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] p-6 md:p-12">
+      <h1 className="text-3xl md:text-4xl font-extrabold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 shadow-xl p-6 bg-white rounded-lg">
         Cursos
       </h1>
       <div className="text-center p-4 bg-white rounded-lg shadow-md mb-8">
@@ -112,7 +100,7 @@ const Cursos = () => {
           <div
             key={course.id}
             className="min-w-[300px] flex flex-col bg-white border border-[#002855] p-4 rounded-lg shadow-lg cursor-pointer hover:shadow-2xl transition duration-300 transform hover:scale-105 hover:bg-[#005073]"
-            onClick={() => handleCourseClick(course.id)} // Redirigir al hacer clic
+            onClick={() => handleCourseClick(course.id)}
           >
             <img
               src={course.imagen}
