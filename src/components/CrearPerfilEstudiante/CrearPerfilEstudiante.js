@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { auth, db, storage } from '../../config/firebaseConfig';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { useNavigate } from 'react-router-dom'; // Importamos useNavigate para la redirección
 
 function CrearPerfilEstudiante() {
   const [nombre, setNombre] = useState('');
@@ -13,6 +14,8 @@ function CrearPerfilEstudiante() {
   const [user, setUser] = useState(null);
   const [mensajeExito, setMensajeExito] = useState('');
   const [mensajeError, setMensajeError] = useState('');
+
+  const navigate = useNavigate(); // Inicializamos useNavigate para redirigir después del registro
 
   // Cargar los datos del perfil del usuario y verificar su rol
   useEffect(() => {
@@ -101,6 +104,7 @@ function CrearPerfilEstudiante() {
               await setDoc(doc(db, 'perfiles', user.uid), perfilData);
               console.log("Perfil de Estudiante actualizado con éxito");
               setMensajeExito("Perfil de Estudiante actualizado con éxito");
+              navigate(`/perfil-estudiante`); // Redirige al perfil de estudiante
             }
           );
         } else {
@@ -108,6 +112,7 @@ function CrearPerfilEstudiante() {
           await setDoc(doc(db, 'perfiles', user.uid), perfilData);
           console.log("Perfil de Estudiante actualizado con éxito sin foto");
           setMensajeExito("Perfil de Estudiante actualizado con éxito");
+          navigate(`/perfil-estudiante`); // Redirige al perfil de estudiante
         }
       } catch (error) {
         console.error("Error al actualizar el perfil:", error);

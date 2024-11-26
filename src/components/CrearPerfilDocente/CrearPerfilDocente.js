@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { auth, db, storage } from '../../config/firebaseConfig';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { useNavigate } from 'react-router-dom'; // Importamos useNavigate para la redirección
 
 function CrearPerfilDocente() {
   const [nombre, setNombre] = useState('');
@@ -12,6 +13,8 @@ function CrearPerfilDocente() {
   const [mensajeExito, setMensajeExito] = useState('');
   const [mensajeError, setMensajeError] = useState('');
   const [esDocente, setEsDocente] = useState(false); // Estado para verificar si el usuario es docente
+
+  const navigate = useNavigate(); // Inicializamos useNavigate para redirigir después de crear el perfil
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((usuario) => {
@@ -73,11 +76,13 @@ function CrearPerfilDocente() {
               perfilData.fotoPerfil = downloadURL;
               await setDoc(doc(db, 'perfiles', usuario.uid), perfilData);
               setMensajeExito("Perfil de Docente creado con éxito");
+              navigate(`/perfil-docente`); // Redirige al perfil de docente
             }
           );
         } else {
           await setDoc(doc(db, 'perfiles', usuario.uid), perfilData);
           setMensajeExito("Perfil de Docente creado con éxito");
+          navigate(`/perfil-docente`); // Redirige al perfil de docente
         }
       } catch (error) {
         console.error("Error al actualizar el perfil:", error);
