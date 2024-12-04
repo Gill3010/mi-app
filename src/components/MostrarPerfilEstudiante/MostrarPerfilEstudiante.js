@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { auth, db } from '../../config/firebaseConfig';
-import { doc, getDoc } from 'firebase/firestore';
+import React, { useState, useEffect } from "react";
+import { auth, db } from "../../config/firebaseConfig";
+import { doc, getDoc } from "firebase/firestore";
 
 function MostrarPerfilEstudiante() {
   const [perfil, setPerfil] = useState(null);
@@ -12,7 +12,7 @@ function MostrarPerfilEstudiante() {
       if (usuario) {
         const cargarPerfil = async () => {
           try {
-            const perfilRef = doc(db, 'perfiles', usuario.uid);
+            const perfilRef = doc(db, "perfiles", usuario.uid);
             const perfilDoc = await getDoc(perfilRef);
             if (perfilDoc.exists()) {
               setPerfil(perfilDoc.data());
@@ -51,17 +51,25 @@ function MostrarPerfilEstudiante() {
       <div className="flex flex-wrap justify-between items-center w-full">
         {/* Información textual */}
         <div className="w-full md:w-3/4 space-y-3">
-          <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400">{perfil.nombre}</h2>
+          <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400">
+            {perfil.nombre}
+          </h2>
           <p className="text-sm italic">{perfil.especializacion}</p>
-          <p className="text-sm">{perfil.anioEstudio && `Año de Estudio: ${perfil.anioEstudio}`}</p>
+          <p className="text-sm">
+            {perfil.anioEstudio && `Año de Estudio: ${perfil.anioEstudio}`}
+          </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <h3 className="text-md font-semibold text-[#003366]">Correo Electrónico:</h3>
+              <h3 className="text-md font-semibold text-[#003366]">
+                Correo Electrónico:
+              </h3>
               <p className="text-sm">{perfil.email}</p>
             </div>
             <div className="col-span-2">
-              <h3 className="text-md font-semibold text-[#003366]">Descripción:</h3>
+              <h3 className="text-md font-semibold text-[#003366]">
+                Descripción:
+              </h3>
               <p className="text-sm">{perfil.descripcion}</p>
             </div>
           </div>

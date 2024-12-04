@@ -1,44 +1,68 @@
-import React, { useState } from 'react';
-import { db } from '../../config/firebaseConfig'; // Configuración de Firebase
-import { collection, addDoc } from 'firebase/firestore';
+import React, { useState } from "react";
+import { db, storage } from "../../config/firebaseConfig"; // Firebase Firestore y Storage
+import { collection, addDoc } from "firebase/firestore";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const FormularioCrearCurso = () => {
   const [courseData, setCourseData] = useState({
-    titulo: '',
-    descripcion: '',
-    imagen: '',
-    precio: '',
-    categoria: '',
-    video: '', // Campo para URL del video
-    etiquetas: '', // Campo para etiquetas (como texto separado por comas)
+    titulo: "",
+    descripcion: "",
+    imagen: "",
+    precio: "",
+    categoria: "",
+    video: "",
+    etiquetas: "",
   });
 
+  const [imageFile, setImageFile] = useState(null);
+  const [videoFile, setVideoFile] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCourseData({ ...courseData, [name]: value });
   };
 
-  // Validación básica de datos
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    if (name === "imagenFile") setImageFile(files[0]);
+    if (name === "videoFile") setVideoFile(files[0]);
+  };
+
+  const uploadFile = (file, folder) => {
+    return new Promise((resolve, reject) => {
+      const fileRef = ref(storage, `${folder}/${file.name}`);
+      const uploadTask = uploadBytesResumable(fileRef, file);
+
+      uploadTask.on(
+        "state_changed",
+        null,
+        (error) => reject(error),
+        async () => {
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          resolve(downloadURL);
+        }
+      );
+    });
+  };
+
   const validateData = () => {
-    const { titulo, descripcion, imagen, precio, categoria, video } = courseData;
-    if (!titulo.trim() || !descripcion.trim() || !imagen.trim() || !precio.trim() || !categoria.trim() || !video.trim()) {
-      setErrorMessage('Todos los campos son obligatorios.');
+    const { titulo, descripcion, precio, categoria } = courseData;
+    if (
+      !titulo.trim() ||
+      !descripcion.trim() ||
+      !precio.trim() ||
+      !categoria.trim()
+    ) {
+      setErrorMessage(
+        "Los campos de título, descripción, precio y categoría son obligatorios."
+      );
       return false;
     }
     if (precio <= 0) {
-      setErrorMessage('El precio debe ser un valor positivo.');
-      return false;
-    }
-    if (!/^https?:\/\/.+\.(jpg|jpeg|png|gif)$/i.test(imagen)) {
-      setErrorMessage('La URL de la imagen no es válida.');
-      return false;
-    }
-    if (!/^https?:\/\/.+$/i.test(video)) {
-      setErrorMessage('La URL del video no es válida.');
+      setErrorMessage("El precio debe ser un valor positivo.");
       return false;
     }
     return true;
@@ -46,33 +70,53 @@ const FormularioCrearCurso = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage(''); // Limpiar mensajes previos
-    setSuccessMessage('');
+    setErrorMessage("");
+    setSuccessMessage("");
 
-    if (!validateData()) return; // Validar datos antes de continuar
+    if (!validateData()) return;
 
     setLoading(true);
 
     try {
+      let imageUrl = courseData.imagen;
+      let videoUrl = courseData.video;
+
+      // Subir imagen si se seleccionó un archivo
+      if (imageFile) {
+        imageUrl = await uploadFile(imageFile, "imagenes");
+      }
+
+      // Subir video si se seleccionó un archivo
+      if (videoFile) {
+        videoUrl = await uploadFile(videoFile, "videos");
+      }
+
       // Guardar los datos en Firestore
-      await addDoc(collection(db, 'cursos'), {
+      await addDoc(collection(db, "cursos"), {
         ...courseData,
-        etiquetas: courseData.etiquetas.split(',').map((etiqueta) => etiqueta.trim()), // Convertir etiquetas a array
-        precio: parseFloat(courseData.precio), // Convertir precio a número
+        imagen: imageUrl,
+        video: videoUrl,
+        etiquetas: courseData.etiquetas
+          .split(",")
+          .map((etiqueta) => etiqueta.trim()),
+        precio: parseFloat(courseData.precio),
       });
-      setSuccessMessage('¡Curso creado exitosamente!');
+
+      setSuccessMessage("¡Curso creado exitosamente!");
       setCourseData({
-        titulo: '',
-        descripcion: '',
-        imagen: '',
-        precio: '',
-        categoria: '',
-        video: '',
-        etiquetas: '',
+        titulo: "",
+        descripcion: "",
+        imagen: "",
+        precio: "",
+        categoria: "",
+        video: "",
+        etiquetas: "",
       });
+      setImageFile(null);
+      setVideoFile(null);
     } catch (error) {
-      console.error('Error al crear el curso:', error);
-      setErrorMessage('Hubo un error al crear el curso. Intenta nuevamente.');
+      console.error("Error al crear el curso:", error);
+      setErrorMessage("Hubo un error al crear el curso. Intenta nuevamente.");
     } finally {
       setLoading(false);
     }
@@ -85,24 +129,24 @@ const FormularioCrearCurso = () => {
           Crear Nuevo Curso
         </h2>
 
-        {/* Mensaje de éxito */}
         {successMessage && (
           <div className="mb-4 text-green-600 font-medium">
             {successMessage}
           </div>
         )}
-
-        {/* Mensaje de error */}
         {errorMessage && (
-          <div className="mb-4 text-red-600 font-medium">
-            {errorMessage}
-          </div>
+          <div className="mb-4 text-red-600 font-medium">{errorMessage}</div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-lg shadow-lg">
-          {/* Campo para Título */}
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-4 bg-white p-6 rounded-lg shadow-lg"
+        >
           <div>
-            <label htmlFor="titulo" className="block text-[#002855] font-medium mb-1">
+            <label
+              htmlFor="titulo"
+              className="block text-[#002855] font-medium mb-1"
+            >
               Título del Curso
             </label>
             <input
@@ -116,9 +160,11 @@ const FormularioCrearCurso = () => {
             />
           </div>
 
-          {/* Campo para Descripción */}
           <div>
-            <label htmlFor="descripcion" className="block text-[#002855] font-medium mb-1">
+            <label
+              htmlFor="descripcion"
+              className="block text-[#002855] font-medium mb-1"
+            >
               Descripción
             </label>
             <textarea
@@ -132,9 +178,11 @@ const FormularioCrearCurso = () => {
             ></textarea>
           </div>
 
-          {/* Campo para Imagen */}
           <div>
-            <label htmlFor="imagen" className="block text-[#002855] font-medium mb-1">
+            <label
+              htmlFor="imagen"
+              className="block text-[#002855] font-medium mb-1"
+            >
               URL de la Imagen
             </label>
             <input
@@ -145,13 +193,66 @@ const FormularioCrearCurso = () => {
               onChange={handleChange}
               className="w-full border border-[#002855] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002855]"
               placeholder="https://ejemplo.com/imagen.jpg"
-              required
             />
           </div>
 
-          {/* Campo para Precio */}
           <div>
-            <label htmlFor="precio" className="block text-[#002855] font-medium mb-1">
+            <label
+              htmlFor="imagenFile"
+              className="block text-[#002855] font-medium mb-1"
+            >
+              Subir Imagen
+            </label>
+            <input
+              type="file"
+              id="imagenFile"
+              name="imagenFile"
+              onChange={handleFileChange}
+              accept="image/*"
+              className="w-full border border-[#002855] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002855]"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="video"
+              className="block text-[#002855] font-medium mb-1"
+            >
+              URL del Video
+            </label>
+            <input
+              type="text"
+              id="video"
+              name="video"
+              value={courseData.video}
+              onChange={handleChange}
+              className="w-full border border-[#002855] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002855]"
+              placeholder="https://ejemplo.com/video.mp4"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="videoFile"
+              className="block text-[#002855] font-medium mb-1"
+            >
+              Subir Video
+            </label>
+            <input
+              type="file"
+              id="videoFile"
+              name="videoFile"
+              onChange={handleFileChange}
+              accept="video/*"
+              className="w-full border border-[#002855] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002855]"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="precio"
+              className="block text-[#002855] font-medium mb-1"
+            >
               Precio del Curso (USD)
             </label>
             <input
@@ -166,9 +267,11 @@ const FormularioCrearCurso = () => {
             />
           </div>
 
-          {/* Menú desplegable para Categoría */}
           <div>
-            <label htmlFor="categoria" className="block text-[#002855] font-medium mb-1">
+            <label
+              htmlFor="categoria"
+              className="block text-[#002855] font-medium mb-1"
+            >
               Categoría del Curso
             </label>
             <select
@@ -181,34 +284,29 @@ const FormularioCrearCurso = () => {
             >
               <option value="">Seleccione una categoría</option>
               <option value="Cursos">Cursos Generales</option>
-              <option value="BusquedaSistematizada">Búsqueda sistematizada de Información con Herramientas IA</option>
-              <option value="AnalisisDatosCualitativos">Análisis de datos cualitativos con apoyo de IA</option>
-              <option value="UsoAtlasTi">Uso de Atlas Ti en investigación científica</option>
-              <option value="GestionFondos">Gestión de Fondos para proyectos de Investigación</option>
-              <option value="CulturaReciclaje">Cultura de Reciclaje y Basura Cero</option>
+              <option value="BusquedaSistematizada">
+                Búsqueda sistematizada de Información con Herramientas IA
+              </option>
+              <option value="AnalisisDatosCualitativos">
+                Análisis de datos cualitativos con apoyo de IA
+              </option>
+              <option value="UsoAtlasTi">
+                Uso de Atlas Ti en investigación científica
+              </option>
+              <option value="GestionFondos">
+                Gestión de Fondos para proyectos de Investigación
+              </option>
+              <option value="CulturaReciclaje">
+                Cultura de Reciclaje y Basura Cero
+              </option>
             </select>
           </div>
 
-          {/* Campo para URL del Video */}
           <div>
-            <label htmlFor="video" className="block text-[#002855] font-medium mb-1">
-              URL del Video
-            </label>
-            <input
-              type="text"
-              id="video"
-              name="video"
-              value={courseData.video}
-              onChange={handleChange}
-              className="w-full border border-[#002855] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002855]"
-              placeholder="https://ejemplo.com/video.mp4"
-              required
-            />
-          </div>
-
-          {/* Campo para Etiquetas */}
-          <div>
-            <label htmlFor="etiquetas" className="block text-[#002855] font-medium mb-1">
+            <label
+              htmlFor="etiquetas"
+              className="block text-[#002855] font-medium mb-1"
+            >
               Etiquetas (separadas por comas)
             </label>
             <input
@@ -219,17 +317,15 @@ const FormularioCrearCurso = () => {
               onChange={handleChange}
               className="w-full border border-[#002855] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002855]"
               placeholder="ejemplo1, ejemplo2, ejemplo3"
-              required
             />
           </div>
 
-          {/* Botón de Enviar */}
           <button
             type="submit"
             className="w-full bg-[#002855] text-white font-medium py-2 rounded hover:bg-[#005073] transition duration-200"
             disabled={loading}
           >
-            {loading ? 'Creando...' : 'Crear Curso'}
+            {loading ? "Creando..." : "Crear Curso"}
           </button>
         </form>
       </div>

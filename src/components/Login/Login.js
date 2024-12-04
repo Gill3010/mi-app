@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { auth, loginUser } from '../../config/firebaseConfig';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { auth, db, loginUser } from "../../config/firebaseConfig";
+import { doc, getDoc } from "firebase/firestore";
 import {
   GoogleAuthProvider,
   FacebookAuthProvider,
   signInWithPopup,
   signInWithRedirect,
   getRedirectResult,
-} from 'firebase/auth';
-import { FaGoogle, FaFacebookF } from 'react-icons/fa';
+} from "firebase/auth";
+import { FaGoogle, FaFacebookF } from "react-icons/fa";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState(""); // Mensaje de éxito
   const [isRedirecting, setIsRedirecting] = useState(false); // Estado de redirección
   const navigate = useNavigate();
 
@@ -21,7 +23,7 @@ const Login = () => {
   const facebookProvider = new FacebookAuthProvider();
 
   // Si necesitas permisos adicionales como el correo electrónico
-  facebookProvider.addScope('email');
+  facebookProvider.addScope("email");
 
   const [isMobileOrSafari, setIsMobileOrSafari] = useState(false);
 
@@ -38,16 +40,16 @@ const Login = () => {
         if (result) {
           const credential = FacebookAuthProvider.credentialFromResult(result);
           const accessToken = credential.accessToken;
-          console.log('Inicio de sesión con Facebook exitoso:', result.user);
-          localStorage.setItem('token', accessToken);
-          alert('¡Inicio de sesión con Facebook exitoso!');
-          navigate('/'); // Redirigir a la página de inicio
+          console.log("Inicio de sesión con Facebook exitoso:", result.user);
+          setSuccessMessage("¡Inicio de sesión con Facebook exitoso!");
+          localStorage.setItem("token", accessToken);
+          navigate("/"); // Redirigir a la página de inicio
         }
       } catch (error) {
-        console.error('Error en el inicio de sesión con Facebook:', error);
+        console.error("Error en el inicio de sesión con Facebook:", error);
         setError(
           error.message ||
-            'Error en el inicio de sesión con Facebook. Por favor intenta de nuevo.'
+            "Error en el inicio de sesión con Facebook. Por favor intenta de nuevo."
         );
       } finally {
         setIsRedirecting(false); // Finalizar el proceso de redirección
@@ -63,12 +65,32 @@ const Login = () => {
     e.preventDefault();
     try {
       const userCredential = await loginUser(email, password);
-      console.log('Inicio de sesión exitoso:', userCredential.user);
-      alert('¡Inicio de sesión exitoso!');
-      navigate('/'); // Redirigir a la página de inicio
+      const user = userCredential.user;
+
+      // Obtener el rol del usuario desde Firestore
+      const userDocRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userDocRef);
+
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        console.log("Usuario autenticado:", userData);
+
+        // Redirigir según el rol
+        if (userData.role === "Docente") {
+          navigate("/perfil-docente");
+        } else if (userData.role === "Estudiante") {
+          navigate("/perfil-estudiante");
+        } else {
+          setError("Rol desconocido. Por favor, contacta al soporte.");
+        }
+      } else {
+        setError("No se encontró la información del usuario.");
+      }
     } catch (error) {
-      console.error('Error en el inicio de sesión:', error);
-      setError('Error durante el inicio de sesión. Por favor intenta de nuevo.');
+      console.error("Error en el inicio de sesión:", error);
+      setError(
+        "Error durante el inicio de sesión. Por favor intenta de nuevo."
+      );
     }
   };
 
@@ -77,13 +99,31 @@ const Login = () => {
       const result = await signInWithPopup(auth, googleProvider);
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
-      console.log('Inicio de sesión con Google exitoso:', result.user);
-      localStorage.setItem('token', token);
-      alert('¡Inicio de sesión con Google exitoso!');
-      navigate('/'); // Redirigir a la página de inicio después de iniciar sesión
+      console.log("Inicio de sesión con Google exitoso:", result.user);
+      setSuccessMessage("¡Inicio de sesión con Google exitoso!");
+      localStorage.setItem("token", token);
+
+      // Obtener el rol del usuario desde Firestore
+      const userDocRef = doc(db, "users", result.user.uid);
+      const userDoc = await getDoc(userDocRef);
+
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+
+        // Redirigir según el rol
+        if (userData.role === "Docente") {
+          navigate("/perfil-docente");
+        } else if (userData.role === "Estudiante") {
+          navigate("/perfil-estudiante");
+        } else {
+          setError("Rol desconocido. Por favor, contacta al soporte.");
+        }
+      }
     } catch (error) {
-      console.error('Error en el inicio de sesión con Google:', error);
-      setError('Error en el inicio de sesión con Google. Por favor intenta de nuevo.');
+      console.error("Error en el inicio de sesión con Google:", error);
+      setError(
+        "Error en el inicio de sesión con Google. Por favor intenta de nuevo."
+      );
     }
   };
 
@@ -98,16 +138,32 @@ const Login = () => {
         const result = await signInWithPopup(auth, facebookProvider);
         const credential = FacebookAuthProvider.credentialFromResult(result);
         const accessToken = credential.accessToken;
-        console.log('Inicio de sesión con Facebook exitoso:', result.user);
-        localStorage.setItem('token', accessToken);
-        alert('¡Inicio de sesión con Facebook exitoso!');
-        navigate('/'); // Redirigir a la página de inicio
+        console.log("Inicio de sesión con Facebook exitoso:", result.user);
+        setSuccessMessage("¡Inicio de sesión con Facebook exitoso!");
+        localStorage.setItem("token", accessToken);
+
+        // Obtener el rol del usuario desde Firestore
+        const userDocRef = doc(db, "users", result.user.uid);
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+
+          // Redirigir según el rol
+          if (userData.role === "Docente") {
+            navigate("/perfil-docente");
+          } else if (userData.role === "Estudiante") {
+            navigate("/perfil-estudiante");
+          } else {
+            setError("Rol desconocido. Por favor, contacta al soporte.");
+          }
+        }
       }
     } catch (error) {
-      console.error('Error en el inicio de sesión con Facebook:', error);
+      console.error("Error en el inicio de sesión con Facebook:", error);
       setError(
         error.message ||
-          'Error en el inicio de sesión con Facebook. Por favor intenta de nuevo.'
+          "Error en el inicio de sesión con Facebook. Por favor intenta de nuevo."
       );
       setIsRedirecting(false); // Finalizar el estado de redirección en caso de error
     }
@@ -119,8 +175,12 @@ const Login = () => {
         Iniciar Sesión
       </h2>
       {error && <p className="text-red-500 mb-4">{error}</p>}
-      {isRedirecting && <p className="text-yellow-300 mb-4">Redirigiendo a Facebook...</p>} {/* Estado de redirección */}
-
+      {successMessage && (
+        <p className="text-green-500 mb-4">{successMessage}</p>
+      )}
+      {isRedirecting && (
+        <p className="text-yellow-300 mb-4">Redirigiendo a Facebook...</p>
+      )}
       <form
         onSubmit={handleLogin}
         className="w-full max-w-md bg-white p-8 shadow-2xl rounded-lg text-gray-800"
@@ -160,7 +220,6 @@ const Login = () => {
           Iniciar Sesión
         </button>
       </form>
-
       <div className="mt-8 w-full max-w-md">
         <button
           onClick={handleGoogleLogin}
@@ -176,10 +235,9 @@ const Login = () => {
           <FaFacebookF className="mr-2" /> Iniciar sesión con Facebook
         </button>
       </div>
-
       <div className="mt-6">
         <p>
-          ¿No tienes una cuenta?{' '}
+          ¿No tienes una cuenta?{" "}
           <a href="/register" className="text-blue-200 hover:underline">
             Crea una como Docente ó Estudiante
           </a>
