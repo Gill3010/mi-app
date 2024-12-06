@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { auth, db } from "../../config/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom"; // Importa el hook useNavigate
 
 function MostrarPerfilDocente() {
   const [perfil, setPerfil] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); // Usa el hook useNavigate
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((usuario) => {
@@ -85,6 +87,16 @@ function MostrarPerfilDocente() {
               </h3>
               <p className="text-sm">{perfil.descripcion}</p>
             </div>
+          </div>
+
+          {/* Botón "Crear curso" */}
+          <div className="mt-6">
+            <button
+              onClick={() => navigate("/crear-curso")} // Redirige al formulario de creación de curso
+              className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300"
+            >
+              Crear Curso
+            </button>
           </div>
         </div>
 

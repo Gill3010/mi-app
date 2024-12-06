@@ -8,6 +8,8 @@ import {
   signInWithPopup,
   signInWithRedirect,
   getRedirectResult,
+  onAuthStateChanged, // Verificación de estado de sesión
+  signOut, // Para cerrar sesión activa
 } from "firebase/auth";
 import { FaGoogle, FaFacebookF } from "react-icons/fa";
 
@@ -15,25 +17,44 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [successMessage, setSuccessMessage] = useState(""); // Mensaje de éxito
-  const [isRedirecting, setIsRedirecting] = useState(false); // Estado de redirección
+  const [successMessage, setSuccessMessage] = useState("");
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const navigate = useNavigate();
 
   const googleProvider = new GoogleAuthProvider();
   const facebookProvider = new FacebookAuthProvider();
-
-  // Si necesitas permisos adicionales como el correo electrónico
   facebookProvider.addScope("email");
 
   const [isMobileOrSafari, setIsMobileOrSafari] = useState(false);
 
   useEffect(() => {
-    // Función para detectar Safari o dispositivos móviles
+    // Verificar si el usuario ya está autenticado al cargar la página
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        // Si el usuario está autenticado, obtenemos su rol
+        const userDocRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          if (userData.role === "Docente") {
+            navigate("/perfil-docente"); // Redirigir al perfil del docente
+          } else if (userData.role === "Estudiante") {
+            navigate("/perfil-estudiante"); // Redirigir al perfil del estudiante
+          }
+        }
+      }
+    });
+
+    // Limpiar el listener cuando el componente se desmonte
+    return () => unsubscribe();
+  }, [navigate]);
+
+  useEffect(() => {
     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     setIsMobileOrSafari(isSafari || isMobile);
 
-    // Manejar el resultado de la redirección después de signInWithRedirect
     const handleRedirectResult = async () => {
       try {
         const result = await getRedirectResult(auth);
@@ -48,11 +69,10 @@ const Login = () => {
       } catch (error) {
         console.error("Error en el inicio de sesión con Facebook:", error);
         setError(
-          error.message ||
-            "Error en el inicio de sesión con Facebook. Por favor intenta de nuevo."
+          "Error en el inicio de sesión con Facebook. Por favor intenta de nuevo."
         );
       } finally {
-        setIsRedirecting(false); // Finalizar el proceso de redirección
+        setIsRedirecting(false);
       }
     };
 
@@ -64,10 +84,12 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
+      // Cerrar cualquier sesión activa antes de intentar iniciar una nueva
+      await signOut(auth);
+
       const userCredential = await loginUser(email, password);
       const user = userCredential.user;
 
-      // Obtener el rol del usuario desde Firestore
       const userDocRef = doc(db, "users", user.uid);
       const userDoc = await getDoc(userDocRef);
 
@@ -75,7 +97,6 @@ const Login = () => {
         const userData = userDoc.data();
         console.log("Usuario autenticado:", userData);
 
-        // Redirigir según el rol
         if (userData.role === "Docente") {
           navigate("/perfil-docente");
         } else if (userData.role === "Estudiante") {
@@ -96,6 +117,9 @@ const Login = () => {
 
   const handleGoogleLogin = async () => {
     try {
+      // Cerrar cualquier sesión activa antes de intentar iniciar una nueva
+      await signOut(auth);
+
       const result = await signInWithPopup(auth, googleProvider);
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
@@ -103,14 +127,12 @@ const Login = () => {
       setSuccessMessage("¡Inicio de sesión con Google exitoso!");
       localStorage.setItem("token", token);
 
-      // Obtener el rol del usuario desde Firestore
       const userDocRef = doc(db, "users", result.user.uid);
       const userDoc = await getDoc(userDocRef);
 
       if (userDoc.exists()) {
         const userData = userDoc.data();
 
-        // Redirigir según el rol
         if (userData.role === "Docente") {
           navigate("/perfil-docente");
         } else if (userData.role === "Estudiante") {
@@ -129,12 +151,13 @@ const Login = () => {
 
   const handleFacebookLogin = async () => {
     try {
-      setIsRedirecting(true); // Iniciar el estado de redirección
+      // Cerrar cualquier sesión activa antes de intentar iniciar una nueva
+      await signOut(auth);
+
+      setIsRedirecting(true);
       if (isMobileOrSafari) {
-        // Usar signInWithRedirect en dispositivos móviles y Safari
         await signInWithRedirect(auth, facebookProvider);
       } else {
-        // Usar signInWithPopup en otros navegadores
         const result = await signInWithPopup(auth, facebookProvider);
         const credential = FacebookAuthProvider.credentialFromResult(result);
         const accessToken = credential.accessToken;
@@ -142,14 +165,12 @@ const Login = () => {
         setSuccessMessage("¡Inicio de sesión con Facebook exitoso!");
         localStorage.setItem("token", accessToken);
 
-        // Obtener el rol del usuario desde Firestore
         const userDocRef = doc(db, "users", result.user.uid);
         const userDoc = await getDoc(userDocRef);
 
         if (userDoc.exists()) {
           const userData = userDoc.data();
 
-          // Redirigir según el rol
           if (userData.role === "Docente") {
             navigate("/perfil-docente");
           } else if (userData.role === "Estudiante") {
@@ -165,7 +186,7 @@ const Login = () => {
         error.message ||
           "Error en el inicio de sesión con Facebook. Por favor intenta de nuevo."
       );
-      setIsRedirecting(false); // Finalizar el estado de redirección en caso de error
+      setIsRedirecting(false);
     }
   };
 
@@ -215,7 +236,7 @@ const Login = () => {
 
         <button
           type="submit"
-          className="w-full bg-[#002855] text-white py-3 rounded-lg text-lg hover:bg-[#005073] transition duration-300"
+          className="w-full bg-blue-500 text-white py-3 rounded-lg text-lg hover:bg-blue-600 transition duration-300"
         >
           Iniciar Sesión
         </button>

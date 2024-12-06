@@ -316,17 +316,18 @@ const FormularioCrearCurso = () => {
               value={courseData.etiquetas}
               onChange={handleChange}
               className="w-full border border-[#002855] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002855]"
-              placeholder="ejemplo1, ejemplo2, ejemplo3"
             />
           </div>
 
-          <button
-            type="submit"
-            className="w-full bg-[#002855] text-white font-medium py-2 rounded hover:bg-[#005073] transition duration-200"
-            disabled={loading}
-          >
-            {loading ? "Creando..." : "Crear Curso"}
-          </button>
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              disabled={loading}
+              className="mt-4 py-2 px-8 bg-gradient-to-r from-blue-600 to-green-500 text-white rounded-md hover:bg-gradient-to-r hover:from-blue-700 hover:to-green-600"
+            >
+              {loading ? "Cargando..." : "Crear Curso"}
+            </button>
+          </div>
         </form>
       </div>
     </div>

@@ -1,11 +1,14 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react"; // Asegúrate de importar useEffect
 import { NavLink } from "react-router-dom";
 import logo from "./Logo4.png";
+import { auth, db } from "../../config/firebaseConfig"; // Asegúrate de tener acceso a auth y db
+import { doc, getDoc } from "firebase/firestore";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState(null);
   const [openNestedSubmenu, setOpenNestedSubmenu] = useState(null);
+  const [userRole, setUserRole] = useState(null); // Estado para almacenar el rol del usuario
 
   const toggleMenu = useCallback(() => {
     setIsMenuOpen((prev) => !prev);
@@ -32,6 +35,24 @@ const Navbar = () => {
     setIsMenuOpen(false);
     setOpenSubmenu(null);
     setOpenNestedSubmenu(null);
+  }, []);
+
+  // Obtener el rol del usuario desde Firestore cuando el componente se monta
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        // Obtener el rol del usuario desde Firestore
+        const userDocRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          setUserRole(userData.role); // Guarda el rol en el estado
+        }
+      }
+    };
+
+    fetchUserRole();
   }, []);
 
   return (
@@ -254,15 +275,15 @@ const Navbar = () => {
             </li>
             <li>
               <a
-                href="#cursos"
+                href="#cursostecnicos"
                 className="text-white hover:bg-[#005073] block px-4 py-2"
-                onClick={() => toggleNestedSubmenu("cursos")}
+                onClick={() => toggleNestedSubmenu("cursostecnicos")}
               >
-                Cursos
+                Cursos Técnicos
               </a>
               <ul
                 className={`${
-                  openNestedSubmenu === "cursos" ? "block" : "hidden"
+                  openNestedSubmenu === "cursostecnicos" ? "block" : "hidden"
                 } bg-gray-700 p-2 space-y-1 ml-4`}
               >
                 <li>
@@ -270,7 +291,7 @@ const Navbar = () => {
                     to="/Cursos"
                     className="text-white hover:bg-[#003D4C] block px-4 py-2"
                   >
-                    Cursos Básicos
+                    Cursos
                   </NavLink>
                 </li>
                 <li>
@@ -304,28 +325,280 @@ const Navbar = () => {
                   >
                     Categoría 4
                   </NavLink>
-                  <li>
-                    <NavLink
-                      to="/cursos/curso5"
-                      className="text-white hover:bg-[#003D4C] block px-4 py-2"
-                    >
-                      Categoría 5
-                    </NavLink>
-                  </li>
+                </li>
+                <li>
+                  <NavLink
+                    to="/cursos/curso5"
+                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
+                  >
+                    Categoría 5
+                  </NavLink>
                 </li>
               </ul>
             </li>
             <li>
               <a
-                href="#informacion"
+                href="#talleres"
                 className="text-white hover:bg-[#005073] block px-4 py-2"
-                onClick={() => toggleNestedSubmenu("informacion")}
+                onClick={() => toggleNestedSubmenu("talleres")}
               >
-                Información
+                Talleres
               </a>
               <ul
                 className={`${
-                  openNestedSubmenu === "informacion" ? "block" : "hidden"
+                  openNestedSubmenu === "talleres" ? "block" : "hidden"
+                } bg-gray-700 p-2 space-y-1 ml-4`}
+              >
+                <li>
+                  <NavLink
+                    to="/talleres/general"
+                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
+                  >
+                    Categoría 1
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/informacion/contacto"
+                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
+                  >
+                    Categoría 2
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/informacion/ubicacion"
+                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
+                  >
+                    Categoría 3
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/informacion/preguntas"
+                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
+                  >
+                    Categoría 4
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/informacion/documentos"
+                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
+                  >
+                    Categoría 5
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/informacion/soporte"
+                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
+                  >
+                    Categoría 6
+                  </NavLink>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="#seminarios"
+                className="text-white hover:bg-[#005073] block px-4 py-2"
+                onClick={() => toggleNestedSubmenu("seminarios")}
+              >
+                Seminarios
+              </a>
+              <ul
+                className={`${
+                  openNestedSubmenu === "seminarios" ? "block" : "hidden"
+                } bg-gray-700 p-2 space-y-1 ml-4`}
+              >
+                <li>
+                  <NavLink
+                    to="/informacion/general"
+                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
+                  >
+                    Categoría 1
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/informacion/contacto"
+                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
+                  >
+                    Categoría 2
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/informacion/ubicacion"
+                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
+                  >
+                    Categoría 3
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/informacion/preguntas"
+                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
+                  >
+                    Categoría 4
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/informacion/documentos"
+                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
+                  >
+                    Categoría 5
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/informacion/soporte"
+                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
+                  >
+                    Categoría 6
+                  </NavLink>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="#diplomados"
+                className="text-white hover:bg-[#005073] block px-4 py-2"
+                onClick={() => toggleNestedSubmenu("diplomados")}
+              >
+                Diplomados
+              </a>
+              <ul
+                className={`${
+                  openNestedSubmenu === "diplomados" ? "block" : "hidden"
+                } bg-gray-700 p-2 space-y-1 ml-4`}
+              >
+                <li>
+                  <NavLink
+                    to="/informacion/general"
+                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
+                  >
+                    Categoría 1
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/informacion/contacto"
+                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
+                  >
+                    Categoría 2
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/informacion/ubicacion"
+                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
+                  >
+                    Categoría 3
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/informacion/preguntas"
+                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
+                  >
+                    Categoría 4
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/informacion/documentos"
+                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
+                  >
+                    Categoría 5
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/informacion/soporte"
+                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
+                  >
+                    Categoría 6
+                  </NavLink>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="#programas"
+                className="text-white hover:bg-[#005073] block px-4 py-2"
+                onClick={() => toggleNestedSubmenu("programas")}
+              >
+                Programas
+              </a>
+              <ul
+                className={`${
+                  openNestedSubmenu === "programas" ? "block" : "hidden"
+                } bg-gray-700 p-2 space-y-1 ml-4`}
+              >
+                <li>
+                  <NavLink
+                    to="/informacion/general"
+                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
+                  >
+                    Categoría 1
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/informacion/contacto"
+                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
+                  >
+                    Categoría 2
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/informacion/ubicacion"
+                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
+                  >
+                    Categoría 3
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/informacion/preguntas"
+                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
+                  >
+                    Categoría 4
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/informacion/documentos"
+                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
+                  >
+                    Categoría 5
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/informacion/soporte"
+                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
+                  >
+                    Categoría 6
+                  </NavLink>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="#postgrados"
+                className="text-white hover:bg-[#005073] block px-4 py-2"
+                onClick={() => toggleNestedSubmenu("postgrados")}
+              >
+                Postgrados
+              </a>
+              <ul
+                className={`${
+                  openNestedSubmenu === "postgrados" ? "block" : "hidden"
                 } bg-gray-700 p-2 space-y-1 ml-4`}
               >
                 <li>
@@ -386,85 +659,6 @@ const Navbar = () => {
               >
                 Crear Galería
               </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/Redaccion"
-                className="text-white hover:bg-[#005073] block px-4 py-2"
-              >
-                Redacción
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/NormasAPA"
-                className="text-white hover:bg-[#005073] block px-4 py-2"
-              >
-                Normas APA
-              </NavLink>
-            </li>
-            <li>
-              <a
-                href="#eventos"
-                className="text-white hover:bg-[#005073] block px-4 py-2"
-                onClick={() => toggleNestedSubmenu("eventos")}
-              >
-                Eventos
-              </a>
-              <ul
-                className={`${
-                  openNestedSubmenu === "eventos" ? "block" : "hidden"
-                } bg-gray-700 p-2 space-y-1 ml-4`}
-              >
-                <li>
-                  <NavLink
-                    to="/eventos/actuales"
-                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
-                  >
-                    Categoría 1
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to="/eventos/proximos"
-                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
-                  >
-                    Categoría 2
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to="/eventos/pasados"
-                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
-                  >
-                    Categoría 3
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to="/eventos/inscripciones"
-                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
-                  >
-                    Categoría 4
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to="/eventos/agenda"
-                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
-                  >
-                    Categoría 5
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to="/eventos/galeria"
-                    className="text-white hover:bg-[#003D4C] block px-4 py-2"
-                  >
-                    Categoría 6
-                  </NavLink>
-                </li>
-              </ul>
             </li>
           </ul>
         </li>
@@ -527,7 +721,11 @@ const Navbar = () => {
             </li>
             <li>
               <NavLink
-                to="/perfil-docente"
+                to={
+                  userRole === "Docente"
+                    ? "/perfil-docente"
+                    : "/perfil-estudiante"
+                }
                 className="text-white hover:bg-[#005073] block px-4 py-2"
               >
                 Ver mi Perfil
