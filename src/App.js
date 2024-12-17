@@ -39,6 +39,7 @@ import CrearPerfilDocente from "./components/CrearPerfilDocente/CrearPerfilDocen
 import MostrarPerfilDocente from "./components/MostrarPerfilDocente/MostrarPerfilDocente";
 import Dashboard from "./components/Dashboard/Dashboard"; // Importación del nuevo componente
 import FormularioCrearMateria from "./components/FormularioCrearMateria/FormularioCrearMateria"; // Nuevo componente
+import FormularioPrueba from "./components/FormularioPrueba/FormularioPrueba"; // Importa el componente FormularioPrueba
 
 const App = () => {
   return (
@@ -144,6 +145,10 @@ const App = () => {
               <Route
                 path="/crear-materia"
                 element={<FormularioCrearMateria />} // Nueva ruta para el componente
+              />
+              <Route
+                path="/formulario-prueba"
+                element={<FormularioPrueba />} // Ruta para el componente FormularioPrueba
               />
             </Routes>
           </div>

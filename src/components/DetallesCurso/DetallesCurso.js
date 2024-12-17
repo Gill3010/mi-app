@@ -73,7 +73,7 @@ const DetallesCurso = () => {
           onClick={handleBuyNow} // Asigna la función de redirección al botón
           className="px-6 py-3 bg-[#002855] text-white font-bold rounded-lg hover:bg-[#00A1E0] transition duration-300"
         >
-          Comprar ahora - ${curso.precio}
+          Suscripción - ${curso.precio}
         </button>
       </div>
 

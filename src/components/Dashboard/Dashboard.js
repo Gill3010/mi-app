@@ -73,6 +73,11 @@ const Dashboard = () => {
     setSelectedVideo(videoUrl);
   };
 
+  // Función para redirigir al formulario
+  const redirectToFormulario = () => {
+    navigate("/formulario-prueba"); // Redirige al formulario de prueba
+  };
+
   return (
     <div className="flex">
       {/* Sidebar */}
@@ -93,8 +98,6 @@ const Dashboard = () => {
 
       {/* Main content */}
       <div className="w-full p-8">
-        {" "}
-        {/* Cambié w-3/4 a w-full */}
         {/* Header: Mostrar la foto de perfil en la parte superior derecha */}
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-3xl font-semibold">Aula Virtual</h2>
@@ -110,6 +113,7 @@ const Dashboard = () => {
             />
           </div>
         </div>
+
         {/* Mostrar el curso seleccionado (moverlo arriba) */}
         {cursoNombre && cursoDescripcion && (
           <div className="mt-8 mb-4">
@@ -118,6 +122,7 @@ const Dashboard = () => {
             <p className="mt-2">{cursoDescripcion}</p>
           </div>
         )}
+
         {/* Mostrar los cursos del usuario */}
         <div className="mt-8">
           <h3 className="text-2xl font-semibold mb-4">Mis Cursos</h3>
@@ -127,6 +132,7 @@ const Dashboard = () => {
               return (
                 <div key={index} className="bg-gray-100 p-4 rounded-md mb-4">
                   <h4 className="font-semibold text-lg">{curso.nombre}</h4>
+
                   {curso.videosRelacionados && (
                     <div className="flex">
                       <div className="w-2/3">
@@ -151,6 +157,25 @@ const Dashboard = () => {
                       </div>
                     </div>
                   )}
+
+                  {/* Mostrar materiales evaluativos (PDF, DOC, DOCX) */}
+                  {curso.materialEvaluativo && (
+                    <div className="mt-4">
+                      <h5 className="font-semibold text-lg mb-2">
+                        Material Evaluativo
+                      </h5>
+                      <div className="bg-white p-4 rounded-md shadow-md max-h-60 overflow-y-auto">
+                        <a
+                          href={curso.materialEvaluativo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full text-left p-2 hover:bg-gray-200 rounded-md mb-2 block"
+                        >
+                          Descargar Material de Repaso
+                        </a>
+                      </div>
+                    </div>
+                  )}
                 </div>
               );
             })
@@ -158,6 +183,17 @@ const Dashboard = () => {
             <p>No tienes cursos aún.</p>
           )}
         </div>
+
+        {/* Botón para acceder al formulario de prueba */}
+        <div className="mt-8">
+          <button
+            onClick={redirectToFormulario}
+            className="bg-blue-600 text-white p-3 rounded-md hover:bg-blue-500"
+          >
+            Acceder al Formulario de Prueba
+          </button>
+        </div>
+
         {/* Video seleccionado */}
         {selectedVideo && (
           <div className="mt-8">

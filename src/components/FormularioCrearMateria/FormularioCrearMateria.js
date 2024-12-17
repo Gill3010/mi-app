@@ -9,6 +9,7 @@ const FormularioCrearMateria = () => {
   });
 
   const [videoFiles, setVideoFiles] = useState([]);
+  const [materialFile, setMaterialFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -24,6 +25,11 @@ const FormularioCrearMateria = () => {
     const newFiles = [...videoFiles];
     newFiles[index] = e.target.files[0]; // Asignamos el archivo al índice correspondiente
     setVideoFiles(newFiles);
+  };
+
+  // Función para manejar el cambio del archivo de material evaluativo
+  const handleMaterialChange = (e) => {
+    setMaterialFile(e.target.files[0]);
   };
 
   // Función para agregar más campos de archivo
@@ -65,7 +71,6 @@ const FormularioCrearMateria = () => {
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevenir el comportamiento por defecto de envío
 
-    console.log("Formulario enviado");
     setErrorMessage("");
     setSuccessMessage("");
 
@@ -75,18 +80,25 @@ const FormularioCrearMateria = () => {
       return;
     }
 
-    // Validar si al menos un archivo ha sido seleccionado
+    // Validar si al menos un archivo de video ha sido seleccionado
     if (videoFiles.length === 0 || videoFiles.some((file) => file === null)) {
       setErrorMessage("Por favor, sube al menos un video.");
+      return;
+    }
+
+    // Validar si el archivo de material evaluativo ha sido seleccionado
+    if (!materialFile) {
+      setErrorMessage("Por favor, sube un archivo de material evaluativo.");
       return;
     }
 
     setLoading(true);
 
     const videoUrls = [];
+    let materialUrl = "";
 
     try {
-      // Subir cada archivo y guardar la URL
+      // Subir los archivos de video y guardar las URLs
       for (const file of videoFiles) {
         if (file) {
           const videoUrl = await uploadFile(file, "videos");
@@ -94,18 +106,21 @@ const FormularioCrearMateria = () => {
         }
       }
 
-      // Guardar los datos en Firestore con videos en el campo "videosRelacionados"
+      // Subir el archivo de material evaluativo y guardar la URL
+      materialUrl = await uploadFile(materialFile, "materialesEvaluativos");
+
+      // Guardar los datos en Firestore
       const materiasRef = collection(db, "materias");
       await addDoc(materiasRef, {
         nombre: materiaData.nombre,
-        videosRelacionados: videoUrls, // Aquí cambiamos de "videos" a "videosRelacionados"
+        videosRelacionados: videoUrls,
+        materialEvaluativo: materialUrl, // Guardar la URL del archivo de material evaluativo
       });
 
       setSuccessMessage("¡Materia creada exitosamente!");
-      setMateriaData({
-        nombre: "",
-      });
+      setMateriaData({ nombre: "" });
       setVideoFiles([]);
+      setMaterialFile(null);
     } catch (error) {
       console.error("Error al crear la materia:", error);
       setErrorMessage("Hubo un error al crear la materia. Intenta nuevamente.");
@@ -174,15 +189,34 @@ const FormularioCrearMateria = () => {
                 )}
               </div>
             ))}
-            <div>
-              <button
-                type="button"
-                onClick={addFileInput}
-                className="mt-2 py-2 px-4 bg-blue-600 text-white rounded-md"
-              >
-                Agregar otro video
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={addFileInput}
+              className="mt-2 py-2 px-4 bg-blue-600 text-white rounded-md"
+            >
+              Agregar otro video
+            </button>
+          </div>
+
+          <div>
+            <label
+              htmlFor="materialFile"
+              className="block text-[#002855] font-medium mb-1"
+            >
+              Subir Material Evaluativo (PDF, DOC, DOCX)
+            </label>
+            <input
+              type="file"
+              accept=".pdf,.doc,.docx"
+              onChange={handleMaterialChange}
+              className="w-full border border-[#002855] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002855]"
+              required
+            />
+            {materialFile && (
+              <p className="text-sm text-gray-500 mt-1">
+                Archivo seleccionado: {materialFile.name}
+              </p>
+            )}
           </div>
 
           <div className="flex justify-center">
