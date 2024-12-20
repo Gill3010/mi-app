@@ -4,48 +4,76 @@ import { collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const FormularioPrueba = () => {
-  const [pruebaData, setPruebaData] = useState({
-    nombre: "Prueba de Evaluación - Inteligencia Artificial en Investigación",
-    opcionMultiple: {
-      googleLabs: "",
-      sunoAI: "",
-      hotPotAI: "",
-    },
-    verdaderoFalso: {
-      civitAI: "",
-      arcBrowser: "",
-      raskAI: "",
-    },
-    respuestaCorta: {
-      ventajasPerplexity: "",
-      mylensAI: "",
-      voiceGPT: "",
-    },
-    preguntasAbiertas: {
-      comparacionUpsCayl: "",
-      analisisMylensAI: "",
-      impactoArcBrowser: "",
-    },
-    archivoRespuestas: null, // Campo para archivo de respuestas
+  const [formData, setFormData] = useState({
+    preguntas: [
+      {
+        id: Date.now(),
+        tipo: "multiple",
+        pregunta: "",
+        opciones: [],
+        respuesta: "",
+      },
+    ],
+    archivoRespuestas: null,
   });
 
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleChange = (e) => {
+  const handleAddQuestion = () => {
+    setFormData({
+      ...formData,
+      preguntas: [
+        ...formData.preguntas,
+        {
+          id: Date.now(),
+          tipo: "multiple",
+          pregunta: "",
+          opciones: [],
+          respuesta: "",
+        },
+      ],
+    });
+  };
+
+  const handleDeleteQuestion = (id) => {
+    setFormData({
+      ...formData,
+      preguntas: formData.preguntas.filter((pregunta) => pregunta.id !== id),
+    });
+  };
+
+  const handleQuestionChange = (id, e) => {
     const { name, value } = e.target;
-    setPruebaData((prevData) => ({
-      ...prevData,
-      [name.split(".")[0]]: {
-        ...prevData[name.split(".")[0]],
-        [name.split(".")[1]]: value,
-      },
-    }));
+    setFormData({
+      ...formData,
+      preguntas: formData.preguntas.map((pregunta) =>
+        pregunta.id === id ? { ...pregunta, [name]: value } : pregunta
+      ),
+    });
+  };
+
+  const handleOptionChange = (id, index, e) => {
+    const { value } = e.target;
+    const preguntasActualizadas = formData.preguntas.map((pregunta) =>
+      pregunta.id === id
+        ? {
+            ...pregunta,
+            opciones: pregunta.opciones.map((opcion, i) =>
+              i === index ? value : opcion
+            ),
+          }
+        : pregunta
+    );
+    setFormData({
+      ...formData,
+      preguntas: preguntasActualizadas,
+    });
   };
 
   const handleFileChange = (e) => {
-    setPruebaData({ ...pruebaData, archivoRespuestas: e.target.files[0] });
+    setFormData({ ...formData, archivoRespuestas: e.target.files[0] });
   };
 
   const uploadFile = (file, folder) => {
@@ -82,7 +110,7 @@ const FormularioPrueba = () => {
     setErrorMessage("");
     setSuccessMessage("");
 
-    if (!pruebaData.archivoRespuestas) {
+    if (!formData.archivoRespuestas) {
       setErrorMessage("Por favor, sube un archivo con tus respuestas.");
       return;
     }
@@ -94,45 +122,28 @@ const FormularioPrueba = () => {
     try {
       // Subir archivo de respuestas
       respuestasUrl = await uploadFile(
-        pruebaData.archivoRespuestas,
+        formData.archivoRespuestas,
         "respuestasPrueba"
       );
 
       // Guardar las respuestas en Firestore
       const pruebasRef = collection(db, "pruebas");
       await addDoc(pruebasRef, {
-        nombre: pruebaData.nombre,
-        opcionesMultiples: pruebaData.opcionMultiple,
-        verdaderoFalso: pruebaData.verdaderoFalso,
-        respuestasCortas: pruebaData.respuestaCorta,
-        preguntasAbiertas: pruebaData.preguntasAbiertas,
+        preguntas: formData.preguntas,
         archivoRespuestas: respuestasUrl, // URL del archivo de respuestas
       });
 
       setSuccessMessage("¡Prueba enviada exitosamente!");
-      setPruebaData({
-        nombre:
-          "Prueba de Evaluación - Inteligencia Artificial en Investigación",
-        opcionMultiple: {
-          googleLabs: "",
-          sunoAI: "",
-          hotPotAI: "",
-        },
-        verdaderoFalso: {
-          civitAI: "",
-          arcBrowser: "",
-          raskAI: "",
-        },
-        respuestaCorta: {
-          ventajasPerplexity: "",
-          mylensAI: "",
-          voiceGPT: "",
-        },
-        preguntasAbiertas: {
-          comparacionUpsCayl: "",
-          analisisMylensAI: "",
-          impactoArcBrowser: "",
-        },
+      setFormData({
+        preguntas: [
+          {
+            id: Date.now(),
+            tipo: "multiple",
+            pregunta: "",
+            opciones: [],
+            respuesta: "",
+          },
+        ],
         archivoRespuestas: null,
       });
     } catch (error) {
@@ -147,7 +158,7 @@ const FormularioPrueba = () => {
     <div className="min-h-screen bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] flex items-center justify-center">
       <div className="p-8 max-w-3xl mx-auto bg-white rounded-lg shadow-lg w-full">
         <h2 className="text-2xl font-bold mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 shadow-xl">
-          {pruebaData.nombre}
+          Crea tu prueba
         </h2>
 
         {successMessage && (
@@ -163,210 +174,153 @@ const FormularioPrueba = () => {
           onSubmit={handleSubmit}
           className="space-y-4 bg-white p-6 rounded-lg shadow-lg"
         >
-          {/* Parte 1: Opción Múltiple */}
-          <h3 className="text-xl font-semibold">Parte 1: Opción Múltiple</h3>
-          <div>
-            <label className="block">¿Qué es Google Labs?</label>
-            <select
-              name="opcionMultiple.googleLabs"
-              value={pruebaData.opcionMultiple.googleLabs}
-              onChange={handleChange}
-              required
+          {formData.preguntas.map((pregunta, index) => (
+            <div key={pregunta.id} className="mb-4">
+              <div className="mb-2">
+                <label className="block">Pregunta {index + 1}</label>
+                <input
+                  type="text"
+                  name="pregunta"
+                  value={pregunta.pregunta}
+                  onChange={(e) => handleQuestionChange(pregunta.id, e)}
+                  className="border-2 border-gray-300 p-2 w-full"
+                  placeholder="Escribe la pregunta aquí"
+                  required
+                />
+              </div>
+
+              {/* Tipo de pregunta */}
+              <div className="mb-2">
+                <label className="block">Tipo de pregunta</label>
+                <select
+                  name="tipo"
+                  value={pregunta.tipo}
+                  onChange={(e) => handleQuestionChange(pregunta.id, e)}
+                  className="border-2 border-gray-300 p-2 w-full"
+                >
+                  <option value="multiple">Opción Múltiple</option>
+                  <option value="verdaderoFalso">Cierto/Falso</option>
+                  <option value="corta">Respuesta Corta</option>
+                  <option value="abierta">Pregunta Abierta</option>
+                </select>
+              </div>
+
+              {/* Mostrar campos según el tipo de pregunta */}
+              {pregunta.tipo === "multiple" && (
+                <div>
+                  <label className="block">Opciones</label>
+                  {pregunta.opciones.map((opcion, i) => (
+                    <div key={i} className="flex mb-2">
+                      <input
+                        type="text"
+                        value={opcion}
+                        onChange={(e) => handleOptionChange(pregunta.id, i, e)}
+                        className="border-2 border-gray-300 p-2 w-full mr-2"
+                        placeholder={`Opción ${i + 1}`}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const opciones = pregunta.opciones.filter(
+                            (_, idx) => idx !== i
+                          );
+                          setFormData({
+                            ...formData,
+                            preguntas: formData.preguntas.map((item) =>
+                              item.id === pregunta.id
+                                ? { ...item, opciones }
+                                : item
+                            ),
+                          });
+                        }}
+                        className="text-red-500"
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  ))}
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const opciones = [...pregunta.opciones, ""];
+                      setFormData({
+                        ...formData,
+                        preguntas: formData.preguntas.map((item) =>
+                          item.id === pregunta.id ? { ...item, opciones } : item
+                        ),
+                      });
+                    }}
+                    className="text-blue-500"
+                  >
+                    Agregar opción
+                  </button>
+                </div>
+              )}
+
+              {pregunta.tipo === "verdaderoFalso" && (
+                <div>
+                  <label className="block">Respuesta Cierto/Falso</label>
+                  <select
+                    name="respuesta"
+                    value={pregunta.respuesta}
+                    onChange={(e) => handleQuestionChange(pregunta.id, e)}
+                    className="border-2 border-gray-300 p-2 w-full"
+                  >
+                    <option value="verdadero">Verdadero</option>
+                    <option value="falso">Falso</option>
+                  </select>
+                </div>
+              )}
+
+              {pregunta.tipo === "corta" && (
+                <div>
+                  <label className="block">Respuesta Corta</label>
+                  <input
+                    type="text"
+                    name="respuesta"
+                    value={pregunta.respuesta}
+                    onChange={(e) => handleQuestionChange(pregunta.id, e)}
+                    className="border-2 border-gray-300 p-2 w-full"
+                    placeholder="Escribe tu respuesta corta"
+                  />
+                </div>
+              )}
+
+              {pregunta.tipo === "abierta" && (
+                <div>
+                  <label className="block">Pregunta Abierta</label>
+                  <textarea
+                    name="respuesta"
+                    value={pregunta.respuesta}
+                    onChange={(e) => handleQuestionChange(pregunta.id, e)}
+                    className="border-2 border-gray-300 p-2 w-full"
+                    placeholder="Escribe tu respuesta abierta"
+                  />
+                </div>
+              )}
+
+              {/* Botón eliminar pregunta */}
+              <div className="mt-2">
+                <button
+                  type="button"
+                  onClick={() => handleDeleteQuestion(pregunta.id)}
+                  className="text-red-500"
+                >
+                  Eliminar pregunta
+                </button>
+              </div>
+            </div>
+          ))}
+
+          <div className="flex justify-center mb-4">
+            <button
+              type="button"
+              onClick={handleAddQuestion}
+              className="bg-blue-500 text-white py-2 px-6 rounded-lg shadow-lg hover:bg-blue-600"
             >
-              <option value="">Seleccione una opción</option>
-              <option value="a">a) Un sistema de procesamiento de texto</option>
-              <option value="b">
-                b) Plataforma para experimentar con nuevas tecnologías de Google
-              </option>
-              <option value="c">c) Red social</option>
-              <option value="d">
-                d) Herramienta de desarrollo de videojuegos
-              </option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block">
-              ¿Cuál de las siguientes es una ventaja de usar Suno AI?
-            </label>
-            <select
-              name="opcionMultiple.sunoAI"
-              value={pruebaData.opcionMultiple.sunoAI}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Seleccione una opción</option>
-              <option value="a">
-                a) Mejorar la productividad en la gestión de proyectos
-              </option>
-              <option value="b">
-                b) Crear música y sonidos personalizados mediante IA
-              </option>
-              <option value="c">
-                c) Entrenar modelos de IA sin experiencia técnica
-              </option>
-              <option value="d">
-                d) Generar respuestas a preguntas en internet
-              </option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block">¿Qué permite hacer Hot Pot AI?</label>
-            <select
-              name="opcionMultiple.hotPotAI"
-              value={pruebaData.opcionMultiple.hotPotAI}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Seleccione una opción</option>
-              <option value="a">
-                a) Crear y analizar imágenes generadas por IA
-              </option>
-              <option value="b">b) Automatizar procesos de escritura</option>
-              <option value="c">c) Mejorar la gestión de proyectos</option>
-              <option value="d">d) Convertir texto en voz</option>
-            </select>
-          </div>
-
-          {/* Parte 2: Verdadero/Falso */}
-          <h3 className="text-xl font-semibold">Parte 2: Verdadero/Falso</h3>
-          <div>
-            <label className="block">
-              Civit AI está diseñado para crear modelos de IA sin necesidad de
-              experiencia técnica.
-            </label>
-            <select
-              name="verdaderoFalso.civitAI"
-              value={pruebaData.verdaderoFalso.civitAI}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Seleccione Verdadero o Falso</option>
-              <option value="verdadero">Verdadero</option>
-              <option value="falso">Falso</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block">
-              Arc Browser es un navegador web que mejora la experiencia de
-              usuario mediante herramientas de personalización y productividad.
-            </label>
-            <select
-              name="verdaderoFalso.arcBrowser"
-              value={pruebaData.verdaderoFalso.arcBrowser}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Seleccione Verdadero o Falso</option>
-              <option value="verdadero">Verdadero</option>
-              <option value="falso">Falso</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block">
-              Rask AI es una plataforma para crear música utilizando
-              inteligencia artificial.
-            </label>
-            <select
-              name="verdaderoFalso.raskAI"
-              value={pruebaData.verdaderoFalso.raskAI}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Seleccione Verdadero o Falso</option>
-              <option value="verdadero">Verdadero</option>
-              <option value="falso">Falso</option>
-            </select>
-          </div>
-
-          {/* Parte 3: Respuesta Corta */}
-          <h3 className="text-xl font-semibold">Parte 3: Respuesta Corta</h3>
-          <div>
-            <label className="block">
-              ¿Qué ventajas ofrece Perplexity respecto a otros motores de
-              búsqueda?
-            </label>
-            <input
-              type="text"
-              name="respuestaCorta.ventajasPerplexity"
-              value={pruebaData.respuestaCorta.ventajasPerplexity}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block">
-              Explica brevemente cómo Mylens AI puede ser útil para la
-              organización de imágenes.
-            </label>
-            <input
-              type="text"
-              name="respuestaCorta.mylensAI"
-              value={pruebaData.respuestaCorta.mylensAI}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block">
-              ¿Cómo puede Voice GPT mejorar la interacción entre usuarios y
-              máquinas?
-            </label>
-            <input
-              type="text"
-              name="respuestaCorta.voiceGPT"
-              value={pruebaData.respuestaCorta.voiceGPT}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          {/* Parte 4: Preguntas Abiertas */}
-          <h3 className="text-xl font-semibold">Parte 4: Preguntas Abiertas</h3>
-          <div>
-            <label className="block">
-              Compara el uso de Ups Cayl con otras herramientas de
-              productividad. ¿Qué beneficios tiene su implementación en equipos
-              de trabajo?
-            </label>
-            <textarea
-              name="preguntasAbiertas.comparacionUpsCayl"
-              value={pruebaData.preguntasAbiertas.comparacionUpsCayl}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block">
-              Imagina que eres un investigador que necesita realizar un análisis
-              rápido de datos visuales. ¿Cómo utilizarías Mylens AI para
-              organizar y analizar las imágenes?
-            </label>
-            <textarea
-              name="preguntasAbiertas.analisisMylensAI"
-              value={pruebaData.preguntasAbiertas.analisisMylensAI}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block">
-              ¿Cuál es el impacto de Arc Browser en la forma en que trabajamos y
-              colaboramos en línea?
-            </label>
-            <textarea
-              name="preguntasAbiertas.impactoArcBrowser"
-              value={pruebaData.preguntasAbiertas.impactoArcBrowser}
-              onChange={handleChange}
-              required
-            />
+              Agregar pregunta
+            </button>
           </div>
 
           {/* Subir archivo de respuestas */}

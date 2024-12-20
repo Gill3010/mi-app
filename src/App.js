@@ -40,6 +40,7 @@ import MostrarPerfilDocente from "./components/MostrarPerfilDocente/MostrarPerfi
 import Dashboard from "./components/Dashboard/Dashboard"; // Importación del nuevo componente
 import FormularioCrearMateria from "./components/FormularioCrearMateria/FormularioCrearMateria"; // Nuevo componente
 import FormularioPrueba from "./components/FormularioPrueba/FormularioPrueba"; // Importa el componente FormularioPrueba
+import VerPrueba from "./components/VerPrueba/VerPrueba"; // Importa el nuevo componente VerPrueba
 
 const App = () => {
   return (
@@ -149,6 +150,10 @@ const App = () => {
               <Route
                 path="/formulario-prueba"
                 element={<FormularioPrueba />} // Ruta para el componente FormularioPrueba
+              />
+              <Route
+                path="/ver-prueba/:id" // Nueva ruta para el componente VerPrueba
+                element={<VerPrueba />}
               />
             </Routes>
           </div>

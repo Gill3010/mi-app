@@ -75,7 +75,7 @@ const Dashboard = () => {
 
   // Función para redirigir al formulario
   const redirectToFormulario = () => {
-    navigate("/formulario-prueba"); // Redirige al formulario de prueba
+    navigate("/ver-prueba/:id"); // Redirige al formulario de prueba
   };
 
   return (
