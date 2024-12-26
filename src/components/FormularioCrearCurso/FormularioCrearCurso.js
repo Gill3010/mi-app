@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Importar useNavigate
 import { db, storage } from "../../config/firebaseConfig"; // Firebase Firestore y Storage
 import { collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const FormularioCrearCurso = () => {
+  const navigate = useNavigate(); // Hook para la redirección
   const [courseData, setCourseData] = useState({
     titulo: "",
     descripcion: "",
@@ -114,6 +116,9 @@ const FormularioCrearCurso = () => {
       });
       setImageFile(null);
       setVideoFile(null);
+
+      // Redirigir al componente CrearMateria
+      navigate("/crear-materia");
     } catch (error) {
       console.error("Error al crear el curso:", error);
       setErrorMessage("Hubo un error al crear el curso. Intenta nuevamente.");
@@ -307,7 +312,7 @@ const FormularioCrearCurso = () => {
               htmlFor="etiquetas"
               className="block text-[#002855] font-medium mb-1"
             >
-              Etiquetas (separadas por comas)
+              Etiquetas (separadas por coma)
             </label>
             <input
               type="text"
@@ -316,16 +321,19 @@ const FormularioCrearCurso = () => {
               value={courseData.etiquetas}
               onChange={handleChange}
               className="w-full border border-[#002855] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002855]"
+              placeholder="ejemplo1, ejemplo2"
             />
           </div>
 
-          <div className="flex justify-center">
+          <div className="text-center">
             <button
               type="submit"
+              className={`px-6 py-2 text-white font-bold rounded ${
+                loading ? "bg-gray-500 cursor-not-allowed" : "bg-[#4CAF50]"
+              }`}
               disabled={loading}
-              className="mt-4 py-2 px-8 bg-gradient-to-r from-blue-600 to-green-500 text-white rounded-md hover:bg-gradient-to-r hover:from-blue-700 hover:to-green-600"
             >
-              {loading ? "Cargando..." : "Crear Curso"}
+              {loading ? "Creando Curso..." : "Crear Curso"}
             </button>
           </div>
         </form>

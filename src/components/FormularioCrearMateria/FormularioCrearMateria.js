@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Importar useNavigate
 import { db, storage } from "../../config/firebaseConfig"; // Firebase Firestore y Storage
 import { collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
@@ -14,30 +15,27 @@ const FormularioCrearMateria = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  // Función para manejar el cambio de los campos de texto
+  const navigate = useNavigate(); // Hook para redirección
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setMateriaData({ ...materiaData, [name]: value });
   };
 
-  // Función para manejar el cambio de los archivos
   const handleFileChange = (e, index) => {
     const newFiles = [...videoFiles];
-    newFiles[index] = e.target.files[0]; // Asignamos el archivo al índice correspondiente
+    newFiles[index] = e.target.files[0];
     setVideoFiles(newFiles);
   };
 
-  // Función para manejar el cambio del archivo de material evaluativo
   const handleMaterialChange = (e) => {
     setMaterialFile(e.target.files[0]);
   };
 
-  // Función para agregar más campos de archivo
   const addFileInput = () => {
-    setVideoFiles([...videoFiles, null]); // Agregar un nuevo campo de archivo
+    setVideoFiles([...videoFiles, null]);
   };
 
-  // Función para subir los archivos a Firebase
   const uploadFile = (file, folder) => {
     return new Promise((resolve, reject) => {
       const fileRef = ref(storage, `${folder}/${file.name}`);
@@ -48,11 +46,7 @@ const FormularioCrearMateria = () => {
         null,
         (error) => {
           console.error("Error al subir el archivo:", error);
-          reject(
-            new Error(
-              "Hubo un problema al subir el archivo. Por favor, inténtalo de nuevo."
-            )
-          );
+          reject(new Error("Hubo un problema al subir el archivo."));
         },
         async () => {
           try {
@@ -67,26 +61,22 @@ const FormularioCrearMateria = () => {
     });
   };
 
-  // Función para manejar el submit del formulario
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevenir el comportamiento por defecto de envío
+    e.preventDefault();
 
     setErrorMessage("");
     setSuccessMessage("");
 
-    // Validar que el nombre de la materia esté presente
     if (!materiaData.nombre.trim()) {
       setErrorMessage("El nombre de la materia es obligatorio.");
       return;
     }
 
-    // Validar si al menos un archivo de video ha sido seleccionado
     if (videoFiles.length === 0 || videoFiles.some((file) => file === null)) {
       setErrorMessage("Por favor, sube al menos un video.");
       return;
     }
 
-    // Validar si el archivo de material evaluativo ha sido seleccionado
     if (!materialFile) {
       setErrorMessage("Por favor, sube un archivo de material evaluativo.");
       return;
@@ -98,29 +88,29 @@ const FormularioCrearMateria = () => {
     let materialUrl = "";
 
     try {
-      // Subir los archivos de video y guardar las URLs
       for (const file of videoFiles) {
         if (file) {
           const videoUrl = await uploadFile(file, "videos");
-          videoUrls.push(videoUrl); // Guardamos la URL del archivo
+          videoUrls.push(videoUrl);
         }
       }
 
-      // Subir el archivo de material evaluativo y guardar la URL
       materialUrl = await uploadFile(materialFile, "materialesEvaluativos");
 
-      // Guardar los datos en Firestore
       const materiasRef = collection(db, "materias");
       await addDoc(materiasRef, {
         nombre: materiaData.nombre,
         videosRelacionados: videoUrls,
-        materialEvaluativo: materialUrl, // Guardar la URL del archivo de material evaluativo
+        materialEvaluativo: materialUrl,
       });
 
       setSuccessMessage("¡Materia creada exitosamente!");
       setMateriaData({ nombre: "" });
       setVideoFiles([]);
       setMaterialFile(null);
+
+      // Redirección al componente formulario-prueba
+      navigate("/formulario-prueba");
     } catch (error) {
       console.error("Error al crear la materia:", error);
       setErrorMessage("Hubo un error al crear la materia. Intenta nuevamente.");
