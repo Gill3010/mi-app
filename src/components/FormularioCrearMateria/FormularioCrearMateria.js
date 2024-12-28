@@ -10,6 +10,7 @@ const FormularioCrearMateria = () => {
   });
 
   const [videoFiles, setVideoFiles] = useState([]);
+  const [videoUrls, setVideoUrls] = useState([]); // Nuevo estado para almacenar URLs de videos
   const [materialFile, setMaterialFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
@@ -34,6 +35,16 @@ const FormularioCrearMateria = () => {
 
   const addFileInput = () => {
     setVideoFiles([...videoFiles, null]);
+  };
+
+  const handleAddVideoUrl = (e, index) => {
+    const newVideoUrls = [...videoUrls];
+    newVideoUrls[index] = e.target.value;
+    setVideoUrls(newVideoUrls);
+  };
+
+  const addVideoUrlInput = () => {
+    setVideoUrls([...videoUrls, ""]);
   };
 
   const uploadFile = (file, folder) => {
@@ -72,7 +83,7 @@ const FormularioCrearMateria = () => {
       return;
     }
 
-    if (videoFiles.length === 0 || videoFiles.some((file) => file === null)) {
+    if (videoFiles.length === 0 && videoUrls.length === 0) {
       setErrorMessage("Por favor, sube al menos un video.");
       return;
     }
@@ -84,29 +95,42 @@ const FormularioCrearMateria = () => {
 
     setLoading(true);
 
-    const videoUrls = [];
-    let materialUrl = "";
+    const videoUrlsFinal = [];
 
     try {
+      // Subir videos seleccionados desde archivos
       for (const file of videoFiles) {
         if (file) {
           const videoUrl = await uploadFile(file, "videos");
-          videoUrls.push(videoUrl);
+          videoUrlsFinal.push(videoUrl);
         }
       }
 
-      materialUrl = await uploadFile(materialFile, "materialesEvaluativos");
+      // Agregar videos desde URLs
+      videoUrls.forEach((url) => {
+        if (url) {
+          videoUrlsFinal.push(url);
+        }
+      });
 
+      // Subir material evaluativo
+      const materialUrl = await uploadFile(
+        materialFile,
+        "materialesEvaluativos"
+      );
+
+      // Guardar la materia en Firestore
       const materiasRef = collection(db, "materias");
       await addDoc(materiasRef, {
         nombre: materiaData.nombre,
-        videosRelacionados: videoUrls,
+        videosRelacionados: videoUrlsFinal,
         materialEvaluativo: materialUrl,
       });
 
       setSuccessMessage("¡Materia creada exitosamente!");
       setMateriaData({ nombre: "" });
       setVideoFiles([]);
+      setVideoUrls([]);
       setMaterialFile(null);
 
       // Redirección al componente formulario-prueba
@@ -185,6 +209,33 @@ const FormularioCrearMateria = () => {
               className="mt-2 py-2 px-4 bg-blue-600 text-white rounded-md"
             >
               Agregar otro video
+            </button>
+          </div>
+
+          <div>
+            <label
+              htmlFor="videoUrls"
+              className="block text-[#002855] font-medium mb-1"
+            >
+              Agregar Videos por URL
+            </label>
+            {videoUrls.map((url, index) => (
+              <div key={index} className="mb-4">
+                <input
+                  type="url"
+                  value={url}
+                  onChange={(e) => handleAddVideoUrl(e, index)}
+                  className="w-full border border-[#002855] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002855]"
+                  placeholder="Introduce la URL del video"
+                />
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={addVideoUrlInput}
+              className="mt-2 py-2 px-4 bg-blue-600 text-white rounded-md"
+            >
+              Agregar URL de video
             </button>
           </div>
 

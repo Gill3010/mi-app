@@ -228,7 +228,7 @@ const Navbar = () => {
                     to="/Cursos"
                     className="text-white hover:bg-[#003D4C] block px-4 py-2"
                   >
-                    Cursos ?
+                    Actuales
                   </NavLink>
                 </li>
                 <li>
@@ -236,9 +236,10 @@ const Navbar = () => {
                     to="/cursos/curso1"
                     className="text-white hover:bg-[#003D4C] block px-4 py-2"
                   >
-                    Sub-Categoría 1
+                    Anteriores
                   </NavLink>
                 </li>
+                {/*
                 <li>
                   <NavLink
                     to="/cursos/curso2"
@@ -271,6 +272,7 @@ const Navbar = () => {
                     Sub-Categoría 5
                   </NavLink>
                 </li>
+                */}
               </ul>
             </li>
             <li>
@@ -291,7 +293,7 @@ const Navbar = () => {
                     to="/talleres/general"
                     className="text-white hover:bg-[#003D4C] block px-4 py-2"
                   >
-                    Sub-Categoría 1
+                    Actuales
                   </NavLink>
                 </li>
                 <li>
@@ -299,9 +301,10 @@ const Navbar = () => {
                     to="/informacion/contacto"
                     className="text-white hover:bg-[#003D4C] block px-4 py-2"
                   >
-                    Sub-Categoría 2
+                    Anteriores
                   </NavLink>
                 </li>
+                {/*
                 <li>
                   <NavLink
                     to="/informacion/ubicacion"
@@ -334,6 +337,7 @@ const Navbar = () => {
                     Sub-Categoría 6
                   </NavLink>
                 </li>
+                */}
               </ul>
             </li>
             <li>
@@ -354,7 +358,7 @@ const Navbar = () => {
                     to="/informacion/general"
                     className="text-white hover:bg-[#003D4C] block px-4 py-2"
                   >
-                    Sub-Categoría 1
+                    Actuales
                   </NavLink>
                 </li>
                 <li>
@@ -362,9 +366,10 @@ const Navbar = () => {
                     to="/informacion/contacto"
                     className="text-white hover:bg-[#003D4C] block px-4 py-2"
                   >
-                    Sub-Categoría 2
+                    Anteriores
                   </NavLink>
                 </li>
+                {/*
                 <li>
                   <NavLink
                     to="/informacion/ubicacion"
@@ -397,6 +402,7 @@ const Navbar = () => {
                     Sub-Categoría 6
                   </NavLink>
                 </li>
+                */}
               </ul>
             </li>
             <li>
@@ -417,7 +423,7 @@ const Navbar = () => {
                     to="/informacion/general"
                     className="text-white hover:bg-[#003D4C] block px-4 py-2"
                   >
-                    Sub-Categoría 1
+                    Actuales
                   </NavLink>
                 </li>
                 <li>
@@ -425,9 +431,10 @@ const Navbar = () => {
                     to="/informacion/contacto"
                     className="text-white hover:bg-[#003D4C] block px-4 py-2"
                   >
-                    Sub-Categoría 2
+                    Anteriores
                   </NavLink>
                 </li>
+                {/*
                 <li>
                   <NavLink
                     to="/informacion/ubicacion"
@@ -460,6 +467,7 @@ const Navbar = () => {
                     Sub-Categoría 6
                   </NavLink>
                 </li>
+                */}
               </ul>
             </li>
             <li>
@@ -480,7 +488,7 @@ const Navbar = () => {
                     to="/informacion/general"
                     className="text-white hover:bg-[#003D4C] block px-4 py-2"
                   >
-                    Sub-Categoría 1
+                    Actuales
                   </NavLink>
                 </li>
                 <li>
@@ -488,9 +496,10 @@ const Navbar = () => {
                     to="/informacion/contacto"
                     className="text-white hover:bg-[#003D4C] block px-4 py-2"
                   >
-                    Sub-Categoría 2
+                    Anteriores
                   </NavLink>
                 </li>
+                {/*
                 <li>
                   <NavLink
                     to="/informacion/ubicacion"
@@ -523,6 +532,7 @@ const Navbar = () => {
                     Sub-Categoría 6
                   </NavLink>
                 </li>
+                */}
               </ul>
             </li>
             <li>
@@ -543,7 +553,7 @@ const Navbar = () => {
                     to="/informacion/general"
                     className="text-white hover:bg-[#003D4C] block px-4 py-2"
                   >
-                    Sub-Categoría 1
+                    Actuales
                   </NavLink>
                 </li>
                 <li>
@@ -551,9 +561,10 @@ const Navbar = () => {
                     to="/informacion/contacto"
                     className="text-white hover:bg-[#003D4C] block px-4 py-2"
                   >
-                    Sub-Categoría 2
+                    Anteriores
                   </NavLink>
                 </li>
+                {/*
                 <li>
                   <NavLink
                     to="/informacion/ubicacion"
@@ -586,6 +597,7 @@ const Navbar = () => {
                     Sub-Categoría 6
                   </NavLink>
                 </li>
+                */}
               </ul>
             </li>
 
