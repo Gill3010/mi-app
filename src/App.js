@@ -50,7 +50,7 @@ const App = () => {
           <Navbar />
           <div className="flex-grow">
             <Routes>
-              {/* Rutas existentes */}
+              {/* Ruta del inicio */}
               <Route
                 path="/"
                 element={
@@ -61,6 +61,7 @@ const App = () => {
                   </div>
                 }
               />
+              {/* Resto de las rutas */}
               <Route path="/resultados" element={<Resultados />} />
               <Route path="/nosotros" element={<Nosotros />} />
               <Route
@@ -110,9 +111,15 @@ const App = () => {
               />
               <Route path="/FormularioEnvio" element={<FormularioEnvio />} />
               <Route path="/GaleriasActuales" element={<GaleriasActuales />} />
+              {/* Ajuste para agregar SearchBar antes de GaleriasAnteriores */}
               <Route
                 path="/GaleriasAnteriores"
-                element={<GaleriasAnteriores />}
+                element={
+                  <div>
+                    <SearchBar />
+                    <GaleriasAnteriores />
+                  </div>
+                }
               />
               <Route
                 path="/EditarPublicacion"
@@ -124,15 +131,11 @@ const App = () => {
                 path="/crear-perfil-estudiante"
                 element={<CrearPerfilEstudiante />}
               />
-              {/* Separando el Dashboard del perfil estudiante */}
               <Route
                 path="/perfil-estudiante"
                 element={<MostrarPerfilEstudiante />}
               />
-              <Route
-                path="/dashboard"
-                element={<Dashboard />} // Ruta independiente para el dashboard
-              />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route
                 path="/crear-perfil-docente"
                 element={<CrearPerfilDocente />}
@@ -142,19 +145,12 @@ const App = () => {
                 element={<MostrarPerfilDocente />}
               />
               <Route path="/detalles-curso/:id" element={<DetallesCurso />} />
-              {/* Nueva ruta para el formulario de creación de materia */}
               <Route
                 path="/crear-materia"
-                element={<FormularioCrearMateria />} // Nueva ruta para el componente
+                element={<FormularioCrearMateria />}
               />
-              <Route
-                path="/formulario-prueba"
-                element={<FormularioPrueba />} // Ruta para el componente FormularioPrueba
-              />
-              <Route
-                path="/ver-prueba/:id" // Nueva ruta para el componente VerPrueba
-                element={<VerPrueba />}
-              />
+              <Route path="/formulario-prueba" element={<FormularioPrueba />} />
+              <Route path="/ver-prueba/:id" element={<VerPrueba />} />
             </Routes>
           </div>
           <Footer />
