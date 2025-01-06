@@ -41,7 +41,7 @@ import Dashboard from "./components/Dashboard/Dashboard"; // Importación del nu
 import FormularioCrearMateria from "./components/FormularioCrearMateria/FormularioCrearMateria"; // Nuevo componente
 import FormularioPrueba from "./components/FormularioPrueba/FormularioPrueba"; // Importa el componente FormularioPrueba
 import VerPrueba from "./components/VerPrueba/VerPrueba"; // Importa el nuevo componente VerPrueba
-
+import Carousel from "./components/Carousel/Carousel";
 const App = () => {
   return (
     <Provider store={store}>
@@ -116,6 +116,7 @@ const App = () => {
                 path="/GaleriasAnteriores"
                 element={
                   <div>
+                    <Carousel />
                     <SearchBar />
                     <GaleriasAnteriores />
                   </div>
