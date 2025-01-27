@@ -688,6 +688,14 @@ const Navbar = () => {
                 Cerrar Sesión
               </NavLink>
             </li>
+            <li>
+              <NavLink
+                to="/Ayuda"
+                className="text-white hover:bg-[#005073] block px-4 py-2"
+              >
+                Ayuda
+              </NavLink>
+            </li>
             {/* Contenido existente */}
           </ul>
         </li>

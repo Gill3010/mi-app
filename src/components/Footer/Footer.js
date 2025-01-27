@@ -1,5 +1,12 @@
-import React from 'react';
-import { FaFacebook, FaInstagram, FaLinkedin, FaMapMarkerAlt, FaEnvelope, FaPhone } from 'react-icons/fa';
+import React from "react";
+import {
+  FaFacebook,
+  FaInstagram,
+  FaLinkedin,
+  FaMapMarkerAlt,
+  FaEnvelope,
+  FaPhone,
+} from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -7,9 +14,13 @@ const Footer = () => {
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
         {/* Información del Portal */}
         <div>
-          <h3 className="text-xl font-bold mb-3">Portal de Carteles Científicos</h3>
+          <h3 className="text-xl font-bold mb-3">
+            Portal de Carteles Científicos
+          </h3>
           <p className="text-white">
-            El sitio principal para la divulgación de investigaciones científicas. Explora investigaciones y participa en nuestra comunidad.
+            El sitio principal para la divulgación de investigaciones
+            científicas. Explora investigaciones y participa en nuestra
+            comunidad.
           </p>
         </div>
 
@@ -19,7 +30,8 @@ const Footer = () => {
           <ul className="space-y-2">
             <li className="flex items-center">
               <FaMapMarkerAlt className="mr-2" />
-              Mirador del Pacífico, San Miguelito, Local 70 Ciudad de Panamá, Panamá
+              Mirador del Pacífico, San Miguelito, Local 70 Ciudad de Panamá,
+              Panamá
             </li>
             <li className="flex items-center">
               <FaEnvelope className="mr-2" />
@@ -70,7 +82,9 @@ const Footer = () => {
 
       {/* Derechos Reservados */}
       <div className="mt-8 border-t border-white pt-6 text-center text-white">
-        <p>© 2024 Portal de Carteles Científicos. Todos los derechos reservados.</p>
+        <p>
+          © 2025 Portal de Carteles Científicos. Todos los derechos reservados.
+        </p>
       </div>
     </footer>
   );

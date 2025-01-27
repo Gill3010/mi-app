@@ -244,38 +244,44 @@ const GaleriasAnteriores = () => {
                     </audio>
                   )}
                 </div>
-                <div className="flex space-x-4 sm:space-x-6 mt-4 text-[#002855] bg-[#006D5B] rounded-lg border border-[#002855] p-3 shadow-sm">
-                  <div className="tooltip flex items-center space-x-1">
-                    <FiEye className="text-lg sm:text-xl hover:text-[#006D5B] transition-colors cursor-pointer" />
-                    <span>{galeria.vistas || 0}</span>
-                    <span className="tooltiptext">Vistas</span>
-                  </div>
-                  <div
-                    className="tooltip flex items-center space-x-1 cursor-pointer"
-                    onClick={() => incrementarLikes(galeria.id)}
-                  >
-                    <FiHeart className="text-lg sm:text-xl hover:text-red-400 transition-colors" />
-                    <span>{galeria.likes || 0}</span>
-                    <span className="tooltiptext">Likes</span>
-                  </div>
-                  <div
-                    className="tooltip flex items-center space-x-1 cursor-pointer"
-                    onClick={() => handleShare(galeria)}
-                  >
-                    <FaShareAlt className="text-lg sm:text-xl hover:text-[#006D5B] transition-colors" />
-                    <span className="text-xs sm:text-base">
-                      {galeria.compartido || 0}
-                    </span>
-                    <span className="tooltiptext w-20">Compartir</span>
-                  </div>
-                  <div className="tooltip flex items-center space-x-1">
-                    <FaQuoteLeft className="text-lg sm:text-xl hover:text-[#006D5B] transition-colors" />
-                    <span className="text-xs sm:text-base">
-                      {galeria.citas || 0}
-                    </span>
-                    <span className="tooltiptext">Citas</span>
+                <div>
+                  <h2 className="text-lg sm:text-xl font-bold text-[#002855] mb-2">
+                    Estadísticas de uso
+                  </h2>
+                  <div className="flex space-x-4 sm:space-x-6 mt-4 text-[#002855] bg-[#006D5B] rounded-lg border border-[#002855] p-3 shadow-sm">
+                    <div className="tooltip flex items-center space-x-1">
+                      <FiEye className="text-lg sm:text-xl hover:text-[#006D5B] transition-colors cursor-pointer" />
+                      <span>{galeria.vistas || 0}</span>
+                      <span className="tooltiptext">Vistas</span>
+                    </div>
+                    <div
+                      className="tooltip flex items-center space-x-1 cursor-pointer"
+                      onClick={() => incrementarLikes(galeria.id)}
+                    >
+                      <FiHeart className="text-lg sm:text-xl hover:text-red-400 transition-colors" />
+                      <span>{galeria.likes || 0}</span>
+                      <span className="tooltiptext">Likes</span>
+                    </div>
+                    <div
+                      className="tooltip flex items-center space-x-1 cursor-pointer"
+                      onClick={() => handleShare(galeria)}
+                    >
+                      <FaShareAlt className="text-lg sm:text-xl hover:text-[#006D5B] transition-colors" />
+                      <span className="text-xs sm:text-base">
+                        {galeria.compartido || 0}
+                      </span>
+                      <span className="tooltiptext w-20">Compartir</span>
+                    </div>
+                    <div className="tooltip flex items-center space-x-1">
+                      <FaQuoteLeft className="text-lg sm:text-xl hover:text-[#006D5B] transition-colors" />
+                      <span className="text-xs sm:text-base">
+                        {galeria.citas || 0}
+                      </span>
+                      <span className="tooltiptext">Citas</span>
+                    </div>
                   </div>
                 </div>
+
                 {currentUserId === galeria.userId && (
                   <div className="flex space-x-2 sm:space-x-4 mt-4 text-blue-900">
                     <button

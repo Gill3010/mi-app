@@ -42,6 +42,7 @@ import FormularioCrearMateria from "./components/FormularioCrearMateria/Formular
 import FormularioPrueba from "./components/FormularioPrueba/FormularioPrueba"; // Importa el componente FormularioPrueba
 import VerPrueba from "./components/VerPrueba/VerPrueba"; // Importa el nuevo componente VerPrueba
 import Carousel from "./components/Carousel/Carousel";
+import Ayuda from "./components/Ayuda/Ayuda";
 const App = () => {
   return (
     <Provider store={store}>
@@ -127,6 +128,7 @@ const App = () => {
                 element={<EditarPublicacion />}
               />
               <Route path="/Logout" element={<Logout />} />
+              <Route path="/Ayuda" element={<Ayuda />} />
               <Route path="/crear-curso" element={<FormularioCrearCurso />} />
               <Route
                 path="/crear-perfil-estudiante"
