@@ -142,12 +142,12 @@ const GaleriasAnteriores = () => {
     );
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] p-6 md:p-12">
-      <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 shadow-lg">
+    <div className="min-h-screen bg-white p-6 md:p-12">
+      <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-[#1B5E20] to-[#FFC107] shadow-lg">
         Vol 1-1 II Encuentro de Investigaciones Cualitativas
       </h2>
 
-      <p className="text-center text-xl font-semibold text-transparent bg-gradient-to-r from-blue-500 to-teal-400 bg-clip-text mt-4 shadow-md p-2 rounded-md">
+      <p className="text-center text-xl font-semibold text-transparent bg-gradient-to-r from-[#1B5E20] to-[#FFC107] bg-clip-text mt-4 shadow-md p-2 rounded-md">
         Del 16 al 20 de septiembre del 2024
       </p>
 
@@ -161,7 +161,7 @@ const GaleriasAnteriores = () => {
           {galerias.map((galeria) => (
             <div
               key={galeria.id}
-              className="relative flex flex-col md:flex-row bg-white border border-[#002855] p-4 sm:p-6 rounded-lg shadow-lg transition hover:shadow-2xl duration-300"
+              className="relative flex flex-col md:flex-row bg-gradient-to-r from-[#1B5E20] to-[#FFC107] border border-[#002855] p-4 sm:p-6 rounded-lg shadow-lg transition hover:shadow-2xl duration-300"
             >
               <div className="md:w-1/3 mb-4 sm:mb-6 md:mb-0 p-2">
                 {galeria.imagen ? (
@@ -180,8 +180,8 @@ const GaleriasAnteriores = () => {
                 )}
               </div>
               <div className="md:w-2/3 p-4 flex flex-col justify-between">
-                <div className="text-blue-900 space-y-2 sm:space-y-3">
-                  <h3 className="text-xl sm:text-2xl font-semibold hover:text-blue-800 transition cursor-pointer relative group">
+                <div className="text-white space-y-2 sm:space-y-3">
+                  <h3 className="text-xl sm:text-2xl font-semibold hover:text-yellow-500 transition cursor-pointer relative group">
                     Título de la investigación
                     <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 w-max px-2 py-1 text-xs text-white bg-black rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
                       {galeria.tituloInvestigacion}
@@ -245,10 +245,10 @@ const GaleriasAnteriores = () => {
                   )}
                 </div>
                 <div>
-                  <h2 className="text-lg sm:text-xl font-bold text-[#002855] mb-2">
+                  <h2 className="text-lg sm:text-xl font-bold text-[#fff] mb-2">
                     Estadísticas de uso
                   </h2>
-                  <div className="flex space-x-4 sm:space-x-6 mt-4 text-[#002855] bg-[#006D5B] rounded-lg border border-[#002855] p-3 shadow-sm">
+                  <div className="flex space-x-4 sm:space-x-6 mt-4 text-[#002855] bg-white rounded-lg border border-[#002855] p-3 shadow-sm">
                     <div className="tooltip flex items-center space-x-1">
                       <FiEye className="text-lg sm:text-xl hover:text-[#006D5B] transition-colors cursor-pointer" />
                       <span>{galeria.vistas || 0}</span>

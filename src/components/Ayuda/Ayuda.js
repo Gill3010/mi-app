@@ -2,13 +2,13 @@ import React from "react";
 
 const Ayuda = () => {
   return (
-    <div className="bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] text-white py-10 px-6">
-      <h1 className="text-2xl font-bold mb-6 text-center">
+    <div className="bg-white text-black py-10 px-6">
+      <h1 className="text-2xl font-bold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-[#1B5E20] to-[#FFC107]">
         Paso a Paso: Creación y Gestión de Usuarios, Roles, Cursos y Contenidos
       </h1>
 
       <section className="mb-8">
-        <h2 className="text-xl font-bold mb-4">
+        <h2 className="text-xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#1B5E20] to-[#FFC107]">
           Registrar un Usuario con un Rol Específico
         </h2>
         <ol className="list-decimal list-inside space-y-2">
@@ -33,7 +33,7 @@ const Ayuda = () => {
         <div className="mt-4">
           <p className="font-semibold">Ejemplo:</p>
           <img
-            src="/img/Paso1.jpg"
+            src="/img/Paso1.png"
             alt="Ejemplo de registro"
             className="rounded-lg shadow-lg"
           />
@@ -41,7 +41,9 @@ const Ayuda = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-bold mb-4">Crear un Perfil</h2>
+        <h2 className="text-xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#1B5E20] to-[#FFC107]">
+          Crear un Perfil
+        </h2>
         <ol className="list-decimal list-inside space-y-2">
           <li>
             Una vez registrado, serás redirigido a una página para configurar tu
@@ -56,7 +58,7 @@ const Ayuda = () => {
         <div className="mt-4">
           <p className="font-semibold">Ejemplo:</p>
           <img
-            src="/img/Paso2.jpg"
+            src="/img/Paso2.png"
             alt="Ejemplo de perfil"
             className="rounded-lg shadow-lg"
           />
@@ -64,7 +66,7 @@ const Ayuda = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-bold mb-4">
+        <h2 className="text-xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#1B5E20] to-[#FFC107]">
           Acceder a Funcionalidades Según el Rol
         </h2>
         <ol className="list-decimal list-inside space-y-2">
@@ -79,7 +81,7 @@ const Ayuda = () => {
         <div className="mt-4">
           <p className="font-semibold">Ejemplo:</p>
           <img
-            src="/img/Paso3.jpg"
+            src="/img/Paso3.png"
             alt="Ejemplo de creación de curso"
             className="rounded-lg shadow-lg"
           />
@@ -87,7 +89,9 @@ const Ayuda = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-bold mb-4">Crear un Nuevo Curso</h2>
+        <h2 className="text-xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#1B5E20] to-[#FFC107]">
+          Crear un Nuevo Curso
+        </h2>
         <ol className="list-decimal list-inside space-y-2">
           <li>
             Al hacer clic en 'Crear Curso', completa los campos del formulario
@@ -98,7 +102,7 @@ const Ayuda = () => {
         <div className="mt-4">
           <p className="font-semibold">Ejemplo:</p>
           <img
-            src="/img/Paso4.jpg"
+            src="/img/Paso4.png"
             alt="Ejemplo de nuevo curso"
             className="rounded-lg shadow-lg"
           />
@@ -106,7 +110,7 @@ const Ayuda = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-bold mb-4">
+        <h2 className="text-xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#1B5E20] to-[#FFC107]">
           Agregar Contenidos o Materias al Curso
         </h2>
         <ol className="list-decimal list-inside space-y-2">
@@ -122,7 +126,7 @@ const Ayuda = () => {
         <div className="mt-4">
           <p className="font-semibold">Ejemplo:</p>
           <img
-            src="/img/Paso5.jpg"
+            src="/img/Paso5.png"
             alt="Ejemplo de agregar materia"
             className="rounded-lg shadow-lg"
           />
@@ -130,7 +134,7 @@ const Ayuda = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-bold mb-4">
+        <h2 className="text-xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#1B5E20] to-[#FFC107]">
           Agregar Examen o Prueba al Curso
         </h2>
         <ol className="list-decimal list-inside space-y-2">
@@ -143,7 +147,7 @@ const Ayuda = () => {
         <div className="mt-4">
           <p className="font-semibold">Ejemplo:</p>
           <img
-            src="/img/Paso6.jpg"
+            src="/img/Paso6.png"
             alt="Ejemplo de agregar examen"
             className="rounded-lg shadow-lg"
           />

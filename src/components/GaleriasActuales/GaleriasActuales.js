@@ -8,7 +8,6 @@ import { auth } from "../../config/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import { FiShare2, FiEye, FiHeart, FiShare, FiUser } from "react-icons/fi";
 import { FaQuoteLeft, FaShareAlt } from "react-icons/fa";
-import "./GaleriasActuales.css";
 import { doc, updateDoc, increment } from "firebase/firestore";
 import { db } from "../../config/firebaseConfig";
 
@@ -29,10 +28,9 @@ const GaleriasActuales = () => {
           return nameA.localeCompare(nameB);
         });
 
-        // Asegurarse de que el contador de compartido esté inicializado en 0 si no existe
         const updatedPublications = publications.map((galeria) => ({
           ...galeria,
-          compartido: galeria.compartido || 0, // Inicializa 'compartido' a 0 si no está definido
+          compartido: galeria.compartido || 0,
         }));
 
         setGalerias(updatedPublications);
@@ -141,8 +139,8 @@ const GaleriasActuales = () => {
     return <p className="text-center text-[#002855]">Cargando galerías...</p>;
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] p-6 md:p-12">
-      <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 shadow-lg">
+    <div className="min-h-screen bg-white p-6 md:p-12">
+      <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-[#1B5E20] to-[#FFC107] shadow-lg">
         Vol 1-2 Galería Actual
       </h2>
 
@@ -156,7 +154,7 @@ const GaleriasActuales = () => {
           {galerias.map((galeria) => (
             <div
               key={galeria.id}
-              className="relative flex flex-col md:flex-row bg-white border border-[#002855] p-4 sm:p-6 rounded-lg shadow-lg transition hover:shadow-2xl duration-300"
+              className="relative flex flex-col md:flex-row bg-gradient-to-r from-[#1B5E20] to-[#FFC107] text-white border border-[#002855] p-4 sm:p-6 rounded-lg shadow-lg transition hover:shadow-2xl duration-300"
             >
               <div className="md:w-1/3 mb-4 sm:mb-6 md:mb-0 p-2">
                 {galeria.imagen ? (
@@ -175,8 +173,8 @@ const GaleriasActuales = () => {
                 )}
               </div>
               <div className="md:w-2/3 p-4 flex flex-col justify-between">
-                <div className="text-blue-900 space-y-2 sm:space-y-3">
-                  <h3 className="text-xl sm:text-2xl font-semibold hover:text-blue-800 transition cursor-pointer relative group">
+                <div className="space-y-2 sm:space-y-3">
+                  <h3 className="text-xl sm:text-2xl font-semibold hover:text-yellow-400 transition cursor-pointer relative group">
                     Título de la investigación
                     <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 w-max px-2 py-1 text-xs text-white bg-black rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
                       {galeria.tituloInvestigacion}
@@ -234,7 +232,7 @@ const GaleriasActuales = () => {
                   )}
                 </div>
 
-                <div className="flex space-x-4 sm:space-x-6 mt-4 text-[#002855] bg-[#006D5B] rounded-lg border border-[#002855] p-3 shadow-sm">
+                <div className="flex space-x-4 sm:space-x-6 mt-4 text-[#002855] bg-white rounded-lg border border-[#002855] p-3 shadow-sm">
                   <div className="tooltip flex items-center space-x-1">
                     <FiEye className="text-lg sm:text-xl hover:text-[#006D5B] transition-colors cursor-pointer" />
                     <span className="text-xs sm:text-base">

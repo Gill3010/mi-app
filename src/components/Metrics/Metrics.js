@@ -1,6 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { getPublications, getPastPublications } from '../../config/firebaseConfig';
-import { FaEye, FaHeart, FaShareAlt, FaQuoteLeft, FaFileAlt, FaImages } from 'react-icons/fa';
+import React, { useEffect, useState } from "react";
+import {
+  getPublications,
+  getPastPublications,
+} from "../../config/firebaseConfig";
+import {
+  FaEye,
+  FaHeart,
+  FaShareAlt,
+  FaQuoteLeft,
+  FaFileAlt,
+  FaImages,
+} from "react-icons/fa";
 
 const Metrics = () => {
   const [metrics, setMetrics] = useState({
@@ -55,29 +65,49 @@ const Metrics = () => {
   }, []);
 
   return (
-    <div className="bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] shadow-xl rounded-lg p-6 mt-8 max-w-5xl mx-auto text-white">
+    <div className="bg-gradient-to-r from-[#1B5E20] via-[#2E7D32] to-[#FFC107] shadow-xl rounded-lg p-6 mt-8 max-w-5xl mx-auto text-white">
       {/* Contenedor principal */}
       <div
         className="flex gap-6 sm:gap-8 text-center overflow-x-auto pb-6"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }} // Oculta la barra en navegadores modernos
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }} // Oculta la barra en navegadores modernos
       >
         {[
-          { label: 'Galerías', value: metrics.totalGalleries, icon: <FaImages /> },
-          { label: 'Publicaciones', value: metrics.totalPublications, icon: <FaFileAlt /> },
-          { label: 'Vistas', value: metrics.totalViews, icon: <FaEye /> },
-          { label: 'Likes', value: metrics.totalLikes, icon: <FaHeart /> },
-          { label: 'Compartidas', value: metrics.totalShares, icon: <FaShareAlt /> },
-          { label: 'Citas (DOI)', value: metrics.totalCitations, icon: <FaQuoteLeft /> },
+          {
+            label: "Galerías",
+            value: metrics.totalGalleries,
+            icon: <FaImages />,
+          },
+          {
+            label: "Publicaciones",
+            value: metrics.totalPublications,
+            icon: <FaFileAlt />,
+          },
+          { label: "Vistas", value: metrics.totalViews, icon: <FaEye /> },
+          { label: "Likes", value: metrics.totalLikes, icon: <FaHeart /> },
+          {
+            label: "Compartidas",
+            value: metrics.totalShares,
+            icon: <FaShareAlt />,
+          },
+          {
+            label: "Citas (DOI)",
+            value: metrics.totalCitations,
+            icon: <FaQuoteLeft />,
+          },
         ].map((metric, index) => (
           <div
             key={index}
-            className="flex-shrink-0 w-32 sm:w-40 md:w-48 flex flex-col items-center p-4 sm:p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-2 hover:bg-[#006D5B] hover:border-[#005A4C] border border-transparent"
+            className="flex-shrink-0 w-32 sm:w-40 md:w-48 flex flex-col items-center p-4 sm:p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-2 hover:bg-[#2E7D32] hover:border-[#005A4C] border border-transparent"
           >
-            <div className="text-4xl sm:text-5xl text-[#005599] mb-2">
+            <div className="text-4xl sm:text-5xl text-[#1B5E20] mb-2">
               {metric.icon}
             </div>
-            <h3 className="text-3xl font-extrabold text-[#003366]">{metric.value}</h3>
-            <p className="mt-1 text-sm sm:text-lg font-medium text-[#005599]">{metric.label}</p>
+            <h3 className="text-3xl font-extrabold text-[#1B5E20]">
+              {metric.value}
+            </h3>
+            <p className="mt-1 text-sm sm:text-lg font-medium text-[#1B5E20]">
+              {metric.label}
+            </p>
           </div>
         ))}
       </div>

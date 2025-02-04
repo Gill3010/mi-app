@@ -144,9 +144,9 @@ const FormularioCrearMateria = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] flex items-center justify-center">
+    <div className="min-h-screen bg-white flex items-center justify-center">
       <div className="p-8 max-w-3xl mx-auto bg-white rounded-lg shadow-lg w-full">
-        <h2 className="text-2xl font-bold mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 shadow-xl">
+        <h2 className="text-2xl font-bold mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-[#1B5E20] to-[#FFC107] shadow-xl">
           Crear Nueva Materia
         </h2>
 
@@ -206,7 +206,7 @@ const FormularioCrearMateria = () => {
             <button
               type="button"
               onClick={addFileInput}
-              className="mt-2 py-2 px-4 bg-blue-600 text-white rounded-md"
+              className="mt-2 py-2 px-4 bg-gradient-to-r from-[#1B5E20] to-[#FFC107] text-white rounded-md"
             >
               Agregar otro video
             </button>
@@ -233,7 +233,7 @@ const FormularioCrearMateria = () => {
             <button
               type="button"
               onClick={addVideoUrlInput}
-              className="mt-2 py-2 px-4 bg-blue-600 text-white rounded-md"
+              className="mt-2 py-2 px-4 bg-gradient-to-r from-[#1B5E20] to-[#FFC107] text-white rounded-md"
             >
               Agregar URL de video
             </button>
@@ -264,7 +264,7 @@ const FormularioCrearMateria = () => {
             <button
               type="submit"
               disabled={loading}
-              className="mt-4 py-2 px-8 bg-gradient-to-r from-blue-600 to-green-500 text-white rounded-md hover:bg-gradient-to-r hover:from-blue-700 hover:to-green-600"
+              className="mt-4 py-2 px-8 bg-gradient-to-r from-[#1B5E20] to-[#FFC107] text-white rounded-md hover:bg-gradient-to-r hover:from-[#2E7D32] hover:to-[#FFC107]"
             >
               {loading ? "Cargando..." : "Crear Materia"}
             </button>

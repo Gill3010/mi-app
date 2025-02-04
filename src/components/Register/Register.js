@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { registerUser } from '../../config/firebaseConfig'; // Configuración de Firebase
-import { db } from '../../config/firebaseConfig'; // Configuración de Firestore
-import { setDoc, doc } from 'firebase/firestore'; // Para guardar datos en Firestore
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { registerUser } from "../../config/firebaseConfig"; // Configuración de Firebase
+import { db } from "../../config/firebaseConfig"; // Configuración de Firestore
+import { setDoc, doc } from "firebase/firestore"; // Para guardar datos en Firestore
 
 const Register = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [role, setRole] = useState('Estudiante'); // Valor por defecto del rol
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [role, setRole] = useState("Estudiante"); // Valor por defecto del rol
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null); // Mensaje de éxito
   const navigate = useNavigate();
 
   useEffect(() => {
-    setName('');
-    setEmail('');
-    setPassword('');
-    setConfirmPassword('');
+    setName("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
     setError(null);
-    setRole('Estudiante');
+    setRole("Estudiante");
     setSuccessMessage(null);
   }, []);
 
@@ -33,22 +33,22 @@ const Register = () => {
     e.preventDefault();
 
     if (!name || !email || !password || !confirmPassword || !role) {
-      setError('Todos los campos son obligatorios.');
+      setError("Todos los campos son obligatorios.");
       return;
     }
 
     if (!validateEmail(email)) {
-      setError('El formato del correo electrónico es inválido.');
+      setError("El formato del correo electrónico es inválido.");
       return;
     }
 
     if (password.length < 6) {
-      setError('La contraseña debe tener al menos 6 caracteres.');
+      setError("La contraseña debe tener al menos 6 caracteres.");
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('Las contraseñas no coinciden.');
+      setError("Las contraseñas no coinciden.");
       return;
     }
 
@@ -56,41 +56,52 @@ const Register = () => {
       const userCredential = await registerUser(email, password);
       if (userCredential) {
         const user = userCredential.user;
-        await setDoc(doc(db, 'users', user.uid), {
+        await setDoc(doc(db, "users", user.uid), {
           name,
           email,
           role, // Guardar el rol seleccionado
           createdAt: new Date().toISOString(), // Fecha de creación
         });
-        setSuccessMessage('¡Registro exitoso! Redirigiendo...');
+        setSuccessMessage("¡Registro exitoso! Redirigiendo...");
 
         // Redirigir según el rol
-        if (role === 'Docente') {
-          setTimeout(() => navigate('/crear-perfil-docente'), 2000);
+        if (role === "Docente") {
+          setTimeout(() => navigate("/crear-perfil-docente"), 2000);
         } else {
-          setTimeout(() => navigate('/crear-perfil-estudiante'), 2000);
+          setTimeout(() => navigate("/crear-perfil-estudiante"), 2000);
         }
       }
     } catch (error) {
-      console.error('Error en el registro:', error);
-      if (error.code === 'auth/email-already-in-use') {
-        setError('El correo electrónico ya está registrado.');
-      } else if (error.code === 'auth/weak-password') {
-        setError('La contraseña es muy débil.');
+      console.error("Error en el registro:", error);
+      if (error.code === "auth/email-already-in-use") {
+        setError("El correo electrónico ya está registrado.");
+      } else if (error.code === "auth/weak-password") {
+        setError("La contraseña es muy débil.");
       } else {
-        setError('Error durante el registro. Por favor intenta de nuevo más tarde.');
+        setError(
+          "Error durante el registro. Por favor intenta de nuevo más tarde."
+        );
       }
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] text-white">
-      <h2 className="text-4xl font-bold mb-8">Regístrate</h2>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-white text-gray-800">
+      <h2 className="text-4xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[#1B5E20] to-[#FFC107]">
+        Regístrate
+      </h2>
       {error && <p className="text-red-500 mb-4">{error}</p>}
-      {successMessage && <p className="text-green-500 mb-4">{successMessage}</p>}
-      <form onSubmit={handleRegister} className="w-full max-w-md bg-white p-8 shadow-2xl rounded-lg text-gray-800">
+      {successMessage && (
+        <p className="text-green-500 mb-4">{successMessage}</p>
+      )}
+      <form
+        onSubmit={handleRegister}
+        className="w-full max-w-md bg-white p-8 shadow-2xl rounded-lg text-gray-800"
+      >
         <div className="mb-6">
-          <label htmlFor="name" className="block text-gray-700 text-lg">Nombre</label>
+          <label htmlFor="name" className="block text-gray-700 text-lg">
+            Nombre
+          </label>
           <input
             type="text"
             id="name"
@@ -102,7 +113,9 @@ const Register = () => {
         </div>
 
         <div className="mb-6">
-          <label htmlFor="email" className="block text-gray-700 text-lg">Correo Electrónico</label>
+          <label htmlFor="email" className="block text-gray-700 text-lg">
+            Correo Electrónico
+          </label>
           <input
             type="email"
             id="email"
@@ -114,7 +127,9 @@ const Register = () => {
         </div>
 
         <div className="mb-6">
-          <label htmlFor="password" className="block text-gray-700 text-lg">Contraseña</label>
+          <label htmlFor="password" className="block text-gray-700 text-lg">
+            Contraseña
+          </label>
           <input
             type="password"
             id="password"
@@ -126,7 +141,12 @@ const Register = () => {
         </div>
 
         <div className="mb-6">
-          <label htmlFor="confirmPassword" className="block text-gray-700 text-lg">Confirmar Contraseña</label>
+          <label
+            htmlFor="confirmPassword"
+            className="block text-gray-700 text-lg"
+          >
+            Confirmar Contraseña
+          </label>
           <input
             type="password"
             id="confirmPassword"
@@ -138,7 +158,9 @@ const Register = () => {
         </div>
 
         <div className="mb-8">
-          <label htmlFor="role" className="block text-gray-700 text-lg">Rol</label>
+          <label htmlFor="role" className="block text-gray-700 text-lg">
+            Rol
+          </label>
           <select
             id="role"
             value={role}
@@ -151,13 +173,21 @@ const Register = () => {
           </select>
         </div>
 
-        <button type="submit" className="w-full bg-[#002855] text-white py-3 rounded-lg text-lg hover:bg-[#005073] transition duration-300">
+        <button
+          type="submit"
+          className="w-full bg-gradient-to-r from-[#1B5E20] via-[#2E7D32] to-[#FFC107] text-white py-3 rounded-lg text-lg hover:bg-[#2E7D32] transition duration-300"
+        >
           Registrarse
         </button>
       </form>
 
       <div className="mt-6">
-        <p className="text-white">¿Ya tienes una cuenta? <a href="/login" className="text-blue-200 hover:text-blue-300 transition duration-300">Iniciar sesión</a></p>
+        <p className="text-gray-800">
+          ¿Ya tienes una cuenta?{" "}
+          <a href="/login" className="text-[#1B5E20] hover:underline">
+            Iniciar sesión
+          </a>
+        </p>
       </div>
     </div>
   );

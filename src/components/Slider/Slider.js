@@ -1,13 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import '../../output.css';
+import React, { useState, useEffect } from "react";
+import "../../output.css";
 
 const Slider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const slides = [
-    { id: 1, image: require('./images/Imagen1.webp'), title: 'Slide 1', link: '/Nosotros' },
-    { id: 2, image: require('./images/Imagen2.webp'), title: 'Slide 2', link: '/FormularioEnvio' },
-    { id: 3, image: require('./images/Imagen3.webp'), title: 'Slide 3', link: '/GaleriasActuales' },
-    { id: 4, image: require('./images/Imagen4.webp'), title: 'Slide 4', link: '/Login' }
+    {
+      id: 1,
+      image: require("./images/Imagen1.webp"),
+      title: "Slide 1",
+      link: "/Nosotros",
+    },
+    {
+      id: 2,
+      image: require("./images/Imagen2.webp"),
+      title: "Slide 2",
+      link: "/FormularioEnvio",
+    },
+    {
+      id: 3,
+      image: require("./images/Imagen3.webp"),
+      title: "Slide 3",
+      link: "/GaleriasActuales",
+    },
+    {
+      id: 4,
+      image: require("./images/Imagen4.webp"),
+      title: "Slide 4",
+      link: "/Login",
+    },
   ];
 
   useEffect(() => {
@@ -35,16 +55,16 @@ const Slider = () => {
       >
         {slides.map((slide) => (
           <div key={slide.id} className="w-full flex-shrink-0 relative">
-            <img 
-              src={slide.image} 
-              alt={slide.title} 
-              className="w-full h-64 md:h-80 object-cover" 
+            <img
+              src={slide.image}
+              alt={slide.title}
+              className="w-full h-64 md:h-80 object-cover"
             />
             {/* Botón de más información */}
             <div className="absolute bottom-4 left-4">
-              <a 
-                href={slide.link} 
-                className="bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] text-white px-4 py-2 rounded-full shadow-md hover:bg-[#005073] transition-colors"
+              <a
+                href={slide.link}
+                className="bg-gradient-to-r from-[#1B5E20] via-[#2E7D32] to-[#FFC107] text-white px-4 py-2 rounded-full shadow-md hover:bg-[#2E7D32] transition-colors"
               >
                 Saber más
               </a>
@@ -56,19 +76,37 @@ const Slider = () => {
       {/* Botones de navegación */}
       <button
         onClick={prevSlide}
-        className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-[#1E3A8A] text-white p-4 rounded-full hover:bg-[#005073] shadow-lg"
+        className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gradient-to-r from-[#1B5E20] via-[#2E7D32] to-[#FFC107] text-white p-4 rounded-full hover:bg-[#2E7D32] shadow-lg"
         aria-label="Previous Slide"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-8 w-8"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M15 19l-7-7 7-7"
+          />
         </svg>
       </button>
       <button
         onClick={nextSlide}
-        className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-[#1E3A8A] text-white p-4 rounded-full hover:bg-[#005073] shadow-lg"
+        className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gradient-to-r from-[#1B5E20] via-[#2E7D32] to-[#FFC107] text-white p-4 rounded-full hover:bg-[#2E7D32] shadow-lg"
         aria-label="Next Slide"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-8 w-8"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
           <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
         </svg>
       </button>
@@ -80,7 +118,7 @@ const Slider = () => {
             key={index}
             onClick={() => setCurrentSlide(index)}
             className={`w-4 h-4 rounded-full transition-transform duration-300 ${
-              currentSlide === index ? 'bg-white scale-125' : 'bg-gray-400'
+              currentSlide === index ? "bg-white scale-125" : "bg-gray-400"
             }`}
             aria-label={`Slide ${index + 1}`}
           />

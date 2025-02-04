@@ -73,8 +73,8 @@ const EditarPublicacion = () => {
   };
 
   return (
-    <div className="p-8 max-w-3xl mx-auto bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50]">
-      <h2 className="text-2xl font-bold mb-4 text-center text-white">
+    <div className="p-8 max-w-3xl mx-auto bg-white">
+      <h2 className="text-2xl font-bold mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-[#1B5E20] via-[#2E7D32] to-[#FFC107]">
         Editar Publicación
       </h2>
       <form
@@ -88,7 +88,7 @@ const EditarPublicacion = () => {
           onChange={handleChange}
           placeholder="Título de la Investigación"
           required
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]"
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32]"
         />
         <input
           type="text"
@@ -97,7 +97,7 @@ const EditarPublicacion = () => {
           onChange={handleChange}
           placeholder="Nombre del Autor"
           required
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]"
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32]"
         />
         <input
           type="text"
@@ -106,7 +106,7 @@ const EditarPublicacion = () => {
           onChange={handleChange}
           placeholder="Apellido del Autor"
           required
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]"
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32]"
         />
         <input
           type="text"
@@ -114,7 +114,7 @@ const EditarPublicacion = () => {
           value={formData.institucion}
           onChange={handleChange}
           placeholder="Institución"
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]"
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32]"
         />
         <input
           type="text"
@@ -122,45 +122,45 @@ const EditarPublicacion = () => {
           value={formData.orcid}
           onChange={handleChange}
           placeholder="ORCID"
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]"
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32]"
         />
 
         {/* Campo de archivo para el resumen */}
-        <label className="block text-sm font-semibold text-[#002855]">
+        <label className="block text-sm font-semibold text-[#2E7D32]">
           Subir Resumen:
         </label>
         <input
           type="file"
           name="resumen"
           onChange={handleFileChange}
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]"
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32]"
         />
 
         {/* Campo de archivo para la imagen */}
-        <label className="block text-sm font-semibold text-[#002855]">
+        <label className="block text-sm font-semibold text-[#2E7D32]">
           Subir Imagen:
         </label>
         <input
           type="file"
           name="imagen"
           onChange={handleFileChange}
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]"
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32]"
         />
 
         {/* Campo de archivo para el audio */}
-        <label className="block text-sm font-semibold text-[#002855]">
+        <label className="block text-sm font-semibold text-[#2E7D32]">
           Subir Audio:
         </label>
         <input
           type="file"
           name="audio"
           onChange={handleFileChange}
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]"
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32]"
         />
 
         <button
           type="submit"
-          className="bg-[#002855] text-white py-2 px-4 rounded-lg hover:bg-[#005073] transition duration-300"
+          className="bg-gradient-to-r from-[#1B5E20] via-[#2E7D32] to-[#FFC107] text-white py-2 px-4 rounded-lg hover:bg-[#2E7D32] transition duration-300"
         >
           Guardar Cambios
         </button>

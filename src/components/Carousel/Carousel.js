@@ -64,7 +64,7 @@ const Carousel = () => {
             <div className="absolute bottom-4 left-4">
               <a
                 href={slide.link}
-                className="bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] text-white px-4 py-2 rounded-full shadow-md hover:bg-[#005073] transition-colors"
+                className="bg-gradient-to-r from-[#1B5E20] via-[#2E7D32] to-[#FFC107] text-white px-4 py-2 rounded-full shadow-md hover:bg-[#2E7D32] transition-colors"
               >
                 Saber más
               </a>
@@ -76,7 +76,7 @@ const Carousel = () => {
       {/* Botones de navegación */}
       <button
         onClick={prevSlide}
-        className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-[#1E3A8A] text-white p-4 rounded-full hover:bg-[#005073] shadow-lg"
+        className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gradient-to-r from-[#1B5E20] via-[#2E7D32] to-[#FFC107] text-white p-4 rounded-full hover:bg-[#2E7D32] shadow-lg"
         aria-label="Previous Slide"
       >
         <svg
@@ -96,7 +96,7 @@ const Carousel = () => {
       </button>
       <button
         onClick={nextSlide}
-        className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-[#1E3A8A] text-white p-4 rounded-full hover:bg-[#005073] shadow-lg"
+        className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gradient-to-r from-[#1B5E20] via-[#2E7D32] to-[#FFC107] text-white p-4 rounded-full hover:bg-[#2E7D32] shadow-lg"
         aria-label="Next Slide"
       >
         <svg

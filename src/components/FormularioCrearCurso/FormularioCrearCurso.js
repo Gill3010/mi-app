@@ -128,9 +128,9 @@ const FormularioCrearCurso = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] flex items-center justify-center">
+    <div className="min-h-screen bg-white flex items-center justify-center">
       <div className="p-8 max-w-3xl mx-auto bg-white rounded-lg shadow-lg w-full">
-        <h2 className="text-2xl font-bold mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 shadow-xl">
+        <h2 className="text-2xl font-bold mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-[#1B5E20] to-[#FFC107]">
           Crear Nuevo Curso
         </h2>
 
@@ -150,7 +150,7 @@ const FormularioCrearCurso = () => {
           <div>
             <label
               htmlFor="titulo"
-              className="block text-[#002855] font-medium mb-1"
+              className="block text-[#1B5E20] font-medium mb-1"
             >
               Título del Curso
             </label>
@@ -160,7 +160,7 @@ const FormularioCrearCurso = () => {
               name="titulo"
               value={courseData.titulo}
               onChange={handleChange}
-              className="w-full border border-[#002855] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002855]"
+              className="w-full border border-[#1B5E20] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]"
               required
             />
           </div>
@@ -168,7 +168,7 @@ const FormularioCrearCurso = () => {
           <div>
             <label
               htmlFor="descripcion"
-              className="block text-[#002855] font-medium mb-1"
+              className="block text-[#1B5E20] font-medium mb-1"
             >
               Descripción
             </label>
@@ -177,7 +177,7 @@ const FormularioCrearCurso = () => {
               name="descripcion"
               value={courseData.descripcion}
               onChange={handleChange}
-              className="w-full border border-[#002855] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002855]"
+              className="w-full border border-[#1B5E20] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]"
               rows="4"
               required
             ></textarea>
@@ -186,7 +186,7 @@ const FormularioCrearCurso = () => {
           <div>
             <label
               htmlFor="imagen"
-              className="block text-[#002855] font-medium mb-1"
+              className="block text-[#1B5E20] font-medium mb-1"
             >
               URL de la Imagen
             </label>
@@ -196,7 +196,7 @@ const FormularioCrearCurso = () => {
               name="imagen"
               value={courseData.imagen}
               onChange={handleChange}
-              className="w-full border border-[#002855] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002855]"
+              className="w-full border border-[#1B5E20] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]"
               placeholder="https://ejemplo.com/imagen.jpg"
             />
           </div>
@@ -204,7 +204,7 @@ const FormularioCrearCurso = () => {
           <div>
             <label
               htmlFor="imagenFile"
-              className="block text-[#002855] font-medium mb-1"
+              className="block text-[#1B5E20] font-medium mb-1"
             >
               Subir Imagen
             </label>
@@ -214,14 +214,14 @@ const FormularioCrearCurso = () => {
               name="imagenFile"
               onChange={handleFileChange}
               accept="image/*"
-              className="w-full border border-[#002855] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002855]"
+              className="w-full border border-[#1B5E20] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]"
             />
           </div>
 
           <div>
             <label
               htmlFor="video"
-              className="block text-[#002855] font-medium mb-1"
+              className="block text-[#1B5E20] font-medium mb-1"
             >
               URL del Video
             </label>
@@ -231,7 +231,7 @@ const FormularioCrearCurso = () => {
               name="video"
               value={courseData.video}
               onChange={handleChange}
-              className="w-full border border-[#002855] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002855]"
+              className="w-full border border-[#1B5E20] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]"
               placeholder="https://ejemplo.com/video.mp4"
             />
           </div>
@@ -239,7 +239,7 @@ const FormularioCrearCurso = () => {
           <div>
             <label
               htmlFor="videoFile"
-              className="block text-[#002855] font-medium mb-1"
+              className="block text-[#1B5E20] font-medium mb-1"
             >
               Subir Video
             </label>
@@ -249,14 +249,14 @@ const FormularioCrearCurso = () => {
               name="videoFile"
               onChange={handleFileChange}
               accept="video/*"
-              className="w-full border border-[#002855] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002855]"
+              className="w-full border border-[#1B5E20] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]"
             />
           </div>
 
           <div>
             <label
               htmlFor="precio"
-              className="block text-[#002855] font-medium mb-1"
+              className="block text-[#1B5E20] font-medium mb-1"
             >
               Precio del Curso (USD)
             </label>
@@ -266,7 +266,7 @@ const FormularioCrearCurso = () => {
               name="precio"
               value={courseData.precio}
               onChange={handleChange}
-              className="w-full border border-[#002855] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002855]"
+              className="w-full border border-[#1B5E20] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]"
               placeholder="50"
               required
             />
@@ -275,7 +275,7 @@ const FormularioCrearCurso = () => {
           <div>
             <label
               htmlFor="categoria"
-              className="block text-[#002855] font-medium mb-1"
+              className="block text-[#1B5E20] font-medium mb-1"
             >
               Categoría del Curso
             </label>
@@ -284,7 +284,7 @@ const FormularioCrearCurso = () => {
               name="categoria"
               value={courseData.categoria}
               onChange={handleChange}
-              className="w-full border border-[#002855] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002855]"
+              className="w-full border border-[#1B5E20] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]"
               required
             >
               <option value="">Seleccione una categoría</option>
@@ -310,7 +310,7 @@ const FormularioCrearCurso = () => {
           <div>
             <label
               htmlFor="etiquetas"
-              className="block text-[#002855] font-medium mb-1"
+              className="block text-[#1B5E20] font-medium mb-1"
             >
               Etiquetas (separadas por coma)
             </label>
@@ -320,7 +320,7 @@ const FormularioCrearCurso = () => {
               name="etiquetas"
               value={courseData.etiquetas}
               onChange={handleChange}
-              className="w-full border border-[#002855] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#002855]"
+              className="w-full border border-[#1B5E20] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1B5E20]"
               placeholder="ejemplo1, ejemplo2"
             />
           </div>
@@ -328,8 +328,8 @@ const FormularioCrearCurso = () => {
           <div className="text-center">
             <button
               type="submit"
-              className={`px-6 py-2 text-white font-bold rounded ${
-                loading ? "bg-gray-500 cursor-not-allowed" : "bg-[#4CAF50]"
+              className={`px-6 py-2 text-white font-bold rounded bg-gradient-to-r from-[#1B5E20] to-[#FFC107] ${
+                loading ? "cursor-not-allowed" : ""
               }`}
               disabled={loading}
             >

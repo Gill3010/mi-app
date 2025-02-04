@@ -16,7 +16,7 @@ const FormularioEnvio = () => {
     institucion: "",
     orcid: "",
     pais: "",
-    galeria: "actual", // Nuevo campo para seleccionar la galería
+    galeria: "actual",
     instrucciones: "",
     metodoPago: "",
     vistas: 0,
@@ -94,7 +94,6 @@ const FormularioEnvio = () => {
         ? await uploadFile(formData.audio, "audios")
         : null;
 
-      // Enviar a la colección seleccionada (actual o anterior)
       if (formData.galeria === "actual") {
         await addPublication({
           ...formData,
@@ -132,9 +131,9 @@ const FormularioEnvio = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] flex items-center justify-center">
+    <div className="min-h-screen bg-white flex items-center justify-center">
       <div className="p-8 max-w-3xl mx-auto bg-white rounded-lg shadow-lg w-full">
-        <h2 className="text-2xl font-bold mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 shadow-xl">
+        <h2 className="text-2xl font-bold mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-[#1B5E20] to-[#FFC107]">
           Creación de Publicación
         </h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
@@ -196,7 +195,6 @@ const FormularioEnvio = () => {
                 <option value="+91">+91 (India)</option>
                 <option value="+81">+81 (Japón)</option>
                 <option value="+61">+61 (Australia)</option>
-                {/* Agrega más códigos de área aquí */}
               </select>
               <input
                 type="text"
@@ -235,7 +233,6 @@ const FormularioEnvio = () => {
             className="w-full px-4 py-2 border border-[#002855] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]"
           />
 
-          {/* Nueva opción para seleccionar la galería */}
           <select
             name="galeria"
             value={formData.galeria}
@@ -266,6 +263,7 @@ const FormularioEnvio = () => {
             placeholder="DOI"
             className="w-full px-4 py-2 border border-[#002855] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]"
           />
+
           <div className="mb-4">
             <label
               htmlFor="imagen"
@@ -332,7 +330,7 @@ const FormularioEnvio = () => {
           </select>
           <button
             type="submit"
-            className="bg-[#002855] hover:bg-[#005073] text-white py-2 px-4 rounded-lg transition duration-300"
+            className="bg-gradient-to-r from-[#1B5E20] to-[#FFC107] text-white py-2 px-4 rounded-lg transition duration-300"
           >
             Enviar Documento
           </button>

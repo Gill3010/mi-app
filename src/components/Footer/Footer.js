@@ -10,7 +10,7 @@ import {
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] text-white py-10">
+    <footer className="bg-gradient-to-r from-[#1B5E20] via-[#2E7D32] to-[#FFC107] text-white py-10">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
         {/* Información del Portal */}
         <div>
@@ -29,16 +29,16 @@ const Footer = () => {
           <h3 className="text-xl font-bold mb-3">Contáctenos</h3>
           <ul className="space-y-2">
             <li className="flex items-center">
-              <FaMapMarkerAlt className="mr-2" />
+              <FaMapMarkerAlt className="mr-2 text-[#FFC107]" />
               Mirador del Pacífico, San Miguelito, Local 70 Ciudad de Panamá,
               Panamá
             </li>
             <li className="flex items-center">
-              <FaEnvelope className="mr-2" />
+              <FaEnvelope className="mr-2 text-[#FFC107]" />
               info@portaldecartelescientificos.org
             </li>
             <li className="flex items-center">
-              <FaPhone className="mr-2" />
+              <FaPhone className="mr-2 text-[#FFC107]" />
               +507 6645-7685 | +507 208-4689
             </li>
           </ul>
@@ -50,7 +50,7 @@ const Footer = () => {
           <div className="flex space-x-4">
             <a
               href="https://facebook.com"
-              className="hover:text-blue-300 transition duration-300"
+              className="hover:text-[#FFC107] transition duration-300"
               aria-label="Facebook"
             >
               <FaFacebook size={30} />
@@ -64,14 +64,14 @@ const Footer = () => {
             </a>
             <a
               href="https://instagram.com"
-              className="hover:text-pink-300 transition duration-300"
+              className="hover:text-[#FFC107] transition duration-300"
               aria-label="Instagram"
             >
               <FaInstagram size={30} />
             </a>
             <a
               href="https://linkedin.com"
-              className="hover:text-blue-500 transition duration-300"
+              className="hover:text-[#FFC107] transition duration-300"
               aria-label="LinkedIn"
             >
               <FaLinkedin size={30} />

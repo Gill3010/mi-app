@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { db } from '../../config/firebaseConfig';
-import { collection, query, where, onSnapshot } from 'firebase/firestore';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { db } from "../../config/firebaseConfig";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
 
 const UsoAtlasTi = () => {
   const [items, setItems] = useState([]);
@@ -12,12 +12,15 @@ const UsoAtlasTi = () => {
 
   useEffect(() => {
     const q = query(
-      collection(db, 'cursos'),
-      where('categoria', '==', 'UsoAtlasTi')
+      collection(db, "cursos"),
+      where("categoria", "==", "UsoAtlasTi")
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const itemsData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      const itemsData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
       setItems(itemsData);
     });
 
@@ -60,16 +63,17 @@ const UsoAtlasTi = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] p-6 md:p-12">
+    <div className="min-h-screen w-full bg-white p-6 md:p-12">
       {/* Título del componente */}
-      <h2 className="text-3xl md:text-4xl font-extrabold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 shadow-xl p-6 bg-white rounded-lg">
+      <h2 className="text-3xl md:text-4xl font-extrabold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-[#1B5E20] to-[#FFC107] shadow-xl p-6 bg-white rounded-lg">
         Uso de Atlas Ti en Investigación Científica
       </h2>
 
       {/* Descripción del componente */}
       <div className="text-center p-4 bg-white rounded-lg shadow-md mb-8">
-        <p className="text-lg md:text-xl font-medium text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400">
-          Aprende a utilizar Atlas Ti para optimizar la gestión y análisis de datos en investigaciones científicas.
+        <p className="text-lg md:text-xl font-medium text-transparent bg-clip-text bg-gradient-to-r from-[#1B5E20] to-[#FFC107]">
+          Aprende a utilizar Atlas Ti para optimizar la gestión y análisis de
+          datos en investigaciones científicas.
         </p>
       </div>
 
@@ -83,12 +87,12 @@ const UsoAtlasTi = () => {
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
-        style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+        style={{ cursor: isDragging ? "grabbing" : "grab" }}
       >
         {items.map((item) => (
           <div
             key={item.id}
-            className="min-w-[300px] flex flex-col bg-white border border-[#002855] p-4 rounded-lg shadow-lg cursor-pointer hover:shadow-2xl transition duration-300 transform hover:scale-105 hover:bg-[#005073]"
+            className="min-w-[300px] flex flex-col bg-gradient-to-r from-[#1B5E20] via-[#2E7D32] to-[#FFC107] p-4 rounded-lg shadow-lg cursor-pointer hover:shadow-2xl transition duration-300 transform hover:scale-105 hover:bg-[#005073]"
             onClick={() => handleItemClick(item.id)}
           >
             <img
@@ -97,10 +101,12 @@ const UsoAtlasTi = () => {
               className="rounded-lg w-full h-64 object-cover"
             />
             <div className="p-4">
-              <h3 className="text-xl font-semibold text-[#003366]">{item.titulo}</h3>
-              <p className="text-gray-600 mt-2 text-sm">{item.descripcion}</p>
-              <p className="text-lg font-bold text-[#005599] mt-4">
-                Precio: {item.precio ? `$${item.precio}` : 'No disponible'}
+              <h3 className="text-xl font-semibold text-white">
+                {item.titulo}
+              </h3>
+              <p className="text-white mt-2 text-sm">{item.descripcion}</p>
+              <p className="text-lg font-bold text-white mt-4">
+                Precio: {item.precio ? `$${item.precio}` : "No disponible"}
               </p>
             </div>
           </div>

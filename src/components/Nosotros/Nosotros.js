@@ -11,7 +11,7 @@ import { FaEnvelope, FaPhone, FaOrcid } from "react-icons/fa";
 
 const Nosotros = () => {
   return (
-    <div className="bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] p-6 md:p-12 text-[#ffffff]">
+    <div className="bg-white p-6 md:p-12 text-[#1B5E20]">
       <h2 className="text-4xl font-bold mb-8 text-center">Sobre Nosotros</h2>
       <p className="text-xl mb-12 text-center max-w-3xl mx-auto">
         Bienvenidos a nuestra organización. Somos un equipo comprometido con la
@@ -19,14 +19,14 @@ const Nosotros = () => {
       </p>
 
       <section className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-12">
-        <div className="bg-[#1E3A8A] text-white p-6 md:p-8 rounded-lg shadow-lg hover:shadow-2xl hover:bg-[#003366] transition duration-300 transform hover:scale-105">
+        <div className="bg-white text-[#1B5E20] p-6 md:p-8 rounded-lg shadow-lg hover:shadow-2xl hover:bg-[#2E7D32] transition duration-300 transform hover:scale-105">
           <h3 className="text-2xl font-semibold mb-4">Nuestra Misión</h3>
           <p>
             Brindar soluciones innovadoras y accesibles a través de la
             investigación.
           </p>
         </div>
-        <div className="bg-[#1E3A8A] text-white p-6 md:p-8 rounded-lg shadow-lg hover:shadow-2xl hover:bg-[#003366] transition duration-300 transform hover:scale-105">
+        <div className="bg-white text-[#1B5E20] p-6 md:p-8 rounded-lg shadow-lg hover:shadow-2xl hover:bg-[#2E7D32] transition duration-300 transform hover:scale-105">
           <h3 className="text-2xl font-semibold mb-4">Nuestra Visión</h3>
           <p>
             Ser líderes en investigación y desarrollo en nuestra área de
@@ -36,7 +36,7 @@ const Nosotros = () => {
       </section>
 
       <section className="text-center">
-        <h3 className="text-3xl font-bold mb-8 text-white">
+        <h3 className="text-3xl font-bold mb-8 text-[#1B5E20]">
           Conoce a Nuestro Equipo
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-10">
@@ -108,7 +108,7 @@ const Nosotros = () => {
           ].map((member) => (
             <div
               key={member.name}
-              className="bg-[#1E3A8A] text-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition duration-300 transform hover:scale-105 flex flex-col items-center sm:flex-row sm:items-start"
+              className="bg-gradient-to-r from-[#1B5E20] via-[#2E7D32] to-[#FFC107] text-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition duration-300 transform hover:scale-105 flex flex-col items-center sm:flex-row sm:items-start"
             >
               <img
                 src={member.image}

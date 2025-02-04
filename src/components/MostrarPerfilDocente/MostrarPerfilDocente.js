@@ -49,12 +49,12 @@ function MostrarPerfilDocente() {
   }
 
   return (
-    <div className="relative w-full bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] text-white p-6 rounded-lg shadow-xl flex items-center">
+    <div className="relative w-full bg-gradient-to-r from-[#1B5E20] via-[#2E7D32] to-[#FFC107] text-white p-6 rounded-lg shadow-xl flex items-center">
       {/* Contenedor principal */}
       <div className="flex flex-wrap justify-between items-center w-full">
         {/* Información textual */}
         <div className="w-full md:w-3/4 space-y-3">
-          <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400">
+          <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#1B5E20] via-[#2E7D32] to-[#FFC107]">
             {perfil.nombre}
           </h2>
           <p className="text-sm italic">{perfil.tituloAcademico}</p>
@@ -92,8 +92,8 @@ function MostrarPerfilDocente() {
           {/* Botón "Crear curso" */}
           <div className="mt-6">
             <button
-              onClick={() => navigate("/crear-curso")} // Redirige al formulario de creación de curso
-              className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300"
+              onClick={() => navigate("/crear-curso")}
+              className="text-white px-6 py-2 rounded-lg transition duration-300 bg-gradient-to-r from-[#1B5E20] via-[#2E7D32] to-[#FFC107] hover:opacity-90"
             >
               Crear Curso
             </button>

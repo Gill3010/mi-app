@@ -8,8 +8,8 @@ import {
   signInWithPopup,
   signInWithRedirect,
   getRedirectResult,
-  onAuthStateChanged, // Verificación de estado de sesión
-  signOut, // Para cerrar sesión activa
+  onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
 import { FaGoogle, FaFacebookF } from "react-icons/fa";
 
@@ -28,25 +28,22 @@ const Login = () => {
   const [isMobileOrSafari, setIsMobileOrSafari] = useState(false);
 
   useEffect(() => {
-    // Verificar si el usuario ya está autenticado al cargar la página
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        // Si el usuario está autenticado, obtenemos su rol
         const userDocRef = doc(db, "users", user.uid);
         const userDoc = await getDoc(userDocRef);
 
         if (userDoc.exists()) {
           const userData = userDoc.data();
           if (userData.role === "Docente") {
-            navigate("/perfil-docente"); // Redirigir al perfil del docente
+            navigate("/perfil-docente");
           } else if (userData.role === "Estudiante") {
-            navigate("/perfil-estudiante"); // Redirigir al perfil del estudiante
+            navigate("/perfil-estudiante");
           }
         }
       }
     });
 
-    // Limpiar el listener cuando el componente se desmonte
     return () => unsubscribe();
   }, [navigate]);
 
@@ -61,13 +58,11 @@ const Login = () => {
         if (result) {
           const credential = FacebookAuthProvider.credentialFromResult(result);
           const accessToken = credential.accessToken;
-          console.log("Inicio de sesión con Facebook exitoso:", result.user);
           setSuccessMessage("¡Inicio de sesión con Facebook exitoso!");
           localStorage.setItem("token", accessToken);
-          navigate("/"); // Redirigir a la página de inicio
+          navigate("/");
         }
       } catch (error) {
-        console.error("Error en el inicio de sesión con Facebook:", error);
         setError(
           "Error en el inicio de sesión con Facebook. Por favor intenta de nuevo."
         );
@@ -84,7 +79,6 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      // Cerrar cualquier sesión activa antes de intentar iniciar una nueva
       await signOut(auth);
 
       const userCredential = await loginUser(email, password);
@@ -95,8 +89,6 @@ const Login = () => {
 
       if (userDoc.exists()) {
         const userData = userDoc.data();
-        console.log("Usuario autenticado:", userData);
-
         if (userData.role === "Docente") {
           navigate("/perfil-docente");
         } else if (userData.role === "Estudiante") {
@@ -108,7 +100,6 @@ const Login = () => {
         setError("No se encontró la información del usuario.");
       }
     } catch (error) {
-      console.error("Error en el inicio de sesión:", error);
       setError(
         "Error durante el inicio de sesión. Por favor intenta de nuevo."
       );
@@ -117,13 +108,11 @@ const Login = () => {
 
   const handleGoogleLogin = async () => {
     try {
-      // Cerrar cualquier sesión activa antes de intentar iniciar una nueva
       await signOut(auth);
 
       const result = await signInWithPopup(auth, googleProvider);
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
-      console.log("Inicio de sesión con Google exitoso:", result.user);
       setSuccessMessage("¡Inicio de sesión con Google exitoso!");
       localStorage.setItem("token", token);
 
@@ -142,7 +131,6 @@ const Login = () => {
         }
       }
     } catch (error) {
-      console.error("Error en el inicio de sesión con Google:", error);
       setError(
         "Error en el inicio de sesión con Google. Por favor intenta de nuevo."
       );
@@ -151,7 +139,6 @@ const Login = () => {
 
   const handleFacebookLogin = async () => {
     try {
-      // Cerrar cualquier sesión activa antes de intentar iniciar una nueva
       await signOut(auth);
 
       setIsRedirecting(true);
@@ -161,7 +148,6 @@ const Login = () => {
         const result = await signInWithPopup(auth, facebookProvider);
         const credential = FacebookAuthProvider.credentialFromResult(result);
         const accessToken = credential.accessToken;
-        console.log("Inicio de sesión con Facebook exitoso:", result.user);
         setSuccessMessage("¡Inicio de sesión con Facebook exitoso!");
         localStorage.setItem("token", accessToken);
 
@@ -181,7 +167,6 @@ const Login = () => {
         }
       }
     } catch (error) {
-      console.error("Error en el inicio de sesión con Facebook:", error);
       setError(
         error.message ||
           "Error en el inicio de sesión con Facebook. Por favor intenta de nuevo."
@@ -191,8 +176,8 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] text-white">
-      <h2 className="text-4xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-white text-gray-800">
+      <h2 className="text-4xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[#1B5E20] to-[#FFC107]">
         Iniciar Sesión
       </h2>
       {error && <p className="text-red-500 mb-4">{error}</p>}
@@ -207,7 +192,7 @@ const Login = () => {
         className="w-full max-w-md bg-white p-8 shadow-2xl rounded-lg text-gray-800"
       >
         <div className="mb-6">
-          <label htmlFor="email" className="block text-gray-700 text-lg">
+          <label htmlFor="email" className="block text-lg">
             Correo Electrónico
           </label>
           <input
@@ -216,12 +201,12 @@ const Login = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1B5E20]"
           />
         </div>
 
         <div className="mb-8">
-          <label htmlFor="password" className="block text-gray-700 text-lg">
+          <label htmlFor="password" className="block text-lg">
             Contraseña
           </label>
           <input
@@ -230,13 +215,13 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002855]"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1B5E20]"
           />
         </div>
 
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-3 rounded-lg text-lg hover:bg-blue-600 transition duration-300"
+          className="w-full bg-gradient-to-r from-[#1B5E20] via-[#2E7D32] to-[#FFC107] text-white py-3 rounded-lg text-lg hover:bg-[#2E7D32] transition duration-300"
         >
           Iniciar Sesión
         </button>
@@ -259,7 +244,7 @@ const Login = () => {
       <div className="mt-6">
         <p>
           ¿No tienes una cuenta?{" "}
-          <a href="/register" className="text-blue-200 hover:underline">
+          <a href="/register" className="text-[#1B5E20] hover:underline">
             Crea una como Docente ó Estudiante
           </a>
         </p>

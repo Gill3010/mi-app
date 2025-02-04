@@ -71,7 +71,7 @@ function MostrarPerfilEstudiante() {
   return (
     <div className="flex">
       {/* Sidebar con color de fondo y ancho ajustado */}
-      <div className="w-1/7 bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] text-white py-10 flex flex-col items-center">
+      <div className="w-1/7 bg-gradient-to-r from-[#1B5E20] via-[#2E7D32] to-[#FFC107] text-white py-10 flex flex-col items-center">
         {/* Iconos de menú */}
         <div className="flex flex-col items-center space-y-4">
           {menuItems.map((item) => (
@@ -92,11 +92,11 @@ function MostrarPerfilEstudiante() {
       </div>
 
       {/* Contenedor principal */}
-      <div className="relative w-full bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] text-white p-6 rounded-lg shadow-xl flex items-center">
+      <div className="relative w-full bg-gradient-to-r from-[#1B5E20] via-[#2E7D32] to-[#FFC107] text-white p-6 rounded-lg shadow-xl flex items-center">
         <div className="flex flex-wrap justify-between items-center w-full">
           {/* Información textual */}
           <div className="w-full md:w-3/4 space-y-3">
-            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400">
+            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#1B5E20] via-[#2E7D32] to-[#FFC107]">
               {perfil.nombre}
             </h2>
             <p className="text-sm italic">{perfil.especializacion}</p>
@@ -121,7 +121,7 @@ function MostrarPerfilEstudiante() {
 
             {/* Botón Editar */}
             <div className="mt-4">
-              <button className="px-4 py-2 bg-[#003366] text-white rounded-full hover:bg-[#005073] focus:outline-none">
+              <button className="px-4 py-2 bg-[#2E7D32] text-white rounded-full hover:bg-[#1B5E20] focus:outline-none">
                 Editar Perfil
               </button>
             </div>

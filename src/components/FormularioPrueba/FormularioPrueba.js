@@ -155,9 +155,9 @@ const FormularioPrueba = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] flex items-center justify-center">
+    <div className="min-h-screen bg-white flex items-center justify-center">
       <div className="p-8 max-w-3xl mx-auto bg-white rounded-lg shadow-lg w-full">
-        <h2 className="text-2xl font-bold mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 shadow-xl">
+        <h2 className="text-2xl font-bold mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-[#1B5E20] to-[#FFC107]">
           Crea tu prueba
         </h2>
 
@@ -317,7 +317,7 @@ const FormularioPrueba = () => {
             <button
               type="button"
               onClick={handleAddQuestion}
-              className="bg-blue-500 text-white py-2 px-6 rounded-lg shadow-lg hover:bg-blue-600"
+              className="bg-gradient-to-r from-[#1B5E20] to-[#FFC107] text-white py-2 px-6 rounded-lg shadow-lg hover:from-[#2E7D32] hover:to-[#FF9800]"
             >
               Agregar pregunta
             </button>
@@ -332,7 +332,7 @@ const FormularioPrueba = () => {
           <div className="mt-6 flex justify-center">
             <button
               type="submit"
-              className="bg-blue-500 text-white py-2 px-6 rounded-lg shadow-lg hover:bg-blue-600 disabled:opacity-50"
+              className="bg-gradient-to-r from-[#1B5E20] to-[#FFC107] text-white py-2 px-6 rounded-lg shadow-lg hover:bg-gradient-to-l disabled:opacity-50"
               disabled={loading}
             >
               {loading ? "Enviando..." : "Enviar prueba"}

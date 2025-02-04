@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { search } from '../../redux/actions/searchActions';
-import { FiEye, FiHeart, FiUser } from 'react-icons/fi';
-import { FaQuoteLeft, FaShareAlt } from 'react-icons/fa';
-import { increment, doc, updateDoc } from 'firebase/firestore';
-import { db } from '../../config/firebaseConfig';
+import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { search } from "../../redux/actions/searchActions";
+import { FiEye, FiHeart, FiUser } from "react-icons/fi";
+import { FaQuoteLeft, FaShareAlt } from "react-icons/fa";
+import { increment, doc, updateDoc } from "firebase/firestore";
+import { db } from "../../config/firebaseConfig";
 
 const Resultados = () => {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ const Resultados = () => {
   const [selectedImage, setSelectedImage] = useState(null);
 
   const { results, loading, error } = useSelector((state) => state.search);
-  const query = new URLSearchParams(location.search).get('query');
+  const query = new URLSearchParams(location.search).get("query");
 
   useEffect(() => {
     if (query) {
@@ -83,17 +83,22 @@ const Resultados = () => {
       });
       dispatch(search(query));
     } catch (error) {
-      console.error('Error al actualizar el contador de veces compartidas:', error);
+      console.error(
+        "Error al actualizar el contador de veces compartidas:",
+        error
+      );
     }
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-r from-[#1E3A8A] to-[#4CAF50] text-white p-8">
-      <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 shadow-lg">
+    <div className="min-h-screen w-full bg-white text-white p-8">
+      <h2 className="text-3xl md:text-4xl font-extrabold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-[#1B5E20] via-[#2E7D32] to-[#FFC107] shadow-lg">
         Resultados de la Búsqueda
       </h2>
 
-      {loading && <p className="text-[#002855] text-center">Cargando resultados...</p>}
+      {loading && (
+        <p className="text-white text-center">Cargando resultados...</p>
+      )}
       {error && <p className="text-red-500 text-center">{error}</p>}
 
       <div>
@@ -102,7 +107,7 @@ const Resultados = () => {
             {results.map((item) => (
               <li
                 key={item.id}
-                className="p-6 border border-gray-200 rounded-lg hover:shadow-xl transition duration-300 ease-in-out hover:border-[#002855] relative bg-white text-[#002855]"
+                className="p-6 border border-gray-200 rounded-lg hover:shadow-xl transition duration-300 ease-in-out hover:border-[#002855] relative bg-gradient-to-r from-[#1B5E20] via-[#2E7D32] to-[#FFC107] text-white"
               >
                 <div className="absolute top-0 left-0 w-full h-1 bg-[#002855] rounded-t-lg"></div>
 
@@ -124,10 +129,13 @@ const Resultados = () => {
                     {item.tituloInvestigacion}
                   </span>
                 </h3>
-                <p className="mb-2"><strong>DOI:</strong> {item.doi || "No disponible"}</p>
+                <p className="mb-2">
+                  <strong>DOI:</strong> {item.doi || "No disponible"}
+                </p>
 
                 <p className="font-medium mb-1">
-                  <strong>Autor:</strong> {item.nombreAutor} {item.apellidoAutor}
+                  <strong>Autor:</strong> {item.nombreAutor}{" "}
+                  {item.apellidoAutor}
                 </p>
                 <p className="flex items-center mb-1">
                   <strong>ORCID:</strong>{" "}
@@ -149,21 +157,31 @@ const Resultados = () => {
                 </p>
 
                 <p className="mb-3">
-                  <strong>Fecha de Publicación:</strong> {formatDate(item.fechaPublicacion)}
+                  <strong>Fecha de Publicación:</strong>{" "}
+                  {formatDate(item.fechaPublicacion)}
                 </p>
 
                 {item.resumen ? (
                   <p className="mb-3">
                     <strong>Resumen:</strong>{" "}
-                    <a href={item.resumen} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
+                    <a
+                      href={item.resumen}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 underline"
+                    >
                       Ver documento
                     </a>
                   </p>
                 ) : (
-                  <p className="mb-3"><strong>Resumen no disponible</strong></p>
+                  <p className="mb-3">
+                    <strong>Resumen no disponible</strong>
+                  </p>
                 )}
 
-                {item.audio && <audio controls src={item.audio} className="mt-4 w-full" />}
+                {item.audio && (
+                  <audio controls src={item.audio} className="mt-4 w-full" />
+                )}
 
                 <button
                   onClick={() => handleDetailsClick(item.id)}
@@ -172,29 +190,56 @@ const Resultados = () => {
                   Ver detalles
                 </button>
 
-                <div className="flex space-x-4 mt-4 text-[#002855] bg-[#006D5B] rounded-lg border border-gray-300 p-3 shadow-md">
-                  <div className="tooltip flex items-center space-x-1 cursor-pointer" onClick={() => handleIncrementViews(item.id)}>
-                    <FiEye className="text-lg hover:text-[#006D5B] transition-colors" />
-                    <span className="text-sm">{item.vistas || 0}</span>
+                <div className="flex space-x-4 mt-4 text-white bg-[#fff] rounded-lg border border-gray-300 p-3 shadow-md">
+                  <div
+                    className="tooltip flex items-center space-x-1 cursor-pointer"
+                    onClick={() => handleIncrementViews(item.id)}
+                  >
+                    <FiEye className="text-lg text-[#002855] hover:text-[#006D5B] transition-colors" />{" "}
+                    {/* Icono verde */}
+                    <span className="text-sm text-[#1B5E20]">
+                      {item.vistas || 0}
+                    </span>{" "}
+                    {/* Color verde */}
                   </div>
-                  <div className="tooltip flex items-center space-x-1 cursor-pointer" onClick={() => handleIncrementLikes(item.id)}>
-                    <FiHeart className="text-lg hover:text-red-400 transition-colors" />
-                    <span className="text-sm">{item.likes || 0}</span>
+                  <div
+                    className="tooltip flex items-center space-x-1 cursor-pointer"
+                    onClick={() => handleIncrementLikes(item.id)}
+                  >
+                    <FiHeart className="text-lg text-[#002855] hover:text-red-400 transition-colors" />{" "}
+                    {/* Icono amarillo */}
+                    <span className="text-sm text-[#002855]">
+                      {item.likes || 0}
+                    </span>{" "}
+                    {/* Color amarillo */}
                   </div>
-                  <div className="tooltip flex items-center space-x-1 cursor-pointer" onClick={() => handleShare(item.id, item.tituloInvestigacion)}>
-                    <FaShareAlt className="text-lg hover:text-[#006D5B] transition-colors" />
-                    <span className="text-sm">{item.compartido || 0}</span>
+                  <div
+                    className="tooltip flex items-center space-x-1 cursor-pointer"
+                    onClick={() =>
+                      handleShare(item.id, item.tituloInvestigacion)
+                    }
+                  >
+                    <FaShareAlt className="text-lg text-[#002855] hover:text-[#006D5B] transition-colors" />{" "}
+                    {/* Icono verde intermedio */}
+                    <span className="text-sm text-[#2E7D32]">
+                      {item.compartido || 0}
+                    </span>{" "}
+                    {/* Color verde intermedio */}
                   </div>
                   <div className="tooltip flex items-center space-x-1">
-                    <FaQuoteLeft className="text-lg hover:text-[#006D5B] transition-colors" />
-                    <span className="text-sm">{item.citas || 0}</span>
+                    <FaQuoteLeft className="text-lg text-[#002855] hover:text-[#006D5B] transition-colors" />{" "}
+                    {/* Icono amarillo */}
+                    <span className="text-sm text-[#002855]">
+                      {item.citas || 0}
+                    </span>{" "}
+                    {/* Color amarillo */}
                   </div>
                 </div>
               </li>
             ))}
           </ul>
         ) : (
-          <p className="text-[#002855] text-center">No se encontraron resultados</p>
+          <p className="text-white text-center">No se encontraron resultados</p>
         )}
       </div>
 
@@ -203,7 +248,11 @@ const Resultados = () => {
           className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50 p-4 overflow-hidden"
           onClick={closeModal}
         >
-          <img src={selectedImage} alt="Imagen ampliada" className="max-w-full max-h-full rounded-lg shadow-lg object-contain" />
+          <img
+            src={selectedImage}
+            alt="Imagen ampliada"
+            className="max-w-full max-h-full rounded-lg shadow-lg object-contain"
+          />
         </div>
       )}
     </div>
