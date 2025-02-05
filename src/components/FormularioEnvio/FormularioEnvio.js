@@ -175,12 +175,12 @@ const FormularioEnvio = () => {
             >
               Número de Teléfono
             </label>
-            <div className="flex">
+            <div className="flex flex-wrap sm:flex-nowrap">
               <select
                 name="codigoArea"
                 value={formData.codigoArea}
                 onChange={handleChange}
-                className="px-4 py-2 border border-[#002855] rounded-l-lg focus:outline-none focus:ring-2 focus:ring-[#002855]"
+                className="px-4 py-2 border border-[#002855] rounded-t-lg sm:rounded-l-lg focus:outline-none focus:ring-2 focus:ring-[#002855] w-full sm:w-auto"
                 required
               >
                 <option value="" disabled>
@@ -203,7 +203,7 @@ const FormularioEnvio = () => {
                 onChange={handleChange}
                 placeholder="Número de Teléfono"
                 required
-                className="flex-1 px-4 py-2 border border-l-0 border-[#002855] rounded-r-lg focus:outline-none focus:ring-2 focus:ring-[#002855]"
+                className="flex-1 px-4 py-2 border border-l-0 border-[#002855] rounded-b-lg sm:rounded-r-lg focus:outline-none focus:ring-2 focus:ring-[#002855] w-full sm:w-auto"
               />
             </div>
           </div>
@@ -286,7 +286,7 @@ const FormularioEnvio = () => {
               htmlFor="resumen"
               className="block text-sm font-medium text-gray-700 mb-2"
             >
-              Seleccionar resumen (PDF)
+              Seleccionar resumen (PDF | Máx. 300 palabras)
             </label>
             <input
               type="file"

@@ -123,12 +123,13 @@ const Resultados = () => {
                   />
                 )}
 
-                <h3 className="text-xl font-semibold relative group cursor-pointer mb-1">
+                <h3 className="text-xl font-semibold relative group cursor-pointer mb-1 inline-block">
                   <strong>Título de la investigación</strong>
-                  <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max px-3 py-1 text-xs text-white bg-black rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span className="absolute top-0 left-1/2 transform -translate-x-1/2 -mb-4 max-w-xs sm:max-w-sm px-3 py-1 text-xs text-white bg-black rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 break-words text-center whitespace-normal">
                     {item.tituloInvestigacion}
                   </span>
                 </h3>
+
                 <p className="mb-2">
                   <strong>DOI:</strong> {item.doi || "No disponible"}
                 </p>
@@ -149,9 +150,9 @@ const Resultados = () => {
                   </a>
                 </p>
 
-                <p className="relative group cursor-pointer mb-1">
+                <p className="relative group cursor-pointer mb-1 inline-block">
                   <strong>Afiliación</strong>
-                  <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max px-3 py-1 text-xs text-white bg-black rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span className="absolute top-0 left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 text-xs text-white bg-black rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 break-words text-center whitespace-normal">
                     {item.institucion || "Afiliación no disponible"}
                   </span>
                 </p>

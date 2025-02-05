@@ -4,8 +4,50 @@ const Ayuda = () => {
   return (
     <div className="bg-white text-black py-10 px-6">
       <h1 className="text-2xl font-bold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-[#1B5E20] to-[#FFC107]">
-        Paso a Paso: Creación y Gestión de Usuarios, Roles, Cursos y Contenidos
+        Paso a Paso: Creación y Gestión de Publicaciones, Usuarios, Roles,
+        Cursos y Contenidos
       </h1>
+
+      <section className="mb-8">
+        <h2 className="text-xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#1B5E20] to-[#FFC107]">
+          Crear una Publicación Científica
+        </h2>
+        <ol className="list-decimal list-inside space-y-2">
+          <li>
+            Ingresa a la página de creación de publicaciones. (
+            <a
+              href="https://portaldecartelescientificos.org/CrearPublicacion"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-300 underline hover:text-blue-400"
+            >
+              Creación de Publicación
+            </a>
+            )
+          </li>
+          <div className="mt-4">
+            <p className="font-semibold">Ejemplo:</p>
+            <img
+              src="/img/Paso0.png"
+              alt="Ejemplo de creación de publicación"
+              className="rounded-lg shadow-lg"
+            />
+          </div>
+          <li>
+            Rellena los campos necesarios para la publicación (nombre, apellido,
+            título etc.).
+          </li>
+          <li>
+            Adjunta los archivos relevantes como imagen (JPG, JPEG, PNG),
+            resumen (PDF, máximo de 300 palabras), y audio (MP3).
+          </li>
+
+          <li>
+            Revisa la vista previa y haz clic en el botón "Enviar documento"
+            para hacer que tu publicación esté disponible.
+          </li>
+        </ol>
+      </section>
 
       <section className="mb-8">
         <h2 className="text-xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#1B5E20] to-[#FFC107]">

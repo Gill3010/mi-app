@@ -43,6 +43,7 @@ import FormularioPrueba from "./components/FormularioPrueba/FormularioPrueba"; /
 import VerPrueba from "./components/VerPrueba/VerPrueba"; // Importa el nuevo componente VerPrueba
 import Carousel from "./components/Carousel/Carousel";
 import Ayuda from "./components/Ayuda/Ayuda";
+import GaleriaPublicaciones from "./components/GaleriaPublicaciones/GaleriaPublicaciones";
 const App = () => {
   return (
     <Provider store={store}>
@@ -59,6 +60,7 @@ const App = () => {
                     <Slider />
                     <SearchBar />
                     <Metrics />
+                    <GaleriaPublicaciones />
                   </div>
                 }
               />

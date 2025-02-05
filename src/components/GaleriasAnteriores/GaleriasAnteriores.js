@@ -181,12 +181,13 @@ const GaleriasAnteriores = () => {
               </div>
               <div className="md:w-2/3 p-4 flex flex-col justify-between">
                 <div className="text-white space-y-2 sm:space-y-3">
-                  <h3 className="text-xl sm:text-2xl font-semibold hover:text-yellow-500 transition cursor-pointer relative group">
+                  <h3 className="text-xl sm:text-2xl font-semibold hover:text-yellow-500 transition cursor-pointer relative group inline-block">
                     Título de la investigación
-                    <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 w-max px-2 py-1 text-xs text-white bg-black rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+                    <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 -mb-2 px-3 py-2 text-xs text-white bg-black rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 max-w-xs sm:max-w-sm z-10 whitespace-normal break-words text-center">
                       {galeria.tituloInvestigacion}
                     </span>
                   </h3>
+
                   <p>
                     <strong>DOI:</strong> {galeria.doi}
                   </p>
@@ -208,13 +209,13 @@ const GaleriasAnteriores = () => {
                       </a>
                     </p>
                   )}
-
-                  <p className="relative group cursor-pointer">
+                  <p className="relative group cursor-pointer inline-block">
                     <strong>Afiliación</strong>
-                    <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 w-max px-2 py-1 text-xs text-white bg-black rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+                    <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 -mb-2 px-3 py-2 text-xs text-white bg-black rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 max-w-xs sm:max-w-sm z-10 whitespace-normal break-words text-center">
                       {galeria.institucion || "No disponible"}
                     </span>
                   </p>
+
                   <p>
                     <strong>Fecha de Publicación:</strong>
                     {galeria.fechaPublicacion &&

@@ -68,7 +68,7 @@ const Nosotros = () => {
             {
               image: equipo4,
               name: "Dev. Israel Samuels",
-              title: "Desarrollador Full Stack",
+              title: "Full Stack Developer",
               email: "soporte@portaldecartelescientificos.org",
               phone: "+507 6549-8362",
               orcid: "https://orcid.org/0009-0007-1212-718X",
@@ -79,7 +79,7 @@ const Nosotros = () => {
               title: "Analista de Sistema y Seguridad Informática",
               email: "asistentedetecnologia@portaldecartelescientificos.org",
               phone: "+507 6320-6113",
-              orcid: "https://orcid.org/0009-0007-1212-718X",
+              orcid: "https://orcid.org/0009-0001-8994-3835",
             },
             {
               image: equipo6,
